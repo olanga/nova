@@ -1,21 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="standard">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Programmed Drills(Standard)</title>
+    <title>Nova S Pro - Programmed Drills</title>
     <style>
-        :root { 
-            --primary: #ff6b4a; 
-            --bg: #f5f6fa; 
-            --surface: #ffffff; 
-            --text: #2d3436; 
+        /* --- THEME DEFINITIONS --- */
+        :root {
+            --trans-speed: 0.3s;
+        }
+
+        [data-theme="standard"] {
+            --primary: #ff6b4a;
+            --primary-dim: rgba(255, 107, 74, 0.1);
+            --bg: #f5f6fa;
+            --surface: #ffffff;
+            --card-bg: #e4e7eb;
+            --text: #2d3436;
             --text-light: #636e72;
-            --border: #dfe6e9; 
-            --success: #ff6b4a; 
-            --danger: #d63031; 
+            --border: #dfe6e9;
+            --shadow: rgba(0,0,0,0.05);
+            --danger: #d63031;
+            --btn-text: #4a4a4a;
+            --menu-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        [data-theme="ocean"] {
+            --primary: #0984e3;
+            --primary-dim: rgba(9, 132, 227, 0.1);
+            --bg: #f0f9ff;
+            --surface: #ffffff;
+            --card-bg: #dfe6e9;
+            --text: #2c3e50;
+            --text-light: #576574;
+            --border: #c7ecee;
+            --shadow: rgba(9, 132, 227, 0.1);
+            --danger: #ff7675;
+            --btn-text: #2c3e50;
+            --menu-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        [data-theme="forest"] {
+            --primary: #00b894;
+            --primary-dim: rgba(0, 184, 148, 0.1);
+            --bg: #f1f2f6;
+            --surface: #ffffff;
+            --card-bg: #ced6e0;
+            --text: #2f3542;
+            --text-light: #747d8c;
+            --border: #a4b0be;
+            --shadow: rgba(0, 184, 148, 0.1);
+            --danger: #ff6b6b;
+            --btn-text: #2f3542;
+            --menu-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        [data-theme="night"] {
+            --primary: #ff7675; 
+            --primary-dim: rgba(255, 118, 117, 0.15);
+            --bg: #1e272e; 
+            --surface: #2f3640; 
+            --card-bg: #353b48; 
+            --text: #f5f6fa; 
+            --text-light: #dcdde1;
+            --border: #4b6584;
+            --shadow: rgba(0,0,0,0.3);
+            --danger: #e17055;
+            --btn-text: #f5f6fa;
+            --menu-bg: rgba(47, 54, 64, 0.95);
         }
         
+        /* --- GLOBAL STYLES --- */
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             background: var(--bg); 
@@ -27,11 +82,13 @@
             margin: 0; 
             padding: 20px 15px;
             box-sizing: border-box;
+            transition: background-color var(--trans-speed), color var(--trans-speed);
         }
 
         .container { 
             width: 100%; 
             max-width: 500px; 
+            position: relative; /* For menu positioning */
         }
 
         /* Header */
@@ -41,6 +98,7 @@
             justify-content: center;
             position: relative;
             margin-bottom: 20px;
+            padding: 0 10px;
         }
         
         h1 { 
@@ -48,30 +106,116 @@
             font-size: 1.1rem; 
             font-weight: 600; 
             color: var(--text); 
+            transition: color var(--trans-speed);
         }
 
         .back-arrow {
             position: absolute;
             left: 0;
             font-size: 1.5rem;
-            color: #b2bec3;
+            color: var(--text-light);
             cursor: pointer;
+            opacity: 0.5;
+        }
+
+        /* Menu Button (Hamburger) */
+        .menu-btn {
+            position: absolute;
+            right: 0;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.2s, color 0.2s;
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+        .menu-btn:active { transform: scale(0.9); color: var(--primary); }
+
+        /* Dropdown Menu */
+        .theme-menu {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            width: 160px;
+            background: var(--menu-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 100;
+            border: 1px solid var(--border);
+            transform-origin: top right;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        .theme-menu.open {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .menu-title {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            font-weight: 700;
+            padding: 5px 10px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .theme-item {
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+        .theme-item:hover { background: var(--primary-dim); color: var(--primary); }
+        
+        .color-preview {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            display: inline-block;
         }
 
         /* Section Label */
         .section-label {
-            font-size: 0.9rem;
-            color: #b2bec3;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
             margin-bottom: 8px;
-            padding-left: 5px;
+            padding-left: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color var(--trans-speed);
         }
 
         /* Settings / Connect Box */
         .settings-card { 
-            background: #e4e7eb; 
+            background: var(--card-bg); 
             border-radius: 20px; 
             padding: 15px; 
             margin-bottom: 20px; 
+            transition: background-color var(--trans-speed);
         }
 
         /* Connect Button */
@@ -84,11 +228,12 @@
             cursor: pointer; 
             font-size: 0.95rem; 
             background: var(--primary); 
-            color: white;
+            color: white; 
             margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(255, 107, 74, 0.3);
-            transition: background 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: background var(--trans-speed), transform 0.1s;
         }
+        .btn-connect:active { transform: scale(0.98); }
         .btn-connect.connected { background: #00b894; } 
 
         /* Controls (Level, Reps, Time) */
@@ -98,7 +243,7 @@
             margin-bottom: 5px;
         }
         .control-pill {
-            background: white;
+            background: var(--surface);
             border-radius: 15px;
             padding: 10px;
             flex: 1;
@@ -106,58 +251,65 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px var(--shadow);
+            transition: background-color var(--trans-speed), box-shadow var(--trans-speed);
         }
         .control-pill label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-light);
             margin-bottom: 4px;
             text-transform: uppercase;
+            font-weight: 700;
         }
         
         input[type="number"] {
             border: none;
-            font-size: 1rem;
-            font-weight: bold;
+            font-size: 1.1rem;
+            font-weight: 800;
             color: var(--primary);
             text-align: center;
             width: 100%;
             background: transparent;
+            transition: color var(--trans-speed);
         }
         input[type="number"]:focus { outline: none; }
 
-        /* Toggle Switch for Mode */
+        /* Toggle Switch */
         .mode-switch {
             display: flex;
-            background: #dfe6e9;
+            background: rgba(0,0,0,0.05); 
             border-radius: 20px;
-            padding: 2px;
+            padding: 3px;
             width: 100%;
         }
+        [data-theme="night"] .mode-switch { background: rgba(255,255,255,0.1); }
+
         .mode-option {
             flex: 1;
             text-align: center;
-            padding: 6px;
+            padding: 8px;
             font-size: 0.75rem;
             border-radius: 18px;
             cursor: pointer;
             color: var(--text-light);
             font-weight: 600;
+            transition: all var(--trans-speed);
         }
         .mode-option.active {
-            background: white;
+            background: var(--surface);
             color: var(--primary);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         /* TABS */
         .tabs-container {
-            background: white;
+            background: var(--card-bg); 
             border-radius: 25px; 
             padding: 4px;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            transition: background-color var(--trans-speed);
         }
         
         .tab-btn {
@@ -166,25 +318,25 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            padding: 10px;
+            padding: 12px;
             border-radius: 22px;
             border: 1px solid transparent;
             background: transparent;
-            color: #b2bec3;
+            color: var(--text-light);
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all var(--trans-speed);
         }
         
         .tab-btn.active {
-            background: white;
+            background: var(--surface);
             border: 1px solid var(--primary);
             color: var(--primary);
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        /* Tab Icons (4 dots) */
+        /* Tab Icons */
         .icon-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -193,39 +345,42 @@
             height: 10px;
         }
         .icon-dot {
-            background-color: #d3d3d3;
+            background-color: var(--text-light);
             border-radius: 50%;
+            opacity: 0.5;
         }
         .tab-btn.active .icon-dot {
             background-color: var(--primary);
+            opacity: 1;
         }
 
-        /* --- DRILL LIST (GRID LAYOUT) --- */
+        /* --- DRILL LIST --- */
         .drill-list {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* 2 Columns */
-            gap: 12px;
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            margin-bottom: 10px; 
         }
         
         .hidden { display: none !important; }
 
         .btn-drill {
-            background: white;
-            border: none;
+            background: var(--surface);
+            border: 1px solid transparent;
             border-radius: 20px; 
-            padding: 15px 10px 15px 10px;
+            padding: 15px 8px;
             font-size: 0.8rem;
             font-weight: 600;
-            color: #4a4a4a; 
+            color: var(--btn-text); 
             cursor: pointer;
             display: flex;
             flex-direction: column; 
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-            transition: transform 0.1s, box-shadow 0.1s;
-            min-height: 80px; 
+            gap: 10px;
+            box-shadow: 0 2px 5px var(--shadow);
+            transition: all 0.1s;
+            min-height: 85px; 
             width: 100%;
             position: relative;
         }
@@ -236,10 +391,19 @@
             width: 100%;
         }
 
-        .btn-drill:active { transform: scale(0.98); }
-        .btn-drill:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-drill:active { transform: scale(0.97); }
+        /* Active state for currently running drill */
+        .btn-drill.running { border-color: var(--primary); background: var(--primary-dim); color: var(--primary); }
 
-        /* Icon inside drill button (Centered) */
+        .btn-drill:disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed; 
+            box-shadow: none; 
+            background: rgba(0,0,0,0.05); 
+        }
+        [data-theme="night"] .btn-drill:disabled { background: rgba(255,255,255,0.05); }
+
+        /* Icon inside drill button */
         .btn-drill .drill-icon {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -248,11 +412,13 @@
             height: 14px;
         }
         .btn-drill .drill-icon .d-dot {
-            background-color: #cbd5e0;
+            background-color: #b2bec3;
             border-radius: 50%;
+            transition: background-color var(--trans-speed);
         }
+        .btn-drill.running .drill-icon .d-dot { background-color: var(--primary); }
 
-        /* Level Selector Styling */
+        /* Level Selector */
         .level-select {
             display: flex;
             justify-content: center;
@@ -260,17 +426,20 @@
             margin-bottom: 10px;
         }
         .lvl-dot {
-            width: 30px; height: 30px;
+            width: 32px; height: 32px;
             border-radius: 50%;
-            background: white;
+            background: var(--surface);
             display: flex; align-items: center; justify-content: center;
-            font-size: 0.8rem; font-weight: bold; color: var(--text-light);
+            font-size: 0.9rem; font-weight: bold; color: var(--text-light);
             cursor: pointer;
             border: 2px solid transparent;
+            box-shadow: 0 2px 5px var(--shadow);
+            transition: all var(--trans-speed);
         }
         .lvl-dot.active {
             border-color: var(--primary);
             color: var(--primary);
+            transform: scale(1.1);
         }
 
         /* Stop Button */
@@ -285,22 +454,25 @@
             cursor: pointer; 
             font-size: 1rem; 
             margin-top: 25px; 
-            box-shadow: 0 4px 10px rgba(214, 48, 49, 0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: opacity 0.2s;
         }
-        .btn-stop:disabled { opacity: 0.5; cursor: not-allowed; background: #fab1a0; box-shadow: none; }
+        .btn-stop:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
         /* Status text */
         #status-text {
             text-align: center;
             font-size: 0.8rem;
             color: var(--primary);
-            font-weight: 600;
+            font-weight: 700;
             height: 20px;
             margin-bottom: 5px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
-        .log-box { margin-top: 20px; background: #2d3436; color: #00cec9; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.7rem; height: 100px; overflow-y: auto; display: none; }
-        .checkbox-wrapper { margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.8rem; color: #b2bec3; }
+        .log-box { margin-top: 20px; background: #2d3436; color: #00cec9; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.7rem; height: 100px; overflow-y: auto; display: none; border: 1px solid #636e72; }
+        .checkbox-wrapper { margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.8rem; color: var(--text-light); }
     </style>
 </head>
 <body>
@@ -310,14 +482,37 @@
     <header>
         <div class="back-arrow">‹</div>
         <h1>Programmed Drills(Standard)</h1>
+        <div class="menu-btn" onclick="toggleMenu()">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </div>
     </header>
+
+    <div id="theme-menu" class="theme-menu">
+        <div class="menu-title">Switch Theme</div>
+        <div class="theme-item" onclick="setTheme('standard')">
+            <span class="color-preview" style="background:#ff6b4a"></span> Standard
+        </div>
+        <div class="theme-item" onclick="setTheme('ocean')">
+            <span class="color-preview" style="background:#0984e3"></span> Ocean
+        </div>
+        <div class="theme-item" onclick="setTheme('forest')">
+            <span class="color-preview" style="background:#00b894"></span> Forest
+        </div>
+        <div class="theme-item" onclick="setTheme('night')">
+            <span class="color-preview" style="background:#2d3436"></span> Night
+        </div>
+    </div>
 
     <div class="settings-card">
         <div id="status-text">Disconnected</div>
         <button id="btn-connect" class="btn-connect">Connect</button>
 
         <div class="control-group">
-            <div style="text-align:center; font-size:0.7rem; color:#636e72; margin-bottom:5px;">DIFFICULTY LEVEL</div>
+            <div style="text-align:center; font-size:0.65rem; color:var(--text-light); margin-bottom:5px; font-weight:700;">DIFFICULTY LEVEL</div>
             <div class="level-select">
                 <div class="lvl-dot active" onclick="setLevel(1, this)">1</div>
                 <div class="lvl-dot" onclick="setLevel(2, this)">2</div>
@@ -325,7 +520,7 @@
             </div>
         </div>
 
-        <div class="control-pill" style="margin-bottom: 10px;">
+        <div class="control-pill" style="margin-bottom: 10px; box-shadow:none; background:transparent; padding:0;">
             <div class="mode-switch">
                 <div class="mode-option active" onclick="setMode('reps', this)">Reps</div>
                 <div class="mode-option" onclick="setMode('time', this)">Time</div>
@@ -346,24 +541,21 @@
                 <input type="number" id="input-pause" value="1000" step="100">
             </div>
         </div>
-        
-        </div>
+    </div>
 
     <div class="section-label">Technique Selection</div>
-    <div class="settings-card" style="padding: 5px; border-radius: 30px; background: #e4e7eb;">
-        <div class="tabs-container" style="margin-bottom:0; background: transparent;">
-            <div class="tab-btn active" onclick="switchTab('basic', this)">
-                <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div>
-                Basic
-            </div>
-            <div class="tab-btn" onclick="switchTab('combined', this)">
-                <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div>
-                Combined
-            </div>
-            <div class="tab-btn" onclick="switchTab('complex', this)">
-                <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div>
-                Complex
-            </div>
+    <div class="tabs-container">
+        <div class="tab-btn active" onclick="switchTab('basic', this)">
+            <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div>
+            Basic
+        </div>
+        <div class="tab-btn" onclick="switchTab('combined', this)">
+            <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div>
+            Combined
+        </div>
+        <div class="tab-btn" onclick="switchTab('complex', this)">
+            <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div>
+            Complex
         </div>
     </div>
 
@@ -467,7 +659,8 @@
         log: document.getElementById('log'),
         drillBtns: document.querySelectorAll('.btn-drill'),
         stop: document.getElementById('btn-stop'),
-        inputPause: document.getElementById('input-pause')
+        inputPause: document.getElementById('input-pause'),
+        themeMenu: document.getElementById('theme-menu')
     };
 
     function log(msg) {
@@ -477,6 +670,23 @@
     }
 
     // --- Interactivity ---
+    
+    function toggleMenu() {
+        ui.themeMenu.classList.toggle('open');
+    }
+
+    // Close menu if clicking outside
+    document.addEventListener('click', function(event) {
+        if (!ui.themeMenu.contains(event.target) && !event.target.matches('.menu-btn') && !event.target.closest('.menu-btn')) {
+            ui.themeMenu.classList.remove('open');
+        }
+    });
+
+    function setTheme(themeName) {
+        document.documentElement.setAttribute('data-theme', themeName);
+        ui.themeMenu.classList.remove('open');
+    }
+
     function switchTab(catName, btn) {
         document.getElementById('view-basic').classList.add('hidden');
         document.getElementById('view-combined').classList.add('hidden');
@@ -525,6 +735,11 @@
 
     ui.drillBtns.forEach(btn => {
         btn.onclick = () => {
+            // Clear previous running state from all buttons
+            ui.drillBtns.forEach(b => b.classList.remove('running'));
+            // Add running state to current
+            btn.classList.add('running');
+            
             const drillName = btn.getAttribute('data-key');
             startDrillSequence(drillName);
         };
@@ -563,7 +778,7 @@
     function onDisconnect() {
         state = "disconnected";
         ui.statusText.textContent = "Disconnected";
-        ui.statusText.style.color = "#b2bec3";
+        ui.statusText.style.color = "var(--text-light)";
         ui.connect.textContent = "Connect";
         ui.connect.classList.remove('connected');
         toggleControls(false);
@@ -684,7 +899,10 @@
         clearTimeout(pauseTimer);
         await send([0x80,1,0,1]);
         ui.statusText.textContent = "Ready";
-        ui.drillBtns.forEach(b => b.disabled = false);
+        ui.drillBtns.forEach(b => {
+            b.disabled = false;
+            b.classList.remove('running');
+        });
         log("Stopped.");
     }
 
