@@ -6,12 +6,22 @@
     <title>Nova S Pro - Programmed Drills</title>
     <style>
         /* --- THEME DEFINITIONS --- */
-        :root { --trans-speed: 0.3s; }
+        :root {
+            --trans-speed: 0.3s;
+        }
 
-        [data-theme="standard"] { --primary: #ff6b4a; --primary-dim: rgba(255, 107, 74, 0.1); --bg: #f5f6fa; --surface: #ffffff; --card-bg: #e4e7eb; --text: #2d3436; --text-light: #636e72; --border: #dfe6e9; --shadow: rgba(0,0,0,0.05); --danger: #d63031; --btn-text: #4a4a4a; --menu-bg: rgba(255, 255, 255, 0.98); }
-        [data-theme="ocean"] { --primary: #0984e3; --primary-dim: rgba(9, 132, 227, 0.1); --bg: #f0f9ff; --surface: #ffffff; --card-bg: #dfe6e9; --text: #2c3e50; --text-light: #576574; --border: #c7ecee; --shadow: rgba(9, 132, 227, 0.1); --danger: #ff7675; --btn-text: #2c3e50; --menu-bg: rgba(255, 255, 255, 0.98); }
-        [data-theme="forest"] { --primary: #00b894; --primary-dim: rgba(0, 184, 148, 0.1); --bg: #f1f2f6; --surface: #ffffff; --card-bg: #ced6e0; --text: #2f3542; --text-light: #747d8c; --border: #a4b0be; --shadow: rgba(0, 184, 148, 0.1); --danger: #ff6b6b; --btn-text: #2f3542; --menu-bg: rgba(255, 255, 255, 0.98); }
-        [data-theme="night"] { --primary: #ff7675; --primary-dim: rgba(255, 118, 117, 0.15); --bg: #1e272e; --surface: #2f3640; --card-bg: #353b48; --text: #f5f6fa; --text-light: #dcdde1; --border: #4b6584; --shadow: rgba(0,0,0,0.3); --danger: #e17055; --btn-text: #f5f6fa; --menu-bg: rgba(47, 54, 64, 0.98); }
+        [data-theme="standard"] {
+            --primary: #ff6b4a; --primary-dim: rgba(255, 107, 74, 0.1); --bg: #f5f6fa; --surface: #ffffff; --card-bg: #e4e7eb; --text: #2d3436; --text-light: #636e72; --border: #dfe6e9; --shadow: rgba(0,0,0,0.05); --danger: #d63031; --btn-text: #4a4a4a; --menu-bg: rgba(255, 255, 255, 0.98);
+        }
+        [data-theme="ocean"] {
+            --primary: #0984e3; --primary-dim: rgba(9, 132, 227, 0.1); --bg: #f0f9ff; --surface: #ffffff; --card-bg: #dfe6e9; --text: #2c3e50; --text-light: #576574; --border: #c7ecee; --shadow: rgba(9, 132, 227, 0.1); --danger: #ff7675; --btn-text: #2c3e50; --menu-bg: rgba(255, 255, 255, 0.98);
+        }
+        [data-theme="forest"] {
+            --primary: #00b894; --primary-dim: rgba(0, 184, 148, 0.1); --bg: #f1f2f6; --surface: #ffffff; --card-bg: #ced6e0; --text: #2f3542; --text-light: #747d8c; --border: #a4b0be; --shadow: rgba(0, 184, 148, 0.1); --danger: #ff6b6b; --btn-text: #2f3542; --menu-bg: rgba(255, 255, 255, 0.98);
+        }
+        [data-theme="night"] {
+            --primary: #ff7675; --primary-dim: rgba(255, 118, 117, 0.15); --bg: #1e272e; --surface: #2f3640; --card-bg: #353b48; --text: #f5f6fa; --text-light: #dcdde1; --border: #4b6584; --shadow: rgba(0,0,0,0.3); --danger: #e17055; --btn-text: #f5f6fa; --menu-bg: rgba(47, 54, 64, 0.98);
+        }
         
         /* --- GLOBAL STYLES --- */
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 20px 15px; box-sizing: border-box; transition: background-color var(--trans-speed), color var(--trans-speed); }
@@ -20,7 +30,7 @@
         /* Header & Menu */
         header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; padding: 0 10px; }
         h1 { margin: 0; font-size: 1.1rem; font-weight: 600; color: var(--text); }
-        .back-arrow { position: absolute; left: 0; font-size: 1.5rem; color: var(--text-light); cursor: pointer; opacity: 0.5; }
+        
         .menu-btn { position: absolute; right: 0; color: var(--text-light); cursor: pointer; padding: 5px; z-index: 101; display: flex; align-items: center; justify-content: center; }
         .menu-btn svg { width: 24px; height: 24px; }
 
@@ -74,6 +84,7 @@
         .btn-drill.running { border-color: var(--primary); background: var(--primary-dim); color: var(--primary); }
         .btn-drill:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; background: rgba(0,0,0,0.05); }
         [data-theme="night"] .btn-drill:disabled { background: rgba(255,255,255,0.05); }
+        
         .btn-drill .drill-icon { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; width: 14px; height: 14px; }
         .btn-drill .drill-icon .d-dot { background-color: #b2bec3; border-radius: 50%; transition: background-color var(--trans-speed); }
         .btn-drill.running .drill-icon .d-dot { background-color: var(--primary); }
@@ -137,7 +148,6 @@
 <div class="container">
     
     <header>
-        <div class="back-arrow">‹</div>
         <h1>Programmed Drills(Standard)</h1>
         <div class="menu-btn" onclick="toggleMenu()">
             <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
@@ -313,7 +323,7 @@
 
     function init() {
         renderDrillButtons();
-        updateDrillButtonStates(); // Ensure visual state is correct on load
+        updateDrillButtonStates(); 
     }
 
     function renderDrillButtons() {
@@ -358,12 +368,11 @@
     }
 
     function updateDrillButtonStates() {
-        // Only visual style changes, interaction logic is handled in click handler
         const btns = document.querySelectorAll('.btn-drill');
         btns.forEach(b => {
              if (state !== 'ready') {
-                 b.disabled = true; // Visual greying out
-                 b.disabled = false; // Actually enabled for interaction logic, CSS handles the rest
+                 b.disabled = true; 
+                 b.disabled = false; 
                  b.style.opacity = "0.6"; 
              } else {
                  b.style.opacity = "1";
@@ -714,6 +723,7 @@
 
     function packBall(us, ls, bh, dp, freq, reps) {
         const b = new ArrayBuffer(24), v = new DataView(b);
+        // Re-clamp for safety during runtime
         us = clamp(us, 400, 7500); ls = clamp(ls, 400, 7500);
         const bh_f = (clamp(bh,-50,100)+50)/150*50-20;
         const dp_f = (clamp(dp,-10,10)+10)/20*44-22;
