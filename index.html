@@ -25,7 +25,7 @@
         .menu-btn svg { width: 24px; height: 24px; }
 
         /* Popup Menu */
-        .theme-menu { position: absolute; top: 50px; right: 10px; width: 200px; background: var(--menu-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 10px; display: flex; flex-direction: column; gap: 5px; z-index: 100; border: 1px solid var(--border); opacity: 0; transform: scale(0.8); pointer-events: none; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: top right; }
+        .theme-menu { position: absolute; top: 50px; right: 10px; width: 180px; background: var(--menu-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 10px; display: flex; flex-direction: column; gap: 5px; z-index: 100; border: 1px solid var(--border); opacity: 0; transform: scale(0.8); pointer-events: none; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: top right; }
         .theme-menu.open { opacity: 1; transform: scale(1); pointer-events: auto; }
         .menu-title { font-size: 0.7rem; color: var(--text-light); font-weight: 700; padding: 5px 10px; border-bottom: 1px solid var(--border); margin-bottom: 5px; text-transform: uppercase; }
         .theme-item { padding: 10px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: 500; color: var(--text); display: flex; align-items: center; gap: 10px; transition: background 0.2s; }
@@ -33,7 +33,6 @@
         .color-preview { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
         .reset-item { color: var(--danger); }
         .reset-item:hover { background: rgba(214, 48, 49, 0.1); color: var(--danger); }
-        .save-item { color: var(--primary); font-weight: 600; }
 
         /* Main UI Components */
         .settings-card { background: var(--card-bg); border-radius: 20px; padding: 15px; margin-bottom: 20px; transition: background-color var(--trans-speed); }
@@ -73,10 +72,8 @@
         .btn-drill span { text-align: center; line-height: 1.3; width: 100%; }
         .btn-drill:active { transform: scale(0.97); }
         .btn-drill.running { border-color: var(--primary); background: var(--primary-dim); color: var(--primary); }
-        /* Only disabled visual style removed, still handles logic in JS */
-        .btn-drill:disabled { background: rgba(0,0,0,0.05); opacity: 0.5; box-shadow:none; }
+        .btn-drill:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; background: rgba(0,0,0,0.05); }
         [data-theme="night"] .btn-drill:disabled { background: rgba(255,255,255,0.05); }
-        
         .btn-drill .drill-icon { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; width: 14px; height: 14px; }
         .btn-drill .drill-icon .d-dot { background-color: #b2bec3; border-radius: 50%; transition: background-color var(--trans-speed); }
         .btn-drill.running .drill-icon .d-dot { background-color: var(--primary); }
@@ -103,10 +100,29 @@
         
         .ball-editor { background: var(--bg); padding: 10px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border); }
         .ball-title { font-size: 0.75rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; }
-        .editor-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        
+        .editor-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+        
+        /* Flex Label Row for slick range display */
         .editor-field { display: flex; flex-direction: column; }
-        .editor-field label { font-size: 0.6rem; color: var(--text-light); font-weight: 600; margin-bottom: 2px; }
-        .editor-field input { background: var(--surface); border: 1px solid var(--border); padding: 8px; border-radius: 8px; font-size: 0.85rem; color: var(--text); font-weight: 700; text-align: center; -moz-appearance: textfield; }
+        .field-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
+        .field-header label { font-size: 0.65rem; color: var(--text-light); font-weight: 700; }
+        .field-header .range-hint { font-size: 0.55rem; color: #b2bec3; font-weight: 400; }
+
+        .editor-field input { 
+            background: var(--surface); 
+            border: 1px solid var(--border); 
+            padding: 6px 2px; 
+            border-radius: 8px; 
+            font-size: 0.85rem; 
+            color: var(--text); 
+            font-weight: 700; 
+            text-align: center; 
+            -moz-appearance: textfield; 
+            width: 100%; 
+            box-sizing: border-box; 
+            min-width: 0; 
+        }
 
         .modal-footer { margin-top: 15px; display: flex; gap: 10px; }
         .btn-modal { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
@@ -273,7 +289,6 @@
         complex: ["push(b)-loop(f)-drive(b)", "push(f)-loop(b)-drive(f)", "loop(f)-drive(f)-drive(b)", "loop(b)-drive(f)-drive(b)", "drive(f)-drive(f)-drive(f)", "push(f)-loop(f)-drive(f)", "push(b)-loop(b)-drive(b)", "push(f)-loop(b)-drive(b)", "loop(f)-drive(b)-drive(f)", "loop(b)-drive(b)-drive(f)", "push(b)-loop(f)-drive(f)", "push(b)-loop(b)-drive(f)", "drive(b)-drive(f)-drive(f)", "random-drive", "23-random-drive", "all-random"]
     };
 
-    // 2. State
     let device, notifyChar, writeChar;
     let writeLock = Promise.resolve();
     let state = "disconnected";
@@ -286,7 +301,6 @@
     let endTime = 0;
     let selectedLevel = 1;
     
-    // Initial Load logic: Load 'custom_drills' if present, if not check 'user_defaults', else factory
     let savedDrills = localStorage.getItem('custom_drills');
     let userDefaults = localStorage.getItem('user_defaults');
     
@@ -297,15 +311,16 @@
     let pressTimer = null;
     let longPressHandled = false;
 
-    // 3. Init
     function init() {
         renderDrillButtons();
+        updateDrillButtonStates(); // Ensure visual state is correct on load
     }
 
     function renderDrillButtons() {
         ['basic', 'combined', 'complex'].forEach(cat => {
             const container = document.getElementById(`view-${cat}`);
             container.innerHTML = '';
+            
             CATEGORIES[cat].forEach(key => {
                 const btn = document.createElement('button');
                 btn.className = 'btn-drill';
@@ -321,10 +336,11 @@
                 
                 const span = document.createElement('span');
                 span.textContent = formatDrillName(key);
+                
                 btn.appendChild(iconDiv);
                 btn.appendChild(span);
                 
-                // Event Handlers
+                // Events
                 btn.addEventListener('click', () => handleDrillClick(key, btn));
                 
                 const startPress = (e) => handlePressStart(e, key);
@@ -341,11 +357,26 @@
         });
     }
 
+    function updateDrillButtonStates() {
+        // Only visual style changes, interaction logic is handled in click handler
+        const btns = document.querySelectorAll('.btn-drill');
+        btns.forEach(b => {
+             if (state !== 'ready') {
+                 b.disabled = true; // Visual greying out
+                 b.disabled = false; // Actually enabled for interaction logic, CSS handles the rest
+                 b.style.opacity = "0.6"; 
+             } else {
+                 b.style.opacity = "1";
+             }
+        });
+    }
+
     function formatDrillName(key) {
         return key.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     }
 
-    // --- 4. Interaction ---
+    // --- 4. Interaction Handlers ---
+    
     function handleDrillClick(key, btn) {
         if (longPressHandled) {
             longPressHandled = false;
@@ -368,7 +399,7 @@
         pressTimer = setTimeout(() => {
             longPressHandled = true;
             openEditor(key);
-        }, 600);
+        }, 600); 
     }
 
     function handlePressEnd(e) {
@@ -383,6 +414,15 @@
     }
 
     // --- 5. Editor & Data Management ---
+    const RANGE_CONFIG = [
+        { label: 'Top', class: 'inp-us', min: 400, max: 7500, step: 1, idx: 0 },
+        { label: 'Bot', class: 'inp-ls', min: 400, max: 7500, step: 1, idx: 1 },
+        { label: 'Hgt', class: 'inp-bh', min: -50, max: 100, step: 1, idx: 2 },
+        { label: 'Drp', class: 'inp-dp', min: -10, max: 10, step: 0.5, idx: 3 },
+        { label: 'Frq', class: 'inp-fr', min: 0, max: 100, step: 10, idx: 4 },
+        { label: 'Rep', class: 'inp-rp', min: 1, max: 200, step: 1, idx: 5 }
+    ];
+
     function openEditor(key) {
         editingDrillKey = key;
         const levelData = currentDrills[key][selectedLevel];
@@ -392,17 +432,22 @@
         levelData.forEach((ballParams, index) => {
             const div = document.createElement('div');
             div.className = 'ball-editor';
-            div.innerHTML = `
-                <div class="ball-title">Ball ${index + 1}</div>
-                <div class="editor-grid">
-                    <div class="editor-field"><label>Top</label><input type="number" class="inp-us" value="${ballParams[0]}" min="400" max="7500" step="1"></div>
-                    <div class="editor-field"><label>Bot</label><input type="number" class="inp-ls" value="${ballParams[1]}" min="400" max="7500" step="1"></div>
-                    <div class="editor-field"><label>Hgt</label><input type="number" class="inp-bh" value="${ballParams[2]}" min="-50" max="100" step="1"></div>
-                    <div class="editor-field"><label>Drp</label><input type="number" class="inp-dp" value="${ballParams[3]}" min="-10" max="10" step="0.5"></div>
-                    <div class="editor-field"><label>Frq</label><input type="number" class="inp-fr" value="${ballParams[4]}" min="0" max="100" step="10"></div>
-                    <div class="editor-field"><label>Rep</label><input type="number" class="inp-rp" value="${ballParams[5]}" min="1" max="200" step="1"></div>
-                </div>
-            `;
+            
+            let gridHtml = '<div class="editor-grid">';
+            RANGE_CONFIG.forEach(cfg => {
+                gridHtml += `
+                    <div class="editor-field">
+                        <div class="field-header">
+                            <label>${cfg.label}</label>
+                            <span class="range-hint">${cfg.min}-${cfg.max}</span>
+                        </div>
+                        <input type="number" class="${cfg.class}" value="${ballParams[cfg.idx]}" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}">
+                    </div>
+                `;
+            });
+            gridHtml += '</div>';
+
+            div.innerHTML = `<div class="ball-title">Ball ${index + 1}</div>` + gridHtml;
             modalBody.appendChild(div);
         });
         document.getElementById('editor-modal').classList.add('open');
@@ -436,7 +481,6 @@
         showToast(`Saved Level ${selectedLevel}`);
     }
 
-    // -- New Menu Functions --
     function saveAsDefault() {
         if(confirm("Save current settings as your new personal default?")) {
             localStorage.setItem('user_defaults', JSON.stringify(currentDrills));
@@ -457,7 +501,6 @@
             } else {
                 currentDrills = JSON.parse(JSON.stringify(DEFAULT_DRILLS));
             }
-            // Update current persistent state
             localStorage.setItem('custom_drills', JSON.stringify(currentDrills));
             toggleMenu();
             showToast(hasUserDefault ? "Restored User Defaults" : "Restored Factory Settings");
@@ -466,7 +509,7 @@
 
     function factoryReset() {
         if(confirm("WARNING: Delete ALL saved data and return to original factory state?")) {
-            localStorage.clear(); // Wipes custom_drills AND user_defaults
+            localStorage.clear(); 
             currentDrills = JSON.parse(JSON.stringify(DEFAULT_DRILLS));
             toggleMenu();
             showToast("Factory Reset Complete");
@@ -572,8 +615,8 @@
         ui.statusText.style.color = "var(--text-light)";
         ui.connect.textContent = "Connect";
         ui.connect.classList.remove('connected');
-        // Controls remain enabled for editing, but click action blocked
         isRunning = false;
+        updateDrillButtonStates(); // Reset visuals
         clearTimeout(pauseTimer);
     }
 
@@ -611,9 +654,9 @@
             ui.statusText.style.color = "#00b894";
             ui.connect.textContent = "Disconnect";
             ui.connect.classList.add('connected');
+            updateDrillButtonStates();
             showToast("Connected");
         }
-        // Handle done signal...
         const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
         if(isRunning && hex.includes(MSG_DONE)) handleDone();
     }
@@ -634,7 +677,6 @@
         }
 
         isRunning = true;
-        // We don't disable buttons, just visually indicate running state
         ui.stop.disabled = false;
         runIteration();
     }
@@ -672,7 +714,6 @@
 
     function packBall(us, ls, bh, dp, freq, reps) {
         const b = new ArrayBuffer(24), v = new DataView(b);
-        // Re-clamp for safety during runtime
         us = clamp(us, 400, 7500); ls = clamp(ls, 400, 7500);
         const bh_f = (clamp(bh,-50,100)+50)/150*50-20;
         const dp_f = (clamp(dp,-10,10)+10)/20*44-22;
