@@ -6,473 +6,114 @@
     <title>Nova S Pro - Programmed Drills</title>
     <style>
         /* --- THEME DEFINITIONS --- */
-        :root {
-            --trans-speed: 0.3s;
-        }
+        :root { --trans-speed: 0.3s; }
 
-        [data-theme="standard"] {
-            --primary: #ff6b4a;
-            --primary-dim: rgba(255, 107, 74, 0.1);
-            --bg: #f5f6fa;
-            --surface: #ffffff;
-            --card-bg: #e4e7eb;
-            --text: #2d3436;
-            --text-light: #636e72;
-            --border: #dfe6e9;
-            --shadow: rgba(0,0,0,0.05);
-            --danger: #d63031;
-            --btn-text: #4a4a4a;
-            --menu-bg: rgba(255, 255, 255, 0.95);
-        }
-
-        [data-theme="ocean"] {
-            --primary: #0984e3;
-            --primary-dim: rgba(9, 132, 227, 0.1);
-            --bg: #f0f9ff;
-            --surface: #ffffff;
-            --card-bg: #dfe6e9;
-            --text: #2c3e50;
-            --text-light: #576574;
-            --border: #c7ecee;
-            --shadow: rgba(9, 132, 227, 0.1);
-            --danger: #ff7675;
-            --btn-text: #2c3e50;
-            --menu-bg: rgba(255, 255, 255, 0.95);
-        }
-
-        [data-theme="forest"] {
-            --primary: #00b894;
-            --primary-dim: rgba(0, 184, 148, 0.1);
-            --bg: #f1f2f6;
-            --surface: #ffffff;
-            --card-bg: #ced6e0;
-            --text: #2f3542;
-            --text-light: #747d8c;
-            --border: #a4b0be;
-            --shadow: rgba(0, 184, 148, 0.1);
-            --danger: #ff6b6b;
-            --btn-text: #2f3542;
-            --menu-bg: rgba(255, 255, 255, 0.95);
-        }
-
-        [data-theme="night"] {
-            --primary: #ff7675; 
-            --primary-dim: rgba(255, 118, 117, 0.15);
-            --bg: #1e272e; 
-            --surface: #2f3640; 
-            --card-bg: #353b48; 
-            --text: #f5f6fa; 
-            --text-light: #dcdde1;
-            --border: #4b6584;
-            --shadow: rgba(0,0,0,0.3);
-            --danger: #e17055;
-            --btn-text: #f5f6fa;
-            --menu-bg: rgba(47, 54, 64, 0.95);
-        }
+        [data-theme="standard"] { --primary: #ff6b4a; --primary-dim: rgba(255, 107, 74, 0.1); --bg: #f5f6fa; --surface: #ffffff; --card-bg: #e4e7eb; --text: #2d3436; --text-light: #636e72; --border: #dfe6e9; --shadow: rgba(0,0,0,0.05); --danger: #d63031; --btn-text: #4a4a4a; --menu-bg: rgba(255, 255, 255, 0.98); }
+        [data-theme="ocean"] { --primary: #0984e3; --primary-dim: rgba(9, 132, 227, 0.1); --bg: #f0f9ff; --surface: #ffffff; --card-bg: #dfe6e9; --text: #2c3e50; --text-light: #576574; --border: #c7ecee; --shadow: rgba(9, 132, 227, 0.1); --danger: #ff7675; --btn-text: #2c3e50; --menu-bg: rgba(255, 255, 255, 0.98); }
+        [data-theme="forest"] { --primary: #00b894; --primary-dim: rgba(0, 184, 148, 0.1); --bg: #f1f2f6; --surface: #ffffff; --card-bg: #ced6e0; --text: #2f3542; --text-light: #747d8c; --border: #a4b0be; --shadow: rgba(0, 184, 148, 0.1); --danger: #ff6b6b; --btn-text: #2f3542; --menu-bg: rgba(255, 255, 255, 0.98); }
+        [data-theme="night"] { --primary: #ff7675; --primary-dim: rgba(255, 118, 117, 0.15); --bg: #1e272e; --surface: #2f3640; --card-bg: #353b48; --text: #f5f6fa; --text-light: #dcdde1; --border: #4b6584; --shadow: rgba(0,0,0,0.3); --danger: #e17055; --btn-text: #f5f6fa; --menu-bg: rgba(47, 54, 64, 0.98); }
         
         /* --- GLOBAL STYLES --- */
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background: var(--bg); 
-            color: var(--text); 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0; 
-            padding: 20px 15px;
-            box-sizing: border-box;
-            transition: background-color var(--trans-speed), color var(--trans-speed);
-        }
-
-        .container { 
-            width: 100%; 
-            max-width: 500px; 
-            position: relative; /* For menu positioning */
-        }
-
-        /* Header */
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            margin-bottom: 20px;
-            padding: 0 10px;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 20px 15px; box-sizing: border-box; transition: background-color var(--trans-speed), color var(--trans-speed); }
+        .container { width: 100%; max-width: 500px; position: relative; }
         
-        h1 { 
-            margin: 0; 
-            font-size: 1.1rem; 
-            font-weight: 600; 
-            color: var(--text); 
-            transition: color var(--trans-speed);
-        }
+        /* Header & Menu */
+        header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; padding: 0 10px; }
+        h1 { margin: 0; font-size: 1.1rem; font-weight: 600; color: var(--text); }
+        .back-arrow { position: absolute; left: 0; font-size: 1.5rem; color: var(--text-light); cursor: pointer; opacity: 0.5; }
+        .menu-btn { position: absolute; right: 0; color: var(--text-light); cursor: pointer; padding: 5px; z-index: 101; display: flex; align-items: center; justify-content: center; }
+        .menu-btn svg { width: 24px; height: 24px; }
 
-        .back-arrow {
-            position: absolute;
-            left: 0;
-            font-size: 1.5rem;
-            color: var(--text-light);
-            cursor: pointer;
-            opacity: 0.5;
-        }
-
-        /* Menu Button (Hamburger) */
-        .menu-btn {
-            position: absolute;
-            right: 0;
-            color: var(--text-light);
-            cursor: pointer;
-            padding: 5px;
-            transition: transform 0.2s, color 0.2s;
-            z-index: 101;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .menu-btn svg {
-            width: 24px;
-            height: 24px;
-        }
-        .menu-btn:active { transform: scale(0.9); color: var(--primary); }
-
-        /* Dropdown Menu */
-        .theme-menu {
-            position: absolute;
-            top: 50px;
-            right: 10px;
-            width: 160px;
-            background: var(--menu-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            z-index: 100;
-            border: 1px solid var(--border);
-            transform-origin: top right;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            opacity: 0;
-            transform: scale(0.8);
-            pointer-events: none;
-        }
-
-        .theme-menu.open {
-            opacity: 1;
-            transform: scale(1);
-            pointer-events: auto;
-        }
-
-        .menu-title {
-            font-size: 0.7rem;
-            color: var(--text-light);
-            font-weight: 700;
-            padding: 5px 10px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-
-        .theme-item {
-            padding: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: background 0.2s;
-        }
+        /* Popup Menu */
+        .theme-menu { position: absolute; top: 50px; right: 10px; width: 200px; background: var(--menu-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 10px; display: flex; flex-direction: column; gap: 5px; z-index: 100; border: 1px solid var(--border); opacity: 0; transform: scale(0.8); pointer-events: none; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: top right; }
+        .theme-menu.open { opacity: 1; transform: scale(1); pointer-events: auto; }
+        .menu-title { font-size: 0.7rem; color: var(--text-light); font-weight: 700; padding: 5px 10px; border-bottom: 1px solid var(--border); margin-bottom: 5px; text-transform: uppercase; }
+        .theme-item { padding: 10px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: 500; color: var(--text); display: flex; align-items: center; gap: 10px; transition: background 0.2s; }
         .theme-item:hover { background: var(--primary-dim); color: var(--primary); }
-        
-        .color-preview {
-            width: 12px; height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-        }
+        .color-preview { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+        .reset-item { color: var(--danger); }
+        .reset-item:hover { background: rgba(214, 48, 49, 0.1); color: var(--danger); }
+        .save-item { color: var(--primary); font-weight: 600; }
 
-        /* Section Label */
-        .section-label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-light);
-            margin-bottom: 8px;
-            padding-left: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: color var(--trans-speed);
-        }
-
-        /* Settings / Connect Box */
-        .settings-card { 
-            background: var(--card-bg); 
-            border-radius: 20px; 
-            padding: 15px; 
-            margin-bottom: 20px; 
-            transition: background-color var(--trans-speed);
-        }
-
-        /* Connect Button */
-        .btn-connect { 
-            width: 100%; 
-            padding: 12px; 
-            border: none; 
-            border-radius: 25px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            font-size: 0.95rem; 
-            background: var(--primary); 
-            color: white; 
-            margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            transition: background var(--trans-speed), transform 0.1s;
-        }
-        .btn-connect:active { transform: scale(0.98); }
-        .btn-connect.connected { background: #00b894; } 
-
-        /* Controls (Level, Reps, Time) */
-        .controls-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 5px;
-        }
-        .control-pill {
-            background: var(--surface);
-            border-radius: 15px;
-            padding: 10px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px var(--shadow);
-            transition: background-color var(--trans-speed), box-shadow var(--trans-speed);
-        }
-        .control-pill label {
-            font-size: 0.65rem;
-            color: var(--text-light);
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-        
-        input[type="number"] {
-            border: none;
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: var(--primary);
-            text-align: center;
-            width: 100%;
-            background: transparent;
-            transition: color var(--trans-speed);
-        }
+        /* Main UI Components */
+        .settings-card { background: var(--card-bg); border-radius: 20px; padding: 15px; margin-bottom: 20px; transition: background-color var(--trans-speed); }
+        .btn-connect { width: 100%; padding: 12px; border: none; border-radius: 25px; font-weight: 600; cursor: pointer; font-size: 0.95rem; background: var(--primary); color: white; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: background var(--trans-speed), transform 0.1s; }
+        .btn-connect.connected { background: #00b894; }
+        .control-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+        .controls-row { display: flex; gap: 10px; margin-bottom: 5px; }
+        .control-pill { background: var(--surface); border-radius: 15px; padding: 10px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 2px 5px var(--shadow); }
+        .control-pill label { font-size: 0.65rem; color: var(--text-light); margin-bottom: 4px; font-weight: 700; text-transform: uppercase; }
+        input[type="number"] { border: none; font-size: 1.1rem; font-weight: 800; color: var(--primary); text-align: center; width: 100%; background: transparent; }
         input[type="number"]:focus { outline: none; }
-
-        /* Toggle Switch */
-        .mode-switch {
-            display: flex;
-            background: rgba(0,0,0,0.05); 
-            border-radius: 20px;
-            padding: 3px;
-            width: 100%;
-        }
+        
+        /* Switch */
+        .mode-switch { display: flex; background: rgba(0,0,0,0.05); border-radius: 20px; padding: 3px; width: 100%; margin-bottom: 10px; }
         [data-theme="night"] .mode-switch { background: rgba(255,255,255,0.1); }
-
-        .mode-option {
-            flex: 1;
-            text-align: center;
-            padding: 8px;
-            font-size: 0.75rem;
-            border-radius: 18px;
-            cursor: pointer;
-            color: var(--text-light);
-            font-weight: 600;
-            transition: all var(--trans-speed);
-        }
-        .mode-option.active {
-            background: var(--surface);
-            color: var(--primary);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        /* TABS */
-        .tabs-container {
-            background: var(--card-bg); 
-            border-radius: 25px; 
-            padding: 4px;
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            transition: background-color var(--trans-speed);
-        }
-        
-        .tab-btn {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding: 12px;
-            border-radius: 22px;
-            border: 1px solid transparent;
-            background: transparent;
-            color: var(--text-light);
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all var(--trans-speed);
-        }
-        
-        .tab-btn.active {
-            background: var(--surface);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        /* Tab Icons */
-        .icon-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2px;
-            width: 10px;
-            height: 10px;
-        }
-        .icon-dot {
-            background-color: var(--text-light);
-            border-radius: 50%;
-            opacity: 0.5;
-        }
-        .tab-btn.active .icon-dot {
-            background-color: var(--primary);
-            opacity: 1;
-        }
-
-        /* --- DRILL LIST --- */
-        .drill-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr; 
-            gap: 12px; 
-            margin-bottom: 10px; 
-        }
-        
-        .hidden { display: none !important; }
-
-        .btn-drill {
-            background: var(--surface);
-            border: 1px solid transparent;
-            border-radius: 20px; 
-            padding: 15px 8px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--btn-text); 
-            cursor: pointer;
-            display: flex;
-            flex-direction: column; 
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 2px 5px var(--shadow);
-            transition: all 0.1s;
-            min-height: 85px; 
-            width: 100%;
-            position: relative;
-        }
-        
-        .btn-drill span {
-            text-align: center;
-            line-height: 1.3;
-            width: 100%;
-        }
-
-        .btn-drill:active { transform: scale(0.97); }
-        /* Active state for currently running drill */
-        .btn-drill.running { border-color: var(--primary); background: var(--primary-dim); color: var(--primary); }
-
-        .btn-drill:disabled { 
-            opacity: 0.5; 
-            cursor: not-allowed; 
-            box-shadow: none; 
-            background: rgba(0,0,0,0.05); 
-        }
-        [data-theme="night"] .btn-drill:disabled { background: rgba(255,255,255,0.05); }
-
-        /* Icon inside drill button */
-        .btn-drill .drill-icon {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3px;
-            width: 14px;
-            height: 14px;
-        }
-        .btn-drill .drill-icon .d-dot {
-            background-color: #b2bec3;
-            border-radius: 50%;
-            transition: background-color var(--trans-speed);
-        }
-        .btn-drill.running .drill-icon .d-dot { background-color: var(--primary); }
+        .mode-option { flex: 1; text-align: center; padding: 8px; font-size: 0.75rem; border-radius: 18px; cursor: pointer; color: var(--text-light); font-weight: 600; transition: all var(--trans-speed); }
+        .mode-option.active { background: var(--surface); color: var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
         /* Level Selector */
-        .level-select {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
-        .lvl-dot {
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            background: var(--surface);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.9rem; font-weight: bold; color: var(--text-light);
-            cursor: pointer;
-            border: 2px solid transparent;
-            box-shadow: 0 2px 5px var(--shadow);
-            transition: all var(--trans-speed);
-        }
-        .lvl-dot.active {
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: scale(1.1);
-        }
+        .level-select { display: flex; justify-content: center; gap: 15px; margin-bottom: 10px; }
+        .lvl-dot { width: 32px; height: 32px; border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; color: var(--text-light); cursor: pointer; border: 2px solid transparent; box-shadow: 0 2px 5px var(--shadow); transition: all var(--trans-speed); }
+        .lvl-dot.active { border-color: var(--primary); color: var(--primary); transform: scale(1.1); }
 
-        /* Stop Button */
-        .btn-stop { 
-            background: var(--danger); 
-            color: white; 
-            width: 100%; 
-            padding: 16px; 
-            border: none; 
-            border-radius: 30px; 
-            font-weight: 700; 
-            cursor: pointer; 
-            font-size: 1rem; 
-            margin-top: 25px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: opacity 0.2s;
-        }
+        /* Tabs */
+        .section-label { font-size: 0.85rem; font-weight: 600; color: var(--text-light); margin-bottom: 8px; padding-left: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .tabs-container { background: var(--card-bg); border-radius: 25px; padding: 4px; display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .tab-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 12px; border-radius: 22px; border: 1px solid transparent; background: transparent; color: var(--text-light); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all var(--trans-speed); }
+        .tab-btn.active { background: var(--surface); border: 1px solid var(--primary); color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .icon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: 10px; height: 10px; }
+        .icon-dot { background-color: var(--text-light); border-radius: 50%; opacity: 0.5; }
+        .tab-btn.active .icon-dot { background-color: var(--primary); opacity: 1; }
+
+        /* Drill List */
+        .drill-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px; }
+        .hidden { display: none !important; }
+        .btn-drill { background: var(--surface); border: 1px solid transparent; border-radius: 20px; padding: 15px 8px; font-size: 0.8rem; font-weight: 600; color: var(--btn-text); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 2px 5px var(--shadow); transition: all 0.1s; min-height: 85px; width: 100%; position: relative; user-select: none; -webkit-user-select: none; }
+        .btn-drill span { text-align: center; line-height: 1.3; width: 100%; }
+        .btn-drill:active { transform: scale(0.97); }
+        .btn-drill.running { border-color: var(--primary); background: var(--primary-dim); color: var(--primary); }
+        /* Only disabled visual style removed, still handles logic in JS */
+        .btn-drill:disabled { background: rgba(0,0,0,0.05); opacity: 0.5; box-shadow:none; }
+        [data-theme="night"] .btn-drill:disabled { background: rgba(255,255,255,0.05); }
+        
+        .btn-drill .drill-icon { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; width: 14px; height: 14px; }
+        .btn-drill .drill-icon .d-dot { background-color: #b2bec3; border-radius: 50%; transition: background-color var(--trans-speed); }
+        .btn-drill.running .drill-icon .d-dot { background-color: var(--primary); }
+
+        /* Footer controls */
+        .btn-stop { background: var(--danger); color: white; width: 100%; padding: 16px; border: none; border-radius: 30px; font-weight: 700; cursor: pointer; font-size: 1rem; margin-top: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: opacity 0.2s; }
         .btn-stop:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
-
-        /* Status text */
-        #status-text {
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--primary);
-            font-weight: 700;
-            height: 20px;
-            margin-bottom: 5px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
+        #status-text { text-align: center; font-size: 0.8rem; color: var(--primary); font-weight: 700; height: 20px; margin-bottom: 5px; letter-spacing: 0.5px; text-transform: uppercase; }
         .log-box { margin-top: 20px; background: #2d3436; color: #00cec9; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.7rem; height: 100px; overflow-y: auto; display: none; border: 1px solid #636e72; }
         .checkbox-wrapper { margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.8rem; color: var(--text-light); }
+
+        /* TOAST */
+        #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 50px; padding: 16px; position: fixed; z-index: 200; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 0.9rem; opacity: 0; transition: opacity 0.5s, bottom 0.5s; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        #toast.show { visibility: visible; opacity: 1; bottom: 50px; }
+
+        /* --- EDITOR MODAL --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(4px); }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .modal { background: var(--surface); width: 95%; max-width: 400px; max-height: 90vh; border-radius: 20px; padding: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; overflow: hidden; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+        .modal-title { font-weight: 700; color: var(--text); font-size: 1.1rem; }
+        .modal-close { font-size: 1.5rem; color: var(--text-light); cursor: pointer; line-height: 1; }
+        .modal-body { overflow-y: auto; flex: 1; padding-right: 5px; }
+        
+        .ball-editor { background: var(--bg); padding: 10px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border); }
+        .ball-title { font-size: 0.75rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; }
+        .editor-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .editor-field { display: flex; flex-direction: column; }
+        .editor-field label { font-size: 0.6rem; color: var(--text-light); font-weight: 600; margin-bottom: 2px; }
+        .editor-field input { background: var(--surface); border: 1px solid var(--border); padding: 8px; border-radius: 8px; font-size: 0.85rem; color: var(--text); font-weight: 700; text-align: center; -moz-appearance: textfield; }
+
+        .modal-footer { margin-top: 15px; display: flex; gap: 10px; }
+        .btn-modal { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+        .btn-save { background: var(--primary); color: white; }
+        .btn-cancel { background: var(--card-bg); color: var(--text); }
+        
+        .helper-text { text-align: center; font-size: 0.7rem; color: var(--text-light); margin-bottom: 10px; opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -483,28 +124,22 @@
         <div class="back-arrow">‹</div>
         <h1>Programmed Drills(Standard)</h1>
         <div class="menu-btn" onclick="toggleMenu()">
-            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </div>
     </header>
 
     <div id="theme-menu" class="theme-menu">
-        <div class="menu-title">Switch Theme</div>
-        <div class="theme-item" onclick="setTheme('standard')">
-            <span class="color-preview" style="background:#ff6b4a"></span> Standard
-        </div>
-        <div class="theme-item" onclick="setTheme('ocean')">
-            <span class="color-preview" style="background:#0984e3"></span> Ocean
-        </div>
-        <div class="theme-item" onclick="setTheme('forest')">
-            <span class="color-preview" style="background:#00b894"></span> Forest
-        </div>
-        <div class="theme-item" onclick="setTheme('night')">
-            <span class="color-preview" style="background:#2d3436"></span> Night
-        </div>
+        <div class="menu-title">Settings</div>
+        <div class="theme-item" onclick="saveAsDefault()"><span class="color-preview" style="background:var(--primary)"></span> Save as New Default</div>
+        <div class="theme-item" onclick="resetToDefault()">Reset to Default</div>
+        <div style="border-top: 1px solid var(--border); margin: 5px 0;"></div>
+        <div class="menu-title">Theme</div>
+        <div class="theme-item" onclick="setTheme('standard')"><span class="color-preview" style="background:#ff6b4a"></span> Standard</div>
+        <div class="theme-item" onclick="setTheme('ocean')"><span class="color-preview" style="background:#0984e3"></span> Ocean</div>
+        <div class="theme-item" onclick="setTheme('forest')"><span class="color-preview" style="background:#00b894"></span> Forest</div>
+        <div class="theme-item" onclick="setTheme('night')"><span class="color-preview" style="background:#2d3436"></span> Night</div>
+        <div style="border-top: 1px solid var(--border); margin: 5px 0;"></div>
+        <div class="theme-item reset-item" onclick="factoryReset()">Factory Reset</div>
     </div>
 
     <div class="settings-card">
@@ -544,102 +179,101 @@
     </div>
 
     <div class="section-label">Technique Selection</div>
+    <div class="helper-text">(Long press any button to edit drill parameters)</div>
+    
     <div class="tabs-container">
         <div class="tab-btn active" onclick="switchTab('basic', this)">
-            <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div>
-            Basic
+            <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div> Basic
         </div>
         <div class="tab-btn" onclick="switchTab('combined', this)">
-            <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div>
-            Combined
+            <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div> Combined
         </div>
         <div class="tab-btn" onclick="switchTab('complex', this)">
-            <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div>
-            Complex
+            <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div> Complex
         </div>
     </div>
 
-    <div id="view-basic" class="drill-list">
-        <button class="btn-drill" data-key="push(b)" disabled>
-            <div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div>
-            <span>Push (B)</span>
-        </button>
-        <button class="btn-drill" data-key="push(f)" disabled>
-            <div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div>
-            <span>Push (F)</span>
-        </button>
-        <button class="btn-drill" data-key="drive(b)" disabled>
-            <div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div>
-            <span>Drive (B)</span>
-        </button>
-        <button class="btn-drill" data-key="drive(f)" disabled>
-            <div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div>
-            <span>Drive (F)</span>
-        </button>
-        <button class="btn-drill" data-key="loop(b)" disabled>
-            <div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div>
-            <span>Loop (B)</span>
-        </button>
-        <button class="btn-drill" data-key="loop(f)" disabled>
-            <div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div>
-            <span>Loop (F)</span>
-        </button>
-    </div>
-
-    <div id="view-combined" class="drill-list hidden">
-        <button class="btn-drill" data-key="loop(b)-drive(b)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Loop(B) Drive(B)</span></button>
-        <button class="btn-drill" data-key="loop(f)-drive(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Loop(F) Drive(F)</span></button>
-        <button class="btn-drill" data-key="drive(f)-drive(b)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Drive(F) Drive(B)</span></button>
-        <button class="btn-drill" data-key="push(f)-drive(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Push(F) Drive(F)</span></button>
-        <button class="btn-drill" data-key="push(b)-loop(b)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Push(B) Loop(B)</span></button>
-        <button class="btn-drill" data-key="loop(f)-drive(b)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Loop(F) Drive(B)</span></button>
-        <button class="btn-drill" data-key="push(f)-loop(b)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Push(F) Loop(B)</span></button>
-        <button class="btn-drill" data-key="drive(f)-drive(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Drive(F) Drive(F)</span></button>
-        <button class="btn-drill" data-key="push(b)-loop(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Push(B) Loop(F)</span></button>
-        <button class="btn-drill" data-key="push(f)-loop(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Push(F) Loop(F)</span></button>
-        <button class="btn-drill" data-key="loop(f)-loop(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Loop(F) Loop(F)</span></button>
-        <button class="btn-drill" data-key="loop(b)-drive(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Loop(B) Drive(F)</span></button>
-    </div>
-
-    <div id="view-complex" class="drill-list hidden">
-        <button class="btn-drill" data-key="push(b)-loop(f)-drive(b)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Push(B)-Loop(F) Drive(B)</span></button>
-        <button class="btn-drill" data-key="push(f)-loop(b)-drive(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Push(F)-Loop(B) Drive(F)</span></button>
-        <button class="btn-drill" data-key="loop(f)-drive(f)-drive(b)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Loop(F)-Drive(F) Drive(B)</span></button>
-        <button class="btn-drill" data-key="loop(b)-drive(f)-drive(b)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Loop(B)-Drive(F) Drive(B)</span></button>
-        <button class="btn-drill" data-key="drive(f)-drive(f)-drive(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Drive(F) 3x</span></button>
-        
-        <button class="btn-drill" data-key="push(f)-loop(f)-drive(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Push(F)-Loop(F) Drive(F)</span></button>
-        <button class="btn-drill" data-key="push(b)-loop(b)-drive(b)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Push(B)-Loop(B) Drive(B)</span></button>
-        <button class="btn-drill" data-key="push(f)-loop(b)-drive(b)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Push(F)-Loop(B) Drive(B)</span></button>
-        <button class="btn-drill" data-key="loop(f)-drive(b)-drive(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Loop(F)-Drive(B) Drive(F)</span></button>
-        <button class="btn-drill" data-key="loop(b)-drive(b)-drive(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Loop(B)-Drive(B) Drive(F)</span></button>
-        <button class="btn-drill" data-key="push(b)-loop(f)-drive(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Push(B)-Loop(F) Drive(F)</span></button>
-        <button class="btn-drill" data-key="push(b)-loop(b)-drive(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Push(B)-Loop(B) Drive(F)</span></button>
-        <button class="btn-drill" data-key="drive(b)-drive(f)-drive(f)" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Drive(B)-Drive(F) Drive(F)</span></button>
-        
-        <button class="btn-drill" data-key="random-drive" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>Random Drive</span></button>
-        <button class="btn-drill" data-key="23-random-drive" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>2/3 Court Random Drive</span></button>
-        <button class="btn-drill" data-key="all-random" disabled><div class="drill-icon"><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div></div><span>All Random</span></button>
-    </div>
+    <div id="view-basic" class="drill-list"></div>
+    <div id="view-combined" class="drill-list hidden"></div>
+    <div id="view-complex" class="drill-list hidden"></div>
 
     <button id="btn-stop" class="btn-stop" disabled>STOP</button>
 
-    <div class="checkbox-wrapper">
-        <input type="checkbox" id="chk-console"> Show Log
-    </div>
+    <div class="checkbox-wrapper"><input type="checkbox" id="chk-console"> Show Log</div>
     <div id="log" class="log-box"></div>
 </div>
 
+<div id="toast">Device not connected</div>
+
+<div id="editor-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title">Edit Drill</div>
+            <div class="modal-close" onclick="closeEditor()">×</div>
+        </div>
+        <div id="editor-body" class="modal-body"></div>
+        <div class="modal-footer">
+            <button class="btn-modal btn-cancel" onclick="closeEditor()">Cancel</button>
+            <button class="btn-modal btn-save" onclick="saveDrillChanges()">Save</button>
+        </div>
+    </div>
+</div>
+
 <script>
-    // --- Config ---
+    // --- 1. Data & Constants ---
     const SERVICE = 0xfeff;
-    const UUID_S  = "02f00000-0000-0000-0000-00000000fe00";
-    const UUID_N  = "02f00000-0000-0000-0000-00000000ff02";
-    const UUID_W  = "02f00000-0000-0000-0000-00000000ff01";
-    const SALT    = "Mjgx1jAwXDBaMFcxCz3JBgNVBAYT4kJF7Rkw";
+    const UUID_S = "02f00000-0000-0000-0000-00000000fe00";
+    const UUID_N = "02f00000-0000-0000-0000-00000000ff02";
+    const UUID_W = "02f00000-0000-0000-0000-00000000ff01";
+    const SALT = "Mjgx1jAwXDBaMFcxCz3JBgNVBAYT4kJF7Rkw";
     const MSG_DONE = "00020300050100";
 
-    // --- State ---
+    const DEFAULT_DRILLS = {
+        "push(b)": { 1: [[1547, 2915, 50, -5, 0, 1]], 2: [[1205, 3257, 50, -5, 10, 1]], 3: [[863, 3599, 50, -5, 10, 1]] },
+        "push(f)": { 1: [[1547, 2915, 50, 5, 0, 1]], 2: [[1205, 3257, 50, 5, 10, 1]], 3: [[863, 3599, 50, 5, 10, 1]] },
+        "drive(b)": { 1: [[3545, 2177, 60, -5, 20, 1]], 2: [[3545, 2177, 50, -5, 40, 1]], 3: [[3545, 2177, 50, -5, 70, 1]] },
+        "drive(f)": { 1: [[3545, 2177, 50, 1, 20, 1]], 2: [[3545, 2177, 50, 0, 40, 1]], 3: [[3545, 2177, 50, 5, 70, 1]] },
+        "loop(f)": { 1: [[1520, 3572, 50, 5, 0, 1]], 2: [[1178, 3914, 50, 5, 10, 1]], 3: [[836, 4256, 50, 5, 10, 1]] },
+        "loop(b)": { 1: [[1520, 3572, 50, -5, 0, 1]], 2: [[1178, 3914, 50, -5, 10, 1]], 3: [[836, 4256, 50, -5, 10, 1]] },
+
+        "loop(b)-drive(b)": { 1: [[1520, 3572, 50, -5, 0, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[836, 4256, 50, -5, 10, 1], [3545, 2177, 50, -5, 80, 1]] },
+        "loop(f)-drive(f)": { 1: [[1520, 3572, 50, 5, 0, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[1178, 3914, 50, 5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[836, 4256, 50, 5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
+        "drive(f)-drive(b)": { 1: [[3545, 2177, 50, 5, 30, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[3545, 2177, 50, 5, 60, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[3545, 2177, 50, 5, 80, 1], [3545, 2177, 50, -5, 80, 1]] },
+        "push(f)-drive(f)": { 1: [[1547, 2915, 50, 5, 0, 1], [3545, 2177, 50, 0, 30, 1]], 2: [[1205, 3257, 50, 5, 10, 1], [3545, 2177, 50, 0, 60, 1]], 3: [[863, 3599, 50, 5, 10, 1], [3545, 2177, 50, 0, 80, 1]] },
+        "push(b)-loop(b)": { 1: [[1547, 2915, 50, -5, 10, 1], [1520, 3572, 50, -5, 10, 1]], 2: [[1205, 3257, 50, -5, 10, 1], [1178, 3914, 50, -5, 20, 1]], 3: [[863, 3599, 50, -5, 10, 1], [836, 4256, 50, -5, 20, 1]] },
+        "loop(f)-drive(b)": { 1: [[1520, 3572, 50, 5, 0, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[1178, 3914, 50, 5, 10, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[836, 4256, 50, 5, 10, 1], [3545, 2177, 50, -5, 80, 1]] },
+        "push(f)-loop(b)": { 1: [[1547, 2915, 50, 5, 10, 1], [1520, 3572, 50, -5, 10, 1]], 2: [[1205, 3257, 50, 5, 10, 1], [1178, 3914, 50, -5, 20, 1]], 3: [[863, 3599, 50, 5, 10, 1], [836, 4256, 50, -5, 20, 1]] },
+        "drive(f)-drive(f)": { 1: [[3545, 2177, 50, 2, 30, 1], [3545, 2177, 50, -3, 30, 1]], 2: [[3545, 2177, 50, 5, 60, 1], [3545, 2177, 50, 0, 60, 1]], 3: [[3545, 2177, 50, 5, 80, 1], [3545, 2177, 50, 0, 80, 1]] },
+        "push(b)-loop(f)": { 1: [[1547, 2915, 50, -5, 10, 1], [1520, 3572, 50, 5, 10, 1]], 2: [[1205, 3257, 50, -5, 10, 1], [1178, 3914, 50, 5, 20, 1]], 3: [[863, 3599, 50, -5, 10, 1], [836, 4256, 50, 5, 20, 1]] },
+        "push(f)-loop(f)": { 1: [[1547, 2915, 44, 5, 10, 1], [1520, 3572, 44, 5, 10, 1]], 2: [[1205, 3257, 50, 5, 10, 1], [1178, 3914, 50, 5, 20, 1]], 3: [[863, 3599, 50, 5, 10, 1], [836, 4256, 50, 5, 20, 1]] },
+        "loop(f)-loop(f)": { 1: [[1520, 3572, 50, 5, 0, 1], [1520, 3572, 50, 0, 0, 1]], 2: [[1178, 3914, 50, 5, 10, 1], [1178, 3914, 50, 0, 10, 1]], 3: [[836, 4256, 50, 5, 10, 1], [836, 4256, 50, 0, 10, 1]] },
+        "loop(b)-drive(f)": { 1: [[1520, 3572, 50, -5, 0, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[836, 4256, 50, -5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
+
+        "push(b)-loop(f)-drive(b)": { 1: [[1547, 2915, 50, -5, 0, 1], [1520, 3572, 50, 5, 10, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[1205, 3257, 50, -5, 10, 1], [1178, 3914, 50, 5, 10, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[863, 3599, 50, -5, 10, 1], [836, 4256, 50, 5, 10, 1], [3545, 2177, 50, -5, 80, 1]] },
+        "push(f)-loop(b)-drive(f)": { 1: [[1547, 2915, 50, 5, 0, 1], [1520, 3572, 50, -5, 10, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[1205, 3257, 50, 5, 10, 1], [1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[863, 3599, 50, 5, 10, 1], [836, 4256, 50, -5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
+        "loop(f)-drive(f)-drive(b)": { 1: [[1520, 3572, 50, 5, 0, 1], [3545, 2177, 50, 5, 10, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[1178, 3914, 50, 5, 10, 1], [3545, 2177, 50, 5, 10, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[836, 4256, 50, 5, 10, 1], [3545, 2177, 50, 5, 10, 1], [3545, 2177, 50, -5, 80, 1]] },
+        "loop(b)-drive(f)-drive(b)": { 1: [[1520, 3572, 50, -5, 0, 1], [3545, 2177, 50, 5, 10, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, 5, 10, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[836, 4256, 50, -5, 10, 1], [3545, 2177, 50, 5, 10, 1], [3545, 2177, 50, -5, 80, 1]] },
+        "drive(f)-drive(f)-drive(f)": { 1: [[3545, 2177, 50, 5, 30, 1], [3545, 2177, 50, 0, 30, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[3545, 2177, 50, 5, 60, 1], [3545, 2177, 50, 0, 60, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[3545, 2177, 50, 5, 80, 1], [3545, 2177, 50, 0, 80, 1], [3545, 2177, 50, -5, 80, 1]] },
+        "push(f)-loop(f)-drive(f)": { 1: [[1547, 2915, 50, 5, 0, 1], [1520, 3572, 50, 5, 10, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[1205, 3257, 50, 5, 10, 1], [1178, 3914, 50, 5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[863, 3599, 50, 5, 10, 1], [836, 4256, 50, 5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
+        "push(b)-loop(b)-drive(b)": { 1: [[1547, 2915, 50, -5, 0, 1], [1520, 3572, 50, -5, 10, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[1205, 3257, 50, -5, 10, 1], [1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[863, 3599, 50, -5, 10, 1], [836, 4256, 50, -5, 10, 1], [3545, 2177, 50, -5, 80, 1]] },
+        "push(f)-loop(b)-drive(b)": { 1: [[1547, 2915, 50, 5, 0, 1], [1520, 3572, 50, -5, 10, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[1205, 3257, 50, 5, 10, 1], [1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[863, 3599, 50, 5, 10, 1], [836, 4256, 50, -5, 10, 1], [3545, 2177, 50, -5, 80, 1]] },
+        "loop(f)-drive(b)-drive(f)": { 1: [[1520, 3572, 50, 5, 0, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[1178, 3914, 50, 5, 10, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[836, 4256, 50, 5, 10, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
+        "loop(b)-drive(b)-drive(f)": { 1: [[1520, 3572, 48, -5, 0, 1], [3545, 2177, 48, -5, 10, 1], [3545, 2177, 48, 5, 30, 1]], 2: [[1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[836, 4256, 50, -5, 10, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
+        "push(b)-loop(f)-drive(f)": { 1: [[1547, 2915, 50, -5, 0, 1], [1520, 3572, 50, 5, 10, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[1205, 3257, 50, -5, 10, 1], [1178, 3914, 50, 5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[863, 3599, 50, -5, 10, 1], [836, 4256, 50, 5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
+        "push(b)-loop(b)-drive(f)": { 1: [[1547, 2915, 50, -5, 0, 1], [1520, 3572, 50, -5, 10, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[1205, 3257, 50, -5, 10, 1], [1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[863, 3599, 50, -5, 10, 1], [836, 4256, 50, -5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
+        "drive(b)-drive(f)-drive(f)": { 1: [[3545, 2177, 50, -5, 0, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
+        "random-drive": { 1: [[3545, 2177, 46, 5, 30, 1], [3545, 2177, 46, 0, 30, 1], [3545, 2177, 46, -5, 30, 1]], 2: [[3545, 2177, 50, 5, 60, 1], [3545, 2177, 50, 0, 60, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[3545, 2177, 50, 5, 80, 1], [3545, 2177, 50, 0, 80, 1], [3545, 2177, 50, -5, 80, 1]] },
+        "23-random-drive": { 1: [[3545, 2177, 50, 5, 30, 1], [3545, 2177, 50, 3, 30, 1], [3545, 2177, 50, 1, 30, 1], [3545, 2177, 50, -1, 30, 1]], 2: [[3545, 2177, 50, 5, 60, 1], [3545, 2177, 50, 3, 60, 1], [3545, 2177, 50, 1, 60, 1], [3545, 2177, 50, -1, 60, 1]], 3: [[3545, 2177, 50, 5, 80, 1], [3545, 2177, 50, 3, 80, 1], [3545, 2177, 50, 1, 80, 1], [3545, 2177, 50, -1, 80, 1]] },
+        "all-random": { 1: [[1547, 2915, 50, 5, 10, 1], [1547, 2915, 50, -5, 10, 1], [3545, 2177, 50, 5, 40, 1], [3545, 2177, 50, 0, 40, 1], [3545, 2177, 50, -5, 40, 1]], 2: [[1205, 3257, 50, 5, 10, 1], [1205, 3257, 50, -5, 10, 1], [3545, 2177, 50, 5, 50, 1], [3545, 2177, 50, 0, 50, 1], [3545, 2177, 50, -5, 50, 1]], 3: [[863, 3599, 50, 5, 10, 1], [863, 3599, 50, -5, 10, 1], [3545, 2177, 50, 5, 80, 1], [3545, 2177, 50, 0, 80, 1], [3545, 2177, 50, -5, 80, 1]] }
+    };
+
+    const CATEGORIES = {
+        basic: ["push(b)", "push(f)", "drive(b)", "drive(f)", "loop(b)", "loop(f)"],
+        combined: ["loop(b)-drive(b)", "loop(f)-drive(f)", "drive(f)-drive(b)", "push(f)-drive(f)", "push(b)-loop(b)", "loop(f)-drive(b)", "push(f)-loop(b)", "drive(f)-drive(f)", "push(b)-loop(f)", "push(f)-loop(f)", "loop(f)-loop(f)", "loop(b)-drive(f)"],
+        complex: ["push(b)-loop(f)-drive(b)", "push(f)-loop(b)-drive(f)", "loop(f)-drive(f)-drive(b)", "loop(b)-drive(f)-drive(b)", "drive(f)-drive(f)-drive(f)", "push(f)-loop(f)-drive(f)", "push(b)-loop(b)-drive(b)", "push(f)-loop(b)-drive(b)", "loop(f)-drive(b)-drive(f)", "loop(b)-drive(b)-drive(f)", "push(b)-loop(f)-drive(f)", "push(b)-loop(b)-drive(f)", "drive(b)-drive(f)-drive(f)", "random-drive", "23-random-drive", "all-random"]
+    };
+
+    // 2. State
     let device, notifyChar, writeChar;
     let writeLock = Promise.resolve();
     let state = "disconnected";
@@ -651,33 +285,207 @@
     let runMode = "reps"; 
     let endTime = 0;
     let selectedLevel = 1;
+    
+    // Initial Load logic: Load 'custom_drills' if present, if not check 'user_defaults', else factory
+    let savedDrills = localStorage.getItem('custom_drills');
+    let userDefaults = localStorage.getItem('user_defaults');
+    
+    let currentDrills = savedDrills ? JSON.parse(savedDrills) : 
+                       (userDefaults ? JSON.parse(userDefaults) : JSON.parse(JSON.stringify(DEFAULT_DRILLS)));
 
-    // --- UI Helpers ---
+    let editingDrillKey = null;
+    let pressTimer = null;
+    let longPressHandled = false;
+
+    // 3. Init
+    function init() {
+        renderDrillButtons();
+    }
+
+    function renderDrillButtons() {
+        ['basic', 'combined', 'complex'].forEach(cat => {
+            const container = document.getElementById(`view-${cat}`);
+            container.innerHTML = '';
+            CATEGORIES[cat].forEach(key => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-drill';
+                btn.dataset.key = key;
+                
+                const iconDiv = document.createElement('div');
+                iconDiv.className = 'drill-icon';
+                for(let i=0; i<4; i++) {
+                    const d = document.createElement('div');
+                    d.className = 'd-dot';
+                    iconDiv.appendChild(d);
+                }
+                
+                const span = document.createElement('span');
+                span.textContent = formatDrillName(key);
+                btn.appendChild(iconDiv);
+                btn.appendChild(span);
+                
+                // Event Handlers
+                btn.addEventListener('click', () => handleDrillClick(key, btn));
+                
+                const startPress = (e) => handlePressStart(e, key);
+                const endPress = (e) => handlePressEnd(e);
+                
+                btn.addEventListener('mousedown', startPress);
+                btn.addEventListener('touchstart', startPress, {passive: true});
+                btn.addEventListener('mouseup', endPress);
+                btn.addEventListener('mouseleave', endPress);
+                btn.addEventListener('touchend', endPress);
+                
+                container.appendChild(btn);
+            });
+        });
+    }
+
+    function formatDrillName(key) {
+        return key.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    }
+
+    // --- 4. Interaction ---
+    function handleDrillClick(key, btn) {
+        if (longPressHandled) {
+            longPressHandled = false;
+            return;
+        }
+        
+        if (state !== 'ready') {
+            showToast("Device not connected");
+            return;
+        }
+
+        document.querySelectorAll('.btn-drill').forEach(b => b.classList.remove('running'));
+        btn.classList.add('running');
+        startDrillSequence(key);
+    }
+
+    function handlePressStart(e, key) {
+        if (isRunning) return;
+        longPressHandled = false;
+        pressTimer = setTimeout(() => {
+            longPressHandled = true;
+            openEditor(key);
+        }, 600);
+    }
+
+    function handlePressEnd(e) {
+        clearTimeout(pressTimer);
+    }
+
+    function showToast(text) {
+        const t = document.getElementById('toast');
+        t.textContent = text;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // --- 5. Editor & Data Management ---
+    function openEditor(key) {
+        editingDrillKey = key;
+        const levelData = currentDrills[key][selectedLevel];
+        const modalBody = document.getElementById('editor-body');
+        modalBody.innerHTML = '';
+
+        levelData.forEach((ballParams, index) => {
+            const div = document.createElement('div');
+            div.className = 'ball-editor';
+            div.innerHTML = `
+                <div class="ball-title">Ball ${index + 1}</div>
+                <div class="editor-grid">
+                    <div class="editor-field"><label>Top</label><input type="number" class="inp-us" value="${ballParams[0]}" min="400" max="7500" step="1"></div>
+                    <div class="editor-field"><label>Bot</label><input type="number" class="inp-ls" value="${ballParams[1]}" min="400" max="7500" step="1"></div>
+                    <div class="editor-field"><label>Hgt</label><input type="number" class="inp-bh" value="${ballParams[2]}" min="-50" max="100" step="1"></div>
+                    <div class="editor-field"><label>Drp</label><input type="number" class="inp-dp" value="${ballParams[3]}" min="-10" max="10" step="0.5"></div>
+                    <div class="editor-field"><label>Frq</label><input type="number" class="inp-fr" value="${ballParams[4]}" min="0" max="100" step="10"></div>
+                    <div class="editor-field"><label>Rep</label><input type="number" class="inp-rp" value="${ballParams[5]}" min="1" max="200" step="1"></div>
+                </div>
+            `;
+            modalBody.appendChild(div);
+        });
+        document.getElementById('editor-modal').classList.add('open');
+    }
+
+    function closeEditor() {
+        document.getElementById('editor-modal').classList.remove('open');
+        editingDrillKey = null;
+    }
+    
+    function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+
+    function saveDrillChanges() {
+        if (!editingDrillKey) return;
+        const modalBody = document.getElementById('editor-body');
+        const ballDivs = modalBody.getElementsByClassName('ball-editor');
+        const newSequence = [];
+
+        for (let div of ballDivs) {
+            const us = clamp(parseInt(div.querySelector('.inp-us').value), 400, 7500);
+            const ls = clamp(parseInt(div.querySelector('.inp-ls').value), 400, 7500);
+            const bh = clamp(parseInt(div.querySelector('.inp-bh').value), -50, 100);
+            const dp = clamp(parseFloat(div.querySelector('.inp-dp').value), -10, 10);
+            const fr = clamp(parseInt(div.querySelector('.inp-fr').value), 0, 100);
+            const rp = clamp(parseInt(div.querySelector('.inp-rp').value), 1, 200);
+            newSequence.push([us, ls, bh, dp, fr, rp]);
+        }
+        currentDrills[editingDrillKey][selectedLevel] = newSequence;
+        localStorage.setItem('custom_drills', JSON.stringify(currentDrills));
+        closeEditor();
+        showToast(`Saved Level ${selectedLevel}`);
+    }
+
+    // -- New Menu Functions --
+    function saveAsDefault() {
+        if(confirm("Save current settings as your new personal default?")) {
+            localStorage.setItem('user_defaults', JSON.stringify(currentDrills));
+            toggleMenu();
+            showToast("Saved as Default");
+        }
+    }
+
+    function resetToDefault() {
+        const hasUserDefault = localStorage.getItem('user_defaults');
+        let msg = "Reset configuration?";
+        if (hasUserDefault) msg += "\n(Restores your saved defaults)";
+        else msg += "\n(Restores factory settings)";
+
+        if(confirm(msg)) {
+            if (hasUserDefault) {
+                currentDrills = JSON.parse(hasUserDefault);
+            } else {
+                currentDrills = JSON.parse(JSON.stringify(DEFAULT_DRILLS));
+            }
+            // Update current persistent state
+            localStorage.setItem('custom_drills', JSON.stringify(currentDrills));
+            toggleMenu();
+            showToast(hasUserDefault ? "Restored User Defaults" : "Restored Factory Settings");
+        }
+    }
+
+    function factoryReset() {
+        if(confirm("WARNING: Delete ALL saved data and return to original factory state?")) {
+            localStorage.clear(); // Wipes custom_drills AND user_defaults
+            currentDrills = JSON.parse(JSON.stringify(DEFAULT_DRILLS));
+            toggleMenu();
+            showToast("Factory Reset Complete");
+        }
+    }
+
+    // --- 6. UI Logic ---
     const ui = {
         connect: document.getElementById('btn-connect'),
         statusText: document.getElementById('status-text'),
         log: document.getElementById('log'),
-        drillBtns: document.querySelectorAll('.btn-drill'),
         stop: document.getElementById('btn-stop'),
         inputPause: document.getElementById('input-pause'),
         themeMenu: document.getElementById('theme-menu')
     };
 
-    function log(msg) {
-        const t = new Date().toLocaleTimeString().split(' ')[0];
-        ui.log.textContent += `\n[${t}] ${msg}`;
-        ui.log.scrollTop = ui.log.scrollHeight;
-    }
-
-    // --- Interactivity ---
-    
-    function toggleMenu() {
-        ui.themeMenu.classList.toggle('open');
-    }
-
-    // Close menu if clicking outside
-    document.addEventListener('click', function(event) {
-        if (!ui.themeMenu.contains(event.target) && !event.target.matches('.menu-btn') && !event.target.closest('.menu-btn')) {
+    function toggleMenu() { ui.themeMenu.classList.toggle('open'); }
+    document.addEventListener('click', (e) => {
+        if (!ui.themeMenu.contains(e.target) && !e.target.closest('.menu-btn')) {
             ui.themeMenu.classList.remove('open');
         }
     });
@@ -733,22 +541,8 @@
 
     ui.stop.onclick = stop;
 
-    ui.drillBtns.forEach(btn => {
-        btn.onclick = () => {
-            // Clear previous running state from all buttons
-            ui.drillBtns.forEach(b => b.classList.remove('running'));
-            // Add running state to current
-            btn.classList.add('running');
-            
-            const drillName = btn.getAttribute('data-key');
-            startDrillSequence(drillName);
-        };
-    });
-
-    // --- Bluetooth ---
     async function connect() {
         try {
-            log("Scanning...");
             device = await navigator.bluetooth.requestDevice({
                 filters: [{ services: [SERVICE] }],
                 optionalServices: [UUID_S]
@@ -756,7 +550,6 @@
             device.addEventListener('gattserverdisconnected', onDisconnect);
             const server = await device.gatt.connect();
             const service = await server.getPrimaryService(UUID_S);
-            
             const chars = await service.getCharacteristics();
             for(let c of chars) {
                 if(c.uuid === UUID_N) {
@@ -766,13 +559,11 @@
                 }
                 if(c.uuid === UUID_W) writeChar = c;
             }
-
             if(notifyChar && writeChar) {
-                log("Handshake...");
                 state = "handshake";
                 send([0x07,0,0,0]);
             }
-        } catch(e) { log("Err: " + e.message); }
+        } catch(e) { console.log(e); }
     }
 
     function onDisconnect() {
@@ -781,32 +572,26 @@
         ui.statusText.style.color = "var(--text-light)";
         ui.connect.textContent = "Connect";
         ui.connect.classList.remove('connected');
-        toggleControls(false);
+        // Controls remain enabled for editing, but click action blocked
         isRunning = false;
         clearTimeout(pauseTimer);
-    }
-
-    function toggleControls(enable) {
-        ui.drillBtns.forEach(b => b.disabled = !enable);
-        ui.stop.disabled = !enable;
     }
 
     async function send(data) {
         if(!writeChar) return;
         const arr = new Uint8Array(data);
-        writeLock = writeLock.then(() => writeChar.writeValue(arr).catch(e => log("TX Fail: "+e)));
+        writeLock = writeLock.then(() => writeChar.writeValue(arr).catch(e => console.log(e)));
         return writeLock;
     }
 
     function onNotify(e) {
         const buf = e.target.value.buffer;
-        const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
-
         if(state === "handshake") {
             const td = new TextDecoder();
-            const serial = td.decode(buf.slice(6,18));
-            const code = td.decode(buf.slice(18));
-            if(serial && code) {
+            const str = td.decode(buf);
+            if(str.length > 18) {
+                const serial = str.slice(6,18);
+                const code = str.slice(18);
                 let hashme = serial;
                 for(let i=0; i<serial.length; i++) hashme += SALT[serial.charCodeAt(i)%0x24];
                 hashme += code;
@@ -826,22 +611,16 @@
             ui.statusText.style.color = "#00b894";
             ui.connect.textContent = "Disconnect";
             ui.connect.classList.add('connected');
-            toggleControls(true);
-            log("Ready.");
+            showToast("Connected");
         }
-
-        if(isRunning && hex.includes(MSG_DONE)) {
-            handleDone();
-        }
+        // Handle done signal...
+        const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+        if(isRunning && hex.includes(MSG_DONE)) handleDone();
     }
 
-    // --- Logic ---
     function startDrillSequence(drillName) {
-        if(state !== "ready") return;
-
-        const params = DRILLS[drillName] ? DRILLS[drillName][selectedLevel] : null;
-        if(!params) { log("Drill data missing"); return; }
-        
+        const params = currentDrills[drillName] ? currentDrills[drillName][selectedLevel] : null;
+        if(!params) return;
         activeDrillParams = params;
         
         if (runMode === 'time') {
@@ -855,21 +634,19 @@
         }
 
         isRunning = true;
-        ui.drillBtns.forEach(b => b.disabled = true);
+        // We don't disable buttons, just visually indicate running state
         ui.stop.disabled = false;
         runIteration();
     }
 
     async function runIteration() {
         if(!isRunning) return;
-        
         if (runMode === 'time') {
             if (Date.now() >= endTime) { stop(); return; }
         } else {
             currentCount++;
             ui.statusText.textContent = `Running (${currentCount}/${targetCount})`;
         }
-        
         const balls = [];
         activeDrillParams.forEach(p => balls.push(packBall(p[0], p[1], p[2], p[3], p[4], p[5])));
         await send(buildPacket(balls));
@@ -877,21 +654,12 @@
 
     function handleDone() {
         if(!isRunning) return;
-
-        if (runMode === 'reps' && currentCount >= targetCount) {
-            stop();
-            return;
-        }
-        if (runMode === 'time' && Date.now() >= endTime) {
-            stop();
-            return;
-        }
+        if (runMode === 'reps' && currentCount >= targetCount) { stop(); return; }
+        if (runMode === 'time' && Date.now() >= endTime) { stop(); return; }
 
         const pause = parseInt(ui.inputPause.value);
         ui.statusText.textContent = "Pausing...";
-        pauseTimer = setTimeout(() => {
-            if(isRunning) runIteration();
-        }, pause);
+        pauseTimer = setTimeout(() => { if(isRunning) runIteration(); }, pause);
     }
 
     async function stop() {
@@ -899,77 +667,35 @@
         clearTimeout(pauseTimer);
         await send([0x80,1,0,1]);
         ui.statusText.textContent = "Ready";
-        ui.drillBtns.forEach(b => {
-            b.disabled = false;
-            b.classList.remove('running');
-        });
-        log("Stopped.");
+        document.querySelectorAll('.btn-drill').forEach(b => b.classList.remove('running'));
     }
 
     function packBall(us, ls, bh, dp, freq, reps) {
         const b = new ArrayBuffer(24), v = new DataView(b);
-        v.setUint32(0, us, true); 
-        v.setUint32(4, ls, true);
-        v.setFloat32(8, (bh+50)/150*50-20, true);
-        v.setFloat32(12, (dp+10)/20*44-22, true);
-        v.setFloat32(16, (freq/100)+0.5, true);
-        v.setUint32(20, reps, true);
+        // Re-clamp for safety during runtime
+        us = clamp(us, 400, 7500); ls = clamp(ls, 400, 7500);
+        const bh_f = (clamp(bh,-50,100)+50)/150*50-20;
+        const dp_f = (clamp(dp,-10,10)+10)/20*44-22;
+        const fr_f = (clamp(freq,0,100)/100)+0.5;
+        v.setUint32(0, us, true); v.setUint32(4, ls, true);
+        v.setFloat32(8, bh_f, true); v.setFloat32(12, dp_f, true);
+        v.setFloat32(16, fr_f, true); v.setUint32(20, reps, true);
         return new Uint8Array(b);
     }
 
     function buildPacket(balls) {
         const b = new ArrayBuffer(7 + balls.length*24);
         const v = new DataView(b);
-        v.setUint8(0, 0x81);
-        v.setUint16(1, 4+balls.length*24, true);
-        v.setUint8(3, 1); 
-        v.setUint16(4, 1, true); 
-        v.setUint8(6, 0);
+        v.setUint8(0, 0x81); v.setUint16(1, 4+balls.length*24, true);
+        v.setUint8(3, 1); v.setUint16(4, 1, true); v.setUint8(6, 0);
         const u = new Uint8Array(b);
         let off = 7;
         balls.forEach(ba => { u.set(ba, off); off+=24; });
         return u;
     }
 
-    // --- DRILL DATA ---
-    const DRILLS = {
-        "push(b)": { 1: [[1547, 2915, 50, -5, 0, 1]], 2: [[1205, 3257, 50, -5, 10, 1]], 3: [[863, 3599, 50, -5, 10, 1]] },
-        "push(f)": { 1: [[1547, 2915, 50, 5, 0, 1]], 2: [[1205, 3257, 50, 5, 10, 1]], 3: [[863, 3599, 50, 5, 10, 1]] },
-        "drive(b)": { 1: [[3545, 2177, 60, -5, 20, 1]], 2: [[3545, 2177, 50, -5, 40, 1]], 3: [[3545, 2177, 50, -5, 70, 1]] },
-        "drive(f)": { 1: [[3545, 2177, 50, 1, 20, 1]], 2: [[3545, 2177, 50, 0, 40, 1]], 3: [[3545, 2177, 50, 5, 70, 1]] },
-        "loop(f)": { 1: [[1520, 3572, 50, 5, 0, 1]], 2: [[1178, 3914, 50, 5, 10, 1]], 3: [[836, 4256, 50, 5, 10, 1]] },
-        "loop(b)": { 1: [[1520, 3572, 50, -5, 0, 1]], 2: [[1178, 3914, 50, -5, 10, 1]], 3: [[836, 4256, 50, -5, 10, 1]] },
-        "loop(b)-drive(b)": { 1: [[1520, 3572, 50, -5, 0, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[836, 4256, 50, -5, 10, 1], [3545, 2177, 50, -5, 80, 1]] },
-        "loop(f)-drive(f)": { 1: [[1520, 3572, 50, 5, 0, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[1178, 3914, 50, 5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[836, 4256, 50, 5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
-        "drive(f)-drive(b)": { 1: [[3545, 2177, 50, 5, 30, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[3545, 2177, 50, 5, 60, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[3545, 2177, 50, 5, 80, 1], [3545, 2177, 50, -5, 80, 1]] },
-        "push(f)-drive(f)": { 1: [[1547, 2915, 50, 5, 0, 1], [3545, 2177, 50, 0, 30, 1]], 2: [[1205, 3257, 50, 5, 10, 1], [3545, 2177, 50, 0, 60, 1]], 3: [[863, 3599, 50, 5, 10, 1], [3545, 2177, 50, 0, 80, 1]] },
-        "push(b)-loop(b)": { 1: [[1547, 2915, 50, -5, 10, 1], [1520, 3572, 50, -5, 10, 1]], 2: [[1205, 3257, 50, -5, 10, 1], [1178, 3914, 50, -5, 20, 1]], 3: [[863, 3599, 50, -5, 10, 1], [836, 4256, 50, -5, 20, 1]] },
-        "loop(f)-drive(b)": { 1: [[1520, 3572, 50, 5, 0, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[1178, 3914, 50, 5, 10, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[836, 4256, 50, 5, 10, 1], [3545, 2177, 50, -5, 80, 1]] },
-        "push(f)-loop(b)": { 1: [[1547, 2915, 50, 5, 10, 1], [1520, 3572, 50, -5, 10, 1]], 2: [[1205, 3257, 50, 5, 10, 1], [1178, 3914, 50, -5, 20, 1]], 3: [[863, 3599, 50, 5, 10, 1], [836, 4256, 50, -5, 20, 1]] },
-        "drive(f)-drive(f)": { 1: [[3545, 2177, 50, 2, 30, 1], [3545, 2177, 50, -3, 30, 1]], 2: [[3545, 2177, 50, 5, 60, 1], [3545, 2177, 50, 0, 60, 1]], 3: [[3545, 2177, 50, 5, 80, 1], [3545, 2177, 50, 0, 80, 1]] },
-        "push(b)-loop(f)": { 1: [[1547, 2915, 50, -5, 10, 1], [1520, 3572, 50, 5, 10, 1]], 2: [[1205, 3257, 50, -5, 10, 1], [1178, 3914, 50, 5, 20, 1]], 3: [[863, 3599, 50, -5, 10, 1], [836, 4256, 50, 5, 20, 1]] },
-        "push(f)-loop(f)": { 1: [[1547, 2915, 44, 5, 10, 1], [1520, 3572, 44, 5, 10, 1]], 2: [[1205, 3257, 50, 5, 10, 1], [1178, 3914, 50, 5, 20, 1]], 3: [[863, 3599, 50, 5, 10, 1], [836, 4256, 50, 5, 20, 1]] },
-        "loop(f)-loop(f)": { 1: [[1520, 3572, 50, 5, 0, 1], [1520, 3572, 50, 0, 0, 1]], 2: [[1178, 3914, 50, 5, 10, 1], [1178, 3914, 50, 0, 10, 1]], 3: [[836, 4256, 50, 5, 10, 1], [836, 4256, 50, 0, 10, 1]] },
-        "loop(b)-drive(f)": { 1: [[1520, 3572, 50, -5, 0, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[836, 4256, 50, -5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
-        "push(b)-loop(f)-drive(b)": { 1: [[1547, 2915, 50, -5, 0, 1], [1520, 3572, 50, 5, 10, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[1205, 3257, 50, -5, 10, 1], [1178, 3914, 50, 5, 10, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[863, 3599, 50, -5, 10, 1], [836, 4256, 50, 5, 10, 1], [3545, 2177, 50, -5, 80, 1]] },
-        "push(f)-loop(b)-drive(f)": { 1: [[1547, 2915, 50, 5, 0, 1], [1520, 3572, 50, -5, 10, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[1205, 3257, 50, 5, 10, 1], [1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[863, 3599, 50, 5, 10, 1], [836, 4256, 50, -5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
-        "loop(f)-drive(f)-drive(b)": { 1: [[1520, 3572, 50, 5, 0, 1], [3545, 2177, 50, 5, 10, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[1178, 3914, 50, 5, 10, 1], [3545, 2177, 50, 5, 10, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[836, 4256, 50, 5, 10, 1], [3545, 2177, 50, 5, 10, 1], [3545, 2177, 50, -5, 80, 1]] },
-        "loop(b)-drive(f)-drive(b)": { 1: [[1520, 3572, 50, -5, 0, 1], [3545, 2177, 50, 5, 10, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, 5, 10, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[836, 4256, 50, -5, 10, 1], [3545, 2177, 50, 5, 10, 1], [3545, 2177, 50, -5, 80, 1]] },
-        "drive(f)-drive(f)-drive(f)": { 1: [[3545, 2177, 50, 5, 30, 1], [3545, 2177, 50, 0, 30, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[3545, 2177, 50, 5, 60, 1], [3545, 2177, 50, 0, 60, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[3545, 2177, 50, 5, 80, 1], [3545, 2177, 50, 0, 80, 1], [3545, 2177, 50, -5, 80, 1]] },
-        "push(f)-loop(f)-drive(f)": { 1: [[1547, 2915, 50, 5, 0, 1], [1520, 3572, 50, 5, 10, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[1205, 3257, 50, 5, 10, 1], [1178, 3914, 50, 5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[863, 3599, 50, 5, 10, 1], [836, 4256, 50, 5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
-        "push(b)-loop(b)-drive(b)": { 1: [[1547, 2915, 50, -5, 0, 1], [1520, 3572, 50, -5, 10, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[1205, 3257, 50, -5, 10, 1], [1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[863, 3599, 50, -5, 10, 1], [836, 4256, 50, -5, 10, 1], [3545, 2177, 50, -5, 80, 1]] },
-        "push(f)-loop(b)-drive(b)": { 1: [[1547, 2915, 50, 5, 0, 1], [1520, 3572, 50, -5, 10, 1], [3545, 2177, 50, -5, 30, 1]], 2: [[1205, 3257, 50, 5, 10, 1], [1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[863, 3599, 50, 5, 10, 1], [836, 4256, 50, -5, 10, 1], [3545, 2177, 50, -5, 80, 1]] },
-        "loop(f)-drive(b)-drive(f)": { 1: [[1520, 3572, 50, 5, 0, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[1178, 3914, 50, 5, 10, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[836, 4256, 50, 5, 10, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
-        "loop(b)-drive(b)-drive(f)": { 1: [[1520, 3572, 48, -5, 0, 1], [3545, 2177, 48, -5, 10, 1], [3545, 2177, 48, 5, 30, 1]], 2: [[1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[836, 4256, 50, -5, 10, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
-        "push(b)-loop(f)-drive(f)": { 1: [[1547, 2915, 50, -5, 0, 1], [1520, 3572, 50, 5, 10, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[1205, 3257, 50, -5, 10, 1], [1178, 3914, 50, 5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[863, 3599, 50, -5, 10, 1], [836, 4256, 50, 5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
-        "push(b)-loop(b)-drive(f)": { 1: [[1547, 2915, 50, -5, 0, 1], [1520, 3572, 50, -5, 10, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[1205, 3257, 50, -5, 10, 1], [1178, 3914, 50, -5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[863, 3599, 50, -5, 10, 1], [836, 4256, 50, -5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
-        "drive(b)-drive(f)-drive(f)": { 1: [[3545, 2177, 50, -5, 0, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 30, 1]], 2: [[3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 60, 1]], 3: [[3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, -5, 10, 1], [3545, 2177, 50, 5, 80, 1]] },
-        "random-drive": { 1: [[3545, 2177, 46, 5, 30, 1], [3545, 2177, 46, 0, 30, 1], [3545, 2177, 46, -5, 30, 1]], 2: [[3545, 2177, 50, 5, 60, 1], [3545, 2177, 50, 0, 60, 1], [3545, 2177, 50, -5, 60, 1]], 3: [[3545, 2177, 50, 5, 80, 1], [3545, 2177, 50, 0, 80, 1], [3545, 2177, 50, -5, 80, 1]] },
-        "23-random-drive": { 1: [[3545, 2177, 50, 5, 30, 1], [3545, 2177, 50, 3, 30, 1], [3545, 2177, 50, 1, 30, 1], [3545, 2177, 50, -1, 30, 1]], 2: [[3545, 2177, 50, 5, 60, 1], [3545, 2177, 50, 3, 60, 1], [3545, 2177, 50, 1, 60, 1], [3545, 2177, 50, -1, 60, 1]], 3: [[3545, 2177, 50, 5, 80, 1], [3545, 2177, 50, 3, 80, 1], [3545, 2177, 50, 1, 80, 1], [3545, 2177, 50, -1, 80, 1]] },
-        "all-random": { 1: [[1547, 2915, 50, 5, 10, 1], [1547, 2915, 50, -5, 10, 1], [3545, 2177, 50, 5, 40, 1], [3545, 2177, 50, 0, 40, 1], [3545, 2177, 50, -5, 40, 1]], 2: [[1205, 3257, 50, 5, 10, 1], [1205, 3257, 50, -5, 10, 1], [3545, 2177, 50, 5, 50, 1], [3545, 2177, 50, 0, 50, 1], [3545, 2177, 50, -5, 50, 1]], 3: [[863, 3599, 50, 5, 10, 1], [863, 3599, 50, -5, 10, 1], [3545, 2177, 50, 5, 80, 1], [3545, 2177, 50, 0, 80, 1], [3545, 2177, 50, -5, 80, 1]] }
-    };
+    init();
 
-    // --- MD5 & Crypto ---
     var MD5=function(d){var r=M(V(Y(X(d),8*d.length)));return r.toLowerCase()};function M(d){for(var _,m="0123456789ABCDEF",f="",r=0;r<d.length;r++)_=d.charCodeAt(r),f+=m.charAt(_>>>4&15)+m.charAt(15&_);return f}function X(d){for(var _=Array(d.length>>2),m=0;m<_.length;m++)_[m]=0;for(m=0;m<8*d.length;m+=8)_[m>>5]|=(255&d.charCodeAt(m/8))<<m%32;return _}function V(d){for(var _="",m=0;m<32*d.length;m+=8)_+=String.fromCharCode(d[m>>5]>>>m%32&255);return _}function Y(d,_){d[_>>5]|=128<<_%32,d[14+(_+64>>>9<<4)]=_;for(var m=1732584193,f=-271733879,r=-1732584194,i=271733878,n=0;n<d.length;n+=16){var h=m,t=f,g=r,e=i;f=md5_ii(f=md5_ii(f=md5_ii(f=md5_ii(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_ff(f=md5_ff(f=md5_ff(f=md5_ff(f,r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+0],7,-680876936),f,r,d[n+1],12,-389564586),m,f,d[n+2],17,606105819),i,m,d[n+3],22,-1044525330),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+4],7,-176418897),f,r,d[n+5],12,1200080426),m,f,d[n+6],17,-1473231341),i,m,d[n+7],22,-45705983),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+8],7,1770035416),f,r,d[n+9],12,-1958414417),m,f,d[n+10],17,-42063),i,m,d[n+11],22,-1990404162),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+12],7,1804603682),f,r,d[n+13],12,-40341101),m,f,d[n+14],17,-1502002290),i,m,d[n+15],22,1236535329),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+1],5,-165796510),f,r,d[n+6],9,-1069501632),m,f,d[n+11],14,643717713),i,m,d[n+0],20,-373897302),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+5],5,-701558691),f,r,d[n+10],9,38016083),m,f,d[n+15],14,-660478335),i,m,d[n+4],20,-405537848),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+9],5,568446438),f,r,d[n+14],9,-1019803690),m,f,d[n+3],14,-187363961),i,m,d[n+8],20,1163531501),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+13],5,-1444681467),f,r,d[n+2],9,-51403784),m,f,d[n+7],14,1735328473),i,m,d[n+12],20,-1926607734),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+5],4,-378558),f,r,d[n+8],11,-2022574463),m,f,d[n+11],16,1839030562),i,m,d[n+14],23,-35309556),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+1],4,-1530992060),f,r,d[n+4],11,1272893353),m,f,d[n+7],16,-155497632),i,m,d[n+10],23,-1094730640),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+13],4,681279174),f,r,d[n+0],11,-358537222),m,f,d[n+3],16,-722521979),i,m,d[n+6],23,76029189),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+9],4,-640364487),f,r,d[n+12],11,-421815835),m,f,d[n+15],16,530742520),i,m,d[n+2],23,-995338651),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+0],6,-198630844),f,r,d[n+7],10,1126891415),m,f,d[n+14],15,-1416354905),i,m,d[n+5],21,-57434055),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+12],6,1700485571),f,r,d[n+3],10,-1894986606),m,f,d[n+10],15,-1051523),i,m,d[n+1],21,-2054922799),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+8],6,1873313359),f,r,d[n+15],10,-30611744),m,f,d[n+6],15,-1560198380),i,m,d[n+13],21,1309151649),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+4],6,-145523070),f,r,d[n+11],10,-1120210379),m,f,d[n+2],15,718787259),i,m,d[n+9],21,-343485551),m=safe_add(m,h),f=safe_add(f,t),r=safe_add(r,g),i=safe_add(i,e)}return Array(m,f,r,i)}function md5_cmn(d,_,m,f,r,i){return safe_add(bit_rol(safe_add(safe_add(_,d),safe_add(f,i)),r),m)}function md5_ff(d,_,m,f,r,i,n){return md5_cmn(_&m|~_&f,d,_,r,i,n)}function md5_gg(d,_,m,f,r,i,n){return md5_cmn(_&f|m&~f,d,_,r,i,n)}function md5_hh(d,_,m,f,r,i,n){return md5_cmn(_^m^f,d,_,r,i,n)}function md5_ii(d,_,m,f,r,i,n){return md5_cmn(m^(_|~f),d,_,r,i,n)}function safe_add(d,_){var m=(65535&d)+(65535&_);return(d>>16)+(_>>16)+(m>>16)<<16|65535&m}function bit_rol(d,_){return d<<_|d>>>32-_}
 </script>
 
