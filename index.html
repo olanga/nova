@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nova S Pro - Programmed Drills</title>
+    <title>Nova Drill Control</title>
     <style>
         /* --- THEME DEFINITIONS --- */
         :root { --trans-speed: 0.3s; }
-
-        [data-theme="standard"] { --primary: #ff6b4a; --primary-dim: rgba(255, 107, 74, 0.1); --bg: #f5f6fa; --surface: #ffffff; --card-bg: #e4e7eb; --text: #2d3436; --text-light: #636e72; --border: #dfe6e9; --shadow: rgba(0,0,0,0.05); --danger: #d63031; --btn-text: #4a4a4a; --menu-bg: rgba(255, 255, 255, 0.98); }
-        [data-theme="ocean"] { --primary: #0984e3; --primary-dim: rgba(9, 132, 227, 0.1); --bg: #f0f9ff; --surface: #ffffff; --card-bg: #dfe6e9; --text: #2c3e50; --text-light: #576574; --border: #c7ecee; --shadow: rgba(9, 132, 227, 0.1); --danger: #ff7675; --btn-text: #2c3e50; --menu-bg: rgba(255, 255, 255, 0.98); }
-        [data-theme="forest"] { --primary: #00b894; --primary-dim: rgba(0, 184, 148, 0.1); --bg: #f1f2f6; --surface: #ffffff; --card-bg: #ced6e0; --text: #2f3542; --text-light: #747d8c; --border: #a4b0be; --shadow: rgba(0, 184, 148, 0.1); --danger: #ff6b6b; --btn-text: #2f3542; --menu-bg: rgba(255, 255, 255, 0.98); }
-        [data-theme="night"] { --primary: #ff7675; --primary-dim: rgba(255, 118, 117, 0.15); --bg: #1e272e; --surface: #2f3640; --card-bg: #353b48; --text: #f5f6fa; --text-light: #dcdde1; --border: #4b6584; --shadow: rgba(0,0,0,0.3); --danger: #e17055; --btn-text: #f5f6fa; --menu-bg: rgba(47, 54, 64, 0.98); }
+        [data-theme="standard"] { --primary: #ff6b4a; --primary-dim: rgba(255, 107, 74, 0.1); --bg: #f5f6fa; --surface: #ffffff; --card-bg: #e4e7eb; --text: #2d3436; --text-light: #636e72; --border: #dfe6e9; --shadow: rgba(0,0,0,0.05); --danger: #d63031; --btn-text: #4a4a4a; --menu-bg: rgba(255, 255, 255, 0.98); --ring-track: #dfe6e9; --ring-color: #ff6b4a; }
+        [data-theme="ocean"] { --primary: #0984e3; --primary-dim: rgba(9, 132, 227, 0.1); --bg: #f0f9ff; --surface: #ffffff; --card-bg: #dfe6e9; --text: #2c3e50; --text-light: #576574; --border: #c7ecee; --shadow: rgba(9, 132, 227, 0.1); --danger: #ff7675; --btn-text: #2c3e50; --menu-bg: rgba(255, 255, 255, 0.98); --ring-track: #c7ecee; --ring-color: #0984e3; }
+        [data-theme="forest"] { --primary: #00b894; --primary-dim: rgba(0, 184, 148, 0.1); --bg: #f1f2f6; --surface: #ffffff; --card-bg: #ced6e0; --text: #2f3542; --text-light: #747d8c; --border: #a4b0be; --shadow: rgba(0, 184, 148, 0.1); --danger: #ff6b6b; --btn-text: #2f3542; --menu-bg: rgba(255, 255, 255, 0.98); --ring-track: #a4b0be; --ring-color: #00b894; }
+        [data-theme="night"] { --primary: #ff7675; --primary-dim: rgba(255, 118, 117, 0.15); --bg: #1e272e; --surface: #2f3640; --card-bg: #353b48; --text: #f5f6fa; --text-light: #dcdde1; --border: #4b6584; --shadow: rgba(0,0,0,0.3); --danger: #e17055; --btn-text: #f5f6fa; --menu-bg: rgba(47, 54, 64, 0.98); --ring-track: #4b6584; --ring-color: #ff7675; }
         
         /* --- GLOBAL STYLES --- */
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 20px 15px; box-sizing: border-box; transition: background-color var(--trans-speed), color var(--trans-speed); }
-        .container { width: 100%; max-width: 500px; position: relative; }
+        .container { width: 100%; max-width: 500px; position: relative; padding-bottom: 80px; }
         
         header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; padding: 0 10px; }
         h1 { margin: 0; font-size: 1.1rem; font-weight: 600; color: var(--text); }
@@ -34,7 +33,7 @@
         .settings-card { background: var(--card-bg); border-radius: 20px; padding: 15px; margin-bottom: 20px; transition: background-color var(--trans-speed); }
         .btn-connect { width: 100%; padding: 12px; border: none; border-radius: 25px; font-weight: 600; cursor: pointer; font-size: 0.95rem; background: var(--primary); color: white; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: background var(--trans-speed), transform 0.1s; }
         .btn-connect.connected { background: #00b894; }
-        .control-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+        .control-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; transition: opacity 0.3s; }
         .controls-row { display: flex; gap: 10px; margin-bottom: 5px; }
         .control-pill { background: var(--surface); border-radius: 15px; padding: 10px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 2px 5px var(--shadow); }
         .control-pill label { font-size: 0.65rem; color: var(--text-light); margin-bottom: 4px; font-weight: 700; text-transform: uppercase; }
@@ -51,40 +50,77 @@
         .lvl-dot.active { border-color: var(--primary); color: var(--primary); transform: scale(1.1); }
 
         .section-label { font-size: 0.85rem; font-weight: 600; color: var(--text-light); margin-bottom: 8px; padding-left: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .tabs-container { background: var(--card-bg); border-radius: 25px; padding: 4px; display: flex; justify-content: space-between; margin-bottom: 20px; }
-        .tab-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 12px; border-radius: 22px; border: 1px solid transparent; background: transparent; color: var(--text-light); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all var(--trans-speed); }
-        .tab-btn.active { background: var(--surface); border: 1px solid var(--primary); color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .icon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: 10px; height: 10px; }
+        
+        /* SCROLLABLE TABS */
+        .tabs-container { 
+            background: var(--card-bg); 
+            border-radius: 20px; 
+            padding: 10px; 
+            margin-bottom: 20px; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr 1fr; 
+            gap: 10px; 
+        }
+        .tab-btn { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 4px; 
+            padding: 12px 5px; 
+            border-radius: 16px; 
+            border: 1px solid transparent; 
+            background: transparent; 
+            color: var(--text-light); 
+            font-weight: 600; 
+            font-size: 0.75rem; 
+            cursor: pointer; 
+            transition: all var(--trans-speed); 
+            text-align: center;
+        }
+        .tab-btn.active { 
+            background: var(--surface); 
+            border: 1px solid var(--primary); 
+            color: var(--primary); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+        }
+        .icon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: 10px; height: 10px; margin-bottom: 2px; }
         .icon-dot { background-color: var(--text-light); border-radius: 50%; opacity: 0.5; }
         .tab-btn.active .icon-dot { background-color: var(--primary); opacity: 1; }
 
         .drill-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px; }
         .hidden { display: none !important; }
+        
         .btn-drill { background: var(--surface); border: 1px solid transparent; border-radius: 20px; padding: 15px 8px; font-size: 0.8rem; font-weight: 600; color: var(--btn-text); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 2px 5px var(--shadow); transition: all 0.1s; min-height: 85px; width: 100%; position: relative; user-select: none; -webkit-user-select: none; }
         .btn-drill span { text-align: center; line-height: 1.3; width: 100%; }
         .btn-drill:active { transform: scale(0.97); }
         .btn-drill.running { border-color: var(--primary); background: var(--primary-dim); color: var(--primary); }
         .btn-drill:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; background: rgba(0,0,0,0.05); }
         [data-theme="night"] .btn-drill:disabled { background: rgba(255,255,255,0.05); }
+        
         .btn-drill .drill-icon { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; width: 14px; height: 14px; }
         .btn-drill .drill-icon .d-dot { background-color: #b2bec3; border-radius: 50%; transition: background-color var(--trans-speed); }
         .btn-drill.running .drill-icon .d-dot { background-color: var(--primary); }
-
-        .btn-stop { background: var(--danger); color: white; width: 100%; padding: 16px; border: none; border-radius: 30px; font-weight: 700; cursor: pointer; font-size: 1rem; margin-top: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: opacity 0.2s; }
-        .btn-stop:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
-        #status-text { text-align: center; font-size: 0.8rem; color: var(--primary); font-weight: 700; height: 20px; margin-bottom: 5px; letter-spacing: 0.5px; text-transform: uppercase; }
         
-        /* Log Box (Restored Visuals) */
-        .log-box { margin-top: 20px; background: #2d3436; color: #00cec9; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.65rem; height: 120px; overflow-y: auto; display: none; border: 1px solid #636e72; line-height: 1.4; }
+        /* RANDOM MARK */
+        .mark-random { position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border: 2px solid var(--danger); color: var(--danger); border-radius: 50%; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; background: transparent; line-height: 1; pointer-events: none; }
+
+        #status-text { text-align: center; font-size: 0.8rem; color: var(--primary); font-weight: 700; height: 20px; margin-bottom: 5px; letter-spacing: 0.5px; text-transform: uppercase; }
+        .log-box { margin-top: 10px; background: #2d3436; color: #00cec9; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.65rem; height: 120px; overflow-y: auto; display: none; border: 1px solid #636e72; line-height: 1.4; }
         .log-box div { margin-bottom: 2px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2px; }
         
-        .checkbox-wrapper { margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.8rem; color: var(--text-light); }
+        /* FOOTER CONTROLS */
+        .footer-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; font-size: 0.8rem; color: var(--text-light); font-weight: 600; padding: 0 5px; }
+        .checkbox-wrapper { display: flex; align-items: center; gap: 6px; }
+        #stats-display { font-variant-numeric: tabular-nums; }
+
         #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 50px; padding: 16px; position: fixed; z-index: 200; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 0.9rem; opacity: 0; transition: opacity 0.5s, bottom 0.5s; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         #toast.show { visibility: visible; opacity: 1; bottom: 50px; }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(4px); }
+        /* --- MODALS --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         .modal-overlay.open { opacity: 1; pointer-events: auto; }
-        .modal { background: var(--surface); width: 95%; max-width: 400px; max-height: 90vh; border-radius: 20px; padding: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; overflow: hidden; }
+        .modal { background: var(--surface); width: 95%; max-width: 400px; max-height: 90vh; border-radius: 25px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.4); display: flex; flex-direction: column; overflow: hidden; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
         .modal-title { font-weight: 700; color: var(--text); font-size: 1.1rem; }
         .modal-close { font-size: 1.5rem; color: var(--text-light); cursor: pointer; line-height: 1; }
@@ -102,7 +138,27 @@
         .btn-modal { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
         .btn-save { background: var(--primary); color: white; }
         .btn-cancel { background: var(--card-bg); color: var(--text); }
-        .helper-text { text-align: center; font-size: 0.7rem; color: var(--text-light); margin-bottom: 10px; opacity: 0.8; }
+
+        /* --- RUN OVERLAY --- */
+        #run-ui { display: none; flex-direction: column; align-items: center; width: 100%; justify-content: center; text-align: center; }
+        .modal-overlay.open #run-ui { display: flex; }
+
+        .countdown-circle { position: relative; width: 200px; height: 200px; margin-bottom: 30px; }
+        .countdown-circle svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+        .track { fill: none; stroke: var(--ring-track); stroke-width: 8; }
+        .progress { fill: none; stroke: var(--primary); stroke-width: 8; stroke-dasharray: 565; stroke-dashoffset: 0; stroke-linecap: round; }
+        
+        .center-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .count-val { font-size: 4.5rem; font-weight: 800; color: var(--text); line-height: 1; font-feature-settings: "tnum"; font-variant-numeric: tabular-nums; }
+        .status-label { font-size: 0.9rem; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
+
+        .run-controls { display: flex; flex-direction: column; gap: 15px; width: 100%; margin-top: 10px; }
+        .btn-run-ctrl { width: 100%; padding: 15px; border-radius: 15px; border: none; font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform 0.1s; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .btn-run-ctrl:active { transform: scale(0.95); }
+        .btn-pause { background: var(--card-bg); color: var(--text); }
+        .btn-stop-run { background: var(--danger); color: white; }
+        .pulse-anim { animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -110,31 +166,37 @@
 <div class="container">
     
     <header>
-        <h1>Programmed Drills(Standard)</h1>
+        <h1>Nova Drill Control</h1>
         <div class="menu-btn" onclick="toggleMenu()">
             <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </div>
     </header>
 
     <div id="theme-menu" class="theme-menu">
-        <div class="menu-title">Settings</div>
-        <div class="theme-item" onclick="saveAsDefault()"><span class="color-preview" style="background:var(--primary)"></span> Save as New Default</div>
-        <div class="theme-item" onclick="resetToDefault()">Reset to Default</div>
+        <div class="menu-title">Custom Data</div>
+        <div class="theme-item" onclick="document.getElementById('csv-input').click()"><span class="color-preview" style="background:var(--text)"></span> Import Custom Drills</div>
+        <div class="theme-item" onclick="exportCustomDrills()"><span class="color-preview" style="background:var(--text)"></span> Export Custom Drills</div>
+        <div class="theme-item" onclick="saveAsDefault()"><span class="color-preview" style="background:var(--primary)"></span> Save Defaults</div>
+        <div class="theme-item" onclick="resetToDefault()">Reset Defaults</div>
+        <div class="theme-item" onclick="resetStats()">Reset Statistics</div>
+        
         <div style="border-top: 1px solid var(--border); margin: 5px 0;"></div>
         <div class="menu-title">Theme</div>
         <div class="theme-item" onclick="setTheme('standard')"><span class="color-preview" style="background:#ff6b4a"></span> Standard</div>
         <div class="theme-item" onclick="setTheme('ocean')"><span class="color-preview" style="background:#0984e3"></span> Ocean</div>
         <div class="theme-item" onclick="setTheme('forest')"><span class="color-preview" style="background:#00b894"></span> Forest</div>
-        <div class="theme-item" onclick="setTheme('night')"><span class="color-preview" style="background:#2d3436"></span> Night</div>
+        <div class="theme-item" onclick="setTheme('night')"><span class="color-preview" style="background:#2d3436"></span> Dark</div>
+        
         <div style="border-top: 1px solid var(--border); margin: 5px 0;"></div>
         <div class="theme-item reset-item" onclick="factoryReset()">Factory Reset</div>
     </div>
+    <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="handleCSVUpload(event)">
 
     <div class="settings-card">
         <div id="status-text">Disconnected</div>
         <button id="btn-connect" class="btn-connect">Connect</button>
 
-        <div class="control-group">
+        <div class="control-group" id="grp-difficulty">
             <div style="text-align:center; font-size:0.65rem; color:var(--text-light); margin-bottom:5px; font-weight:700;">DIFFICULTY LEVEL</div>
             <div class="level-select">
                 <div class="lvl-dot active" onclick="setLevel(1, this)">1</div>
@@ -166,8 +228,7 @@
         </div>
     </div>
 
-    <div class="section-label">Technique Selection</div>
-    <div class="helper-text">(Long press any button to edit drill parameters)</div>
+    <div class="section-label">Drill Selection</div>
     
     <div class="tabs-container">
         <div class="tab-btn active" onclick="switchTab('basic', this)">
@@ -179,24 +240,45 @@
         <div class="tab-btn" onclick="switchTab('complex', this)">
             <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div> Complex
         </div>
+        <div class="tab-btn" onclick="switchTab('custom-a', this)">
+            <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div> Custom A
+        </div>
+        <div class="tab-btn" onclick="switchTab('custom-b', this)">
+            <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div> Custom B
+        </div>
+        <div class="tab-btn" onclick="switchTab('custom-c', this)">
+            <div class="icon-grid"><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div><div class="icon-dot"></div></div> Custom C
+        </div>
     </div>
 
     <div id="view-basic" class="drill-list"></div>
     <div id="view-combined" class="drill-list hidden"></div>
     <div id="view-complex" class="drill-list hidden"></div>
+    <div id="view-custom-a" class="drill-list hidden"></div>
+    <div id="view-custom-b" class="drill-list hidden"></div>
+    <div id="view-custom-c" class="drill-list hidden"></div>
 
-    <button id="btn-stop" class="btn-stop" disabled>STOP</button>
-
-    <div class="checkbox-wrapper"><input type="checkbox" id="chk-console"> Show Log</div>
+    <div class="footer-row">
+        <div id="stats-display">Balls: 0 | Drills: 0</div>
+        <div class="checkbox-wrapper">
+            <input type="checkbox" id="chk-console"> 
+            <label for="chk-console" style="margin:0; cursor:pointer;">Show Log</label>
+        </div>
+    </div>
+    
     <div id="log" class="log-box"></div>
 </div>
 
-<div id="toast">Device not connected</div>
+<div id="toast">Notification</div>
 
 <div id="editor-modal" class="modal-overlay">
     <div class="modal">
         <div class="modal-header">
             <div class="modal-title">Edit Drill</div>
+            <div style="display:flex; align-items:center; gap:5px; margin-left:auto; margin-right:20px;">
+                <input type="checkbox" id="chk-drill-random">
+                <label for="chk-drill-random" style="font-size:0.75rem; font-weight:600; color:var(--text-light);">Random</label>
+            </div>
             <div class="modal-close" onclick="closeEditor()">×</div>
         </div>
         <div id="editor-body" class="modal-body"></div>
@@ -207,18 +289,44 @@
     </div>
 </div>
 
+<div id="run-overlay" class="modal-overlay">
+    <div class="modal" style="background: var(--surface); width: 90%; max-width:450px; padding: 30px 20px;">
+        <div id="run-ui">
+            <div class="countdown-circle">
+                <svg viewBox="0 0 200 200">
+                    <circle class="track" cx="100" cy="100" r="90"></circle>
+                    <circle class="progress" id="run-progress" cx="100" cy="100" r="90"></circle>
+                </svg>
+                <div class="center-text">
+                    <div class="count-val" id="run-display">4</div>
+                    <div class="status-label" id="run-label">GET READY</div>
+                </div>
+            </div>
+
+            <div class="run-controls">
+                <button id="btn-pause" class="btn-run-ctrl btn-pause" onclick="togglePause()">PAUSE</button>
+                <button class="btn-run-ctrl btn-stop-run" onclick="stopRun()">STOP</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    // --- 1. Global Helpers & UI References ---
+    // --- 1. Global Helpers ---
     const ui = {
         connect: document.getElementById('btn-connect'),
         statusText: document.getElementById('status-text'),
         log: document.getElementById('log'),
-        stop: document.getElementById('btn-stop'),
         inputPause: document.getElementById('input-pause'),
-        themeMenu: document.getElementById('theme-menu')
+        themeMenu: document.getElementById('theme-menu'),
+        runOverlay: document.getElementById('run-overlay'),
+        runDisplay: document.getElementById('run-display'),
+        runLabel: document.getElementById('run-label'),
+        runProgress: document.getElementById('run-progress'),
+        btnPause: document.getElementById('btn-pause'),
+        statsDisplay: document.getElementById('stats-display')
     };
 
-    // Updated Log function to create new lines
     function log(msg) {
         const t = new Date().toLocaleTimeString().split(' ')[0];
         const line = document.createElement('div');
@@ -287,7 +395,8 @@
     const CATEGORIES = {
         basic: ["push(b)", "push(f)", "drive(b)", "drive(f)", "loop(b)", "loop(f)"],
         combined: ["loop(b)-drive(b)", "loop(f)-drive(f)", "drive(f)-drive(b)", "push(f)-drive(f)", "push(b)-loop(b)", "loop(f)-drive(b)", "push(f)-loop(b)", "drive(f)-drive(f)", "push(b)-loop(f)", "push(f)-loop(f)", "loop(f)-loop(f)", "loop(b)-drive(f)"],
-        complex: ["push(b)-loop(f)-drive(b)", "push(f)-loop(b)-drive(f)", "loop(f)-drive(f)-drive(b)", "loop(b)-drive(f)-drive(b)", "drive(f)-drive(f)-drive(f)", "push(f)-loop(f)-drive(f)", "push(b)-loop(b)-drive(b)", "push(f)-loop(b)-drive(b)", "loop(f)-drive(b)-drive(f)", "loop(b)-drive(b)-drive(f)", "push(b)-loop(f)-drive(f)", "push(b)-loop(b)-drive(f)", "drive(b)-drive(f)-drive(f)", "random-drive", "23-random-drive", "all-random"]
+        complex: ["push(b)-loop(f)-drive(b)", "push(f)-loop(b)-drive(f)", "loop(f)-drive(f)-drive(b)", "loop(b)-drive(f)-drive(b)", "drive(f)-drive(f)-drive(f)", "push(f)-loop(f)-drive(f)", "push(b)-loop(b)-drive(b)", "push(f)-loop(b)-drive(b)", "loop(f)-drive(b)-drive(f)", "loop(b)-drive(b)-drive(f)", "push(b)-loop(f)-drive(f)", "push(b)-loop(b)-drive(f)", "drive(b)-drive(f)-drive(f)", "random-drive", "23-random-drive", "all-random"],
+        "custom-a": [], "custom-b": [], "custom-c": [] 
     };
 
     // --- 3. State ---
@@ -295,72 +404,187 @@
     let writeLock = Promise.resolve();
     let state = "disconnected";
     let isRunning = false;
+    let isPaused = false;
     let currentCount = 0;
     let targetCount = 0;
     let pauseTimer = null;
+    let countdownTimer = null;
+    let runTimer = null;
     let activeDrillParams = null;
+    let activeDrillRandom = false; 
     let runMode = "reps"; 
     let endTime = 0;
+    let remainingTime = 0;
     let selectedLevel = 1;
+    let appStats = { balls: 0, drills: 0 };
     
-    let savedDrills = localStorage.getItem('custom_drills');
-    let userDefaults = localStorage.getItem('user_defaults');
+    // Safely load storage with fallback to prevent crashes if storage is corrupt
+    let savedDrills = null;
+    try { savedDrills = localStorage.getItem('custom_drills'); } catch(e) { console.error(e); }
+    
+    let userDefaults = null;
+    try { userDefaults = localStorage.getItem('user_defaults'); } catch(e) { console.error(e); }
+    
+    let customData = null;
+    try { customData = localStorage.getItem('custom_data'); } catch(e) { console.error(e); }
     
     let currentDrills = savedDrills ? JSON.parse(savedDrills) : 
                        (userDefaults ? JSON.parse(userDefaults) : JSON.parse(JSON.stringify(DEFAULT_DRILLS)));
+    
+    let userCustomDrills = customData ? JSON.parse(customData) : { "custom-a": [], "custom-b": [], "custom-c": [] };
 
     let editingDrillKey = null;
     let pressTimer = null;
     let longPressHandled = false;
 
     // --- 4. Initialization ---
+    // Ensure this runs after all definitions
     init();
 
     function init() {
+        // Load saved theme
+        const savedTheme = localStorage.getItem('nova_theme_pref');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+        
+        // Load Stats
+        const savedStats = localStorage.getItem('nova_stats');
+        if (savedStats) {
+            try { appStats = JSON.parse(savedStats); } catch(e){}
+        }
+        updateStatsUI();
+
         renderDrillButtons();
         updateDrillButtonStates(); 
         log("System Ready.");
     }
 
+    function setTheme(themeName) {
+        document.documentElement.setAttribute('data-theme', themeName);
+        localStorage.setItem('nova_theme_pref', themeName);
+        ui.themeMenu.classList.remove('open');
+    }
+
+    function updateStatsUI() {
+        if(ui.statsDisplay) {
+            ui.statsDisplay.textContent = `Balls: ${appStats.balls} | Drills: ${appStats.drills}`;
+        }
+    }
+
+    function resetStats() {
+        if(confirm("Reset total ball and drill counts to zero?")) {
+            appStats = { balls: 0, drills: 0 };
+            localStorage.setItem('nova_stats', JSON.stringify(appStats));
+            updateStatsUI();
+            ui.themeMenu.classList.remove('open');
+            showToast("Statistics Reset");
+        }
+    }
+
     function renderDrillButtons() {
-        ['basic', 'combined', 'complex'].forEach(cat => {
-            const container = document.getElementById(`view-${cat}`);
-            container.innerHTML = '';
-            
-            CATEGORIES[cat].forEach(key => {
-                const btn = document.createElement('button');
-                btn.className = 'btn-drill';
-                btn.dataset.key = key;
+        try {
+            ['basic', 'combined', 'complex'].forEach(cat => {
+                const container = document.getElementById(`view-${cat}`);
+                if (!container) return;
+                container.innerHTML = '';
                 
-                const iconDiv = document.createElement('div');
-                iconDiv.className = 'drill-icon';
-                for(let i=0; i<4; i++) {
-                    const d = document.createElement('div');
-                    d.className = 'd-dot';
-                    iconDiv.appendChild(d);
-                }
-                
-                const span = document.createElement('span');
-                span.textContent = formatDrillName(key);
-                
-                btn.appendChild(iconDiv);
-                btn.appendChild(span);
-                
-                // Events
-                btn.addEventListener('click', () => handleDrillClick(key, btn));
-                
-                const startPress = (e) => handlePressStart(e, key);
-                const endPress = (e) => handlePressEnd(e);
-                
-                btn.addEventListener('mousedown', startPress);
-                btn.addEventListener('touchstart', startPress, {passive: true});
-                btn.addEventListener('mouseup', endPress);
-                btn.addEventListener('mouseleave', endPress);
-                btn.addEventListener('touchend', endPress);
-                
-                container.appendChild(btn);
+                CATEGORIES[cat].forEach(key => {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn-drill';
+                    btn.dataset.key = key;
+                    
+                    const iconDiv = document.createElement('div');
+                    iconDiv.className = 'drill-icon';
+                    for(let i=0; i<4; i++) {
+                        const d = document.createElement('div');
+                        d.className = 'd-dot';
+                        iconDiv.appendChild(d);
+                    }
+                    
+                    btn.appendChild(iconDiv);
+
+                    // Add Random Mark if applicable
+                    if (currentDrills[key] && currentDrills[key].random) {
+                        const rMark = document.createElement('div');
+                        rMark.className = 'mark-random';
+                        rMark.textContent = 'R';
+                        btn.appendChild(rMark);
+                    }
+                    
+                    const span = document.createElement('span');
+                    span.textContent = formatDrillName(key);
+                    btn.appendChild(span);
+                    
+                    btn.addEventListener('click', () => handleDrillClick(key, btn));
+                    
+                    const startPress = (e) => handlePressStart(e, key);
+                    const endPress = (e) => handlePressEnd(e);
+                    
+                    btn.addEventListener('mousedown', startPress);
+                    btn.addEventListener('touchstart', startPress, {passive: true});
+                    btn.addEventListener('mouseup', endPress);
+                    btn.addEventListener('mouseleave', endPress);
+                    btn.addEventListener('touchend', endPress);
+                    
+                    container.appendChild(btn);
+                });
             });
-        });
+
+            ['custom-a', 'custom-b', 'custom-c'].forEach(cat => {
+                const container = document.getElementById(`view-${cat}`);
+                if (!container) return;
+                container.innerHTML = '';
+                if (userCustomDrills[cat].length === 0) {
+                    container.innerHTML = '<div style="grid-column:span 2; text-align:center; color:#999; padding:20px; font-size:0.8rem;">No drills imported.<br>Use Settings > Import CSV</div>';
+                } else {
+                    userCustomDrills[cat].forEach(item => {
+                        createCustomButton(container, item.key, item.name);
+                    });
+                }
+            });
+        } catch(e) {
+            log("Render Error: " + e.message);
+        }
+    }
+
+    function createCustomButton(container, key, label) {
+        const btn = document.createElement('button');
+        btn.className = 'btn-drill';
+        btn.dataset.key = key;
+        
+        const iconDiv = document.createElement('div');
+        iconDiv.className = 'drill-icon';
+        for(let i=0; i<4; i++) {
+            const d = document.createElement('div');
+            d.className = 'd-dot';
+            iconDiv.appendChild(d);
+        }
+        btn.appendChild(iconDiv);
+        
+        if (currentDrills[key] && currentDrills[key].random) {
+            const rMark = document.createElement('div');
+            rMark.className = 'mark-random';
+            rMark.textContent = 'R';
+            btn.appendChild(rMark);
+        }
+
+        const span = document.createElement('span');
+        span.textContent = label;
+        btn.appendChild(span);
+        
+        btn.addEventListener('click', () => handleDrillClick(key, btn));
+        
+        const startPress = (e) => handlePressStart(e, key);
+        const endPress = (e) => handlePressEnd(e);
+        
+        btn.addEventListener('mousedown', startPress);
+        btn.addEventListener('touchstart', startPress, {passive: true});
+        btn.addEventListener('mouseup', endPress);
+        btn.addEventListener('mouseleave', endPress);
+        btn.addEventListener('touchend', endPress);
+        
+        container.appendChild(btn);
     }
 
     function updateDrillButtonStates() {
@@ -375,6 +599,7 @@
     }
 
     function formatDrillName(key) {
+        if (key.startsWith('cust_')) return key; 
         return key.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     }
 
@@ -409,7 +634,7 @@
         clearTimeout(pressTimer);
     }
 
-    // --- 6. Editor & Data Management ---
+    // --- 6. Editor, CSV & Settings ---
     const RANGE_CONFIG = [
         { label: 'Top', class: 'inp-us', min: 400, max: 7500, step: 1, idx: 0 },
         { label: 'Bot', class: 'inp-ls', min: 400, max: 7500, step: 1, idx: 1 },
@@ -422,6 +647,10 @@
     function openEditor(key) {
         editingDrillKey = key;
         const levelData = currentDrills[key][selectedLevel];
+        
+        const chk = document.getElementById('chk-drill-random');
+        chk.checked = !!currentDrills[key].random;
+
         const modalBody = document.getElementById('editor-body');
         modalBody.innerHTML = '';
 
@@ -458,6 +687,9 @@
 
     function saveDrillChanges() {
         if (!editingDrillKey) return;
+        
+        currentDrills[editingDrillKey].random = document.getElementById('chk-drill-random').checked;
+        
         const modalBody = document.getElementById('editor-body');
         const ballDivs = modalBody.getElementsByClassName('ball-editor');
         const newSequence = [];
@@ -473,10 +705,114 @@
         }
         currentDrills[editingDrillKey][selectedLevel] = newSequence;
         localStorage.setItem('custom_drills', JSON.stringify(currentDrills));
+        
+        renderDrillButtons();
         closeEditor();
         showToast(`Saved Level ${selectedLevel}`);
     }
 
+    function handleCSVUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) { parseCSV(e.target.result); };
+        reader.readAsText(file);
+        event.target.value = '';
+    }
+
+    function parseCSV(text) {
+        const lines = text.split(/\r?\n/);
+        const newCustomData = { "custom-a": [], "custom-b": [], "custom-c": [] };
+        const newDrillParams = {};
+
+        for (let cat in userCustomDrills) {
+            userCustomDrills[cat].forEach(drill => {
+                if (currentDrills[drill.key]) delete currentDrills[drill.key];
+            });
+        }
+
+        const getCat = (val) => {
+            val = val.trim().toUpperCase();
+            if(val === 'A') return 'custom-a';
+            if(val === 'B') return 'custom-b';
+            if(val === 'C') return 'custom-c';
+            return null;
+        };
+
+        lines.forEach(line => {
+            if (!line.trim()) return;
+            const sep = line.includes(';') ? ';' : ',';
+            const parts = line.split(sep);
+            if (parts.length < 8) return;
+            if (isNaN(parseInt(parts[2]))) return;
+
+            const catCode = parts[0].trim();
+            const name = parts[1].trim().substring(0, 32);
+            const category = getCat(catCode);
+
+            if (!category) return;
+
+            const ball = [
+                parseInt(parts[2]), parseInt(parts[3]), parseInt(parts[4]),
+                parseFloat(parts[5]), parseInt(parts[6]), parseInt(parts[7])
+            ];
+
+            const key = `cust_${catCode}_${name.replace(/\s+/g, '_')}`;
+
+            if (!newDrillParams[key]) {
+                let exists = newCustomData[category].find(d => d.key === key);
+                if (!exists) {
+                    if (newCustomData[category].length >= 20) return;
+                    newCustomData[category].push({ name: name, key: key });
+                    newDrillParams[key] = { 1: [], 2: [], 3: [] };
+                }
+            }
+
+            if (newDrillParams[key][1].length < 20) {
+                newDrillParams[key][1].push(ball);
+                newDrillParams[key][2].push(ball);
+                newDrillParams[key][3].push(ball);
+            }
+        });
+
+        userCustomDrills = newCustomData;
+        Object.assign(currentDrills, newDrillParams);
+        localStorage.setItem('custom_data', JSON.stringify(userCustomDrills));
+        localStorage.setItem('custom_drills', JSON.stringify(currentDrills));
+        renderDrillButtons();
+        ui.themeMenu.classList.remove('open');
+        showToast("Imported");
+    }
+
+    function exportCustomDrills() {
+        let csvContent = "Set,Name,Top,Bottom,Height,Drop,Freq,Reps\n";
+        const cats = { 'custom-a': 'A', 'custom-b': 'B', 'custom-c': 'C' };
+        for (let catKey in cats) {
+            const setLabel = cats[catKey];
+            const drillList = userCustomDrills[catKey];
+            if(drillList && drillList.length > 0) {
+                drillList.forEach(drill => {
+                    const sequence = currentDrills[drill.key] ? currentDrills[drill.key][1] : null; 
+                    if (sequence) {
+                        sequence.forEach(ball => {
+                             const row = [setLabel, drill.name, ball[0], ball[1], ball[2], ball[3], ball[4], ball[5]].join(",");
+                             csvContent += row + "\n";
+                        });
+                    }
+                });
+            }
+        }
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "nova_custom_drills.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        ui.themeMenu.classList.remove('open');
+    }
+    
     function saveAsDefault() {
         if(confirm("Save current settings as your new personal default?")) {
             localStorage.setItem('user_defaults', JSON.stringify(currentDrills));
@@ -487,28 +823,21 @@
 
     function resetToDefault() {
         const hasUserDefault = localStorage.getItem('user_defaults');
-        let msg = "Reset configuration?";
-        if (hasUserDefault) msg += "\n(Restores your saved defaults)";
-        else msg += "\n(Restores factory settings)";
-
-        if(confirm(msg)) {
-            if (hasUserDefault) {
-                currentDrills = JSON.parse(hasUserDefault);
-            } else {
-                currentDrills = JSON.parse(JSON.stringify(DEFAULT_DRILLS));
-            }
+        if(confirm(hasUserDefault ? "Restore saved defaults?" : "Restore factory settings?")) {
+            currentDrills = hasUserDefault ? JSON.parse(hasUserDefault) : JSON.parse(JSON.stringify(DEFAULT_DRILLS));
             localStorage.setItem('custom_drills', JSON.stringify(currentDrills));
             toggleMenu();
-            showToast(hasUserDefault ? "Restored User Defaults" : "Restored Factory Settings");
+            showToast("Restored");
         }
     }
 
     function factoryReset() {
-        if(confirm("WARNING: Delete ALL saved data and return to original factory state?")) {
+        if(confirm("WARNING: Delete ALL saved data (including custom drills) and return to original factory state?")) {
             localStorage.clear(); 
-            currentDrills = JSON.parse(JSON.stringify(DEFAULT_DRILLS));
-            toggleMenu();
-            showToast("Factory Reset Complete");
+            // Re-apply standard theme visually before reload
+            document.documentElement.setAttribute('data-theme', 'standard');
+            // Reload page to clear memory state and re-initialize from defaults
+            location.reload();
         }
     }
 
@@ -522,16 +851,28 @@
 
     function setTheme(themeName) {
         document.documentElement.setAttribute('data-theme', themeName);
+        localStorage.setItem('nova_theme_pref', themeName);
         ui.themeMenu.classList.remove('open');
     }
 
     function switchTab(catName, btn) {
-        document.getElementById('view-basic').classList.add('hidden');
-        document.getElementById('view-combined').classList.add('hidden');
-        document.getElementById('view-complex').classList.add('hidden');
+        ['basic','combined','complex','custom-a','custom-b','custom-c'].forEach(c => {
+            const el = document.getElementById('view-'+c);
+            if(el) el.classList.add('hidden');
+        });
         document.getElementById('view-' + catName).classList.remove('hidden');
         document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
         btn.classList.add('active');
+
+        // Logic to hide/show Difficulty Level
+        const diffGroup = document.getElementById('grp-difficulty');
+        if(diffGroup) {
+            if (['custom-a', 'custom-b', 'custom-c'].includes(catName)) {
+                diffGroup.style.display = 'none';
+            } else {
+                diffGroup.style.display = 'flex';
+            }
+        }
     }
 
     function setLevel(lvl, btn) {
@@ -569,8 +910,7 @@
         else connect();
     };
 
-    ui.stop.onclick = stop;
-
+    // --- 8. Bluetooth ---
     async function connect() {
         try {
             log("Scanning...");
@@ -651,63 +991,199 @@
         if(isRunning && hex.includes(MSG_DONE)) handleDone();
     }
 
+    // --- 9. Drill Run Logic ---
     function startDrillSequence(drillName) {
         const params = currentDrills[drillName] ? currentDrills[drillName][selectedLevel] : null;
-        if(!params) return;
+        if(!params) {
+             log("Drill data not found: " + drillName);
+             return;
+        }
         activeDrillParams = params;
+        activeDrillRandom = !!currentDrills[drillName].random;
+
+        ui.runOverlay.classList.add('open');
+        // 1. Countdown Setup
+        let count = 4;
+        ui.runDisplay.textContent = count;
+        ui.runLabel.textContent = "GET READY";
+        ui.btnPause.style.display = 'none'; 
+        
+        // Reset Ring Animation
+        ui.runProgress.style.transition = 'none';
+        ui.runProgress.style.strokeDashoffset = '0';
+        void ui.runProgress.offsetWidth; 
+        
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                ui.runProgress.style.transition = 'stroke-dashoffset 4s linear';
+                ui.runProgress.style.strokeDashoffset = '565'; 
+            });
+        });
+
+        countdownTimer = setInterval(() => {
+            count--;
+            if (count > 0) {
+                ui.runDisplay.textContent = count;
+            } else {
+                clearInterval(countdownTimer);
+                ui.runDisplay.textContent = "GO!";
+                ui.runProgress.style.strokeDashoffset = '565'; // Ensure empty
+                
+                // Short "GO!" pause before actual drill start
+                setTimeout(() => {
+                     beginDrillExecution();
+                }, 800);
+            }
+        }, 1000);
+    }
+
+    function beginDrillExecution() {
+        isRunning = true;
+        isPaused = false;
+        ui.btnPause.style.display = 'block';
+        ui.btnPause.textContent = "PAUSE";
+        ui.btnPause.classList.remove('pulse-anim');
+        ui.runLabel.textContent = "REMAINING";
+
+        ui.runProgress.style.transition = 'none';
+        ui.runProgress.style.strokeDashoffset = '0';
         
         if (runMode === 'time') {
             const tVal = document.getElementById('input-time').value;
-            endTime = Date.now() + (parseInt(tVal) * 1000);
-            ui.statusText.textContent = `Running (${tVal}s)`;
-            log(`Started ${drillName} (${tVal}s)`);
+            remainingTime = parseInt(tVal);
+            ui.runDisplay.textContent = formatTime(remainingTime);
+            
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    if(isRunning && !isPaused) {
+                        ui.runProgress.style.transition = `stroke-dashoffset ${remainingTime}s linear`;
+                        ui.runProgress.style.strokeDashoffset = '565';
+                    }
+                });
+            });
+
+            runTimer = setInterval(() => {
+                if (!isPaused) {
+                    remainingTime--;
+                    ui.runDisplay.textContent = formatTime(remainingTime);
+                    if (remainingTime <= 0) {
+                        stopRun();
+                    }
+                }
+            }, 1000);
+
         } else {
             targetCount = parseInt(document.getElementById('input-reps').value) || 1;
             currentCount = 0;
-            ui.statusText.textContent = `Running (0/${targetCount})`;
-            log(`Started ${drillName} (x${targetCount})`);
+            ui.runDisplay.textContent = targetCount;
+            ui.runProgress.style.transition = 'stroke-dashoffset 0.5s ease';
         }
-
-        isRunning = true;
-        ui.stop.disabled = false;
+        
         runIteration();
     }
 
+    function formatTime(seconds) {
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        return `${m}:${s.toString().padStart(2,'0')}`;
+    }
+
     async function runIteration() {
-        if(!isRunning) return;
-        if (runMode === 'time') {
-            if (Date.now() >= endTime) { stop(); return; }
-        } else {
+        if(!isRunning || isPaused) return;
+        
+        if (runMode === 'reps') {
+            const remaining = targetCount - currentCount;
+            ui.runDisplay.textContent = remaining;
+            
+            // Update Ring Stepwise (Inverted: 0 completed = full ring, target completed = empty ring)
+            const fractionCompleted = currentCount / targetCount;
+            const offset = 565 * fractionCompleted;
+            ui.runProgress.style.strokeDashoffset = offset;
+
             currentCount++;
-            ui.statusText.textContent = `Running (${currentCount}/${targetCount})`;
         }
+        
+        let sequence = activeDrillParams;
+        if (activeDrillRandom) {
+            sequence = [...activeDrillParams]; 
+            for (let i = sequence.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [sequence[i], sequence[j]] = [sequence[j], sequence[i]];
+            }
+        }
+
         const balls = [];
-        activeDrillParams.forEach((p, i) => {
-            // Log the exact params for each ball
-            log(`Ball ${i+1}: ${p.join(' ')}`);
+        sequence.forEach((p, i) => {
+            log(`TX Ball ${i+1}: ${p.join(' ')}`);
             balls.push(packBall(p[0], p[1], p[2], p[3], p[4], p[5]));
         });
+        
+        // Update Stats
+        appStats.balls += balls.length;
+        appStats.drills += 1;
+        localStorage.setItem('nova_stats', JSON.stringify(appStats));
+        updateStatsUI();
         
         await send(buildPacket(balls));
     }
 
     function handleDone() {
         if(!isRunning) return;
-        if (runMode === 'reps' && currentCount >= targetCount) { stop(); return; }
-        if (runMode === 'time' && Date.now() >= endTime) { stop(); return; }
-
+        
+        if (runMode === 'reps' && currentCount >= targetCount) {
+            stopRun();
+            return;
+        }
+        
         const pause = parseInt(ui.inputPause.value);
-        ui.statusText.textContent = "Pausing...";
-        pauseTimer = setTimeout(() => { if(isRunning) runIteration(); }, pause);
+        if (!isPaused) {
+             pauseTimer = setTimeout(() => { if(isRunning && !isPaused) runIteration(); }, pause);
+        }
     }
 
-    async function stop() {
+    function togglePause() {
+        if (isPaused) {
+            // Resume
+            isPaused = false;
+            ui.btnPause.textContent = "PAUSE";
+            ui.btnPause.classList.remove('pulse-anim');
+            
+            // Resume Ring Animation for Time Mode
+            if(runMode === 'time') {
+                 ui.runProgress.style.transition = `stroke-dashoffset ${remainingTime}s linear`;
+                 ui.runProgress.style.strokeDashoffset = '565';
+            }
+            
+            runIteration(); 
+        } else {
+            // Pause
+            isPaused = true;
+            ui.btnPause.textContent = "RESUME";
+            ui.btnPause.classList.add('pulse-anim');
+            clearTimeout(pauseTimer);
+            
+            // Freeze Ring
+            const computedStyle = window.getComputedStyle(ui.runProgress);
+            const currentOffset = computedStyle.getPropertyValue('stroke-dashoffset');
+            ui.runProgress.style.transition = 'none';
+            ui.runProgress.style.strokeDashoffset = currentOffset;
+            
+            send([0x80,1,0,1]); 
+        }
+    }
+
+    function stopRun() {
         isRunning = false;
+        isPaused = false;
+        clearInterval(countdownTimer);
+        clearInterval(runTimer);
         clearTimeout(pauseTimer);
-        await send([0x80,1,0,1]);
-        ui.statusText.textContent = "Ready";
+        
+        ui.runOverlay.classList.remove('open');
         document.querySelectorAll('.btn-drill').forEach(b => b.classList.remove('running'));
-        log("Stopped");
+        
+        send([0x80,1,0,1]); 
+        log("Drill Stopped");
     }
 
     function packBall(us, ls, bh, dp, freq, reps) {
