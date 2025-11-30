@@ -5,12 +5,16 @@ Supports pre-programmed and custom  drills
 
 Based on findings by https://github.com/smee/nova-s-custom-drills . Thank you!
 
-How to use
+## How to use
 - open https://olanga.github.io/nova/  and press connect button
+  
+  or
+  
 - download the index.html file and open it locally or host it on your own server
-- Webapp supports Chrome and Chromium type browsers
+  
+Webapp supports only Chrome and Chromium type browsers
 
-Features
+## Features
 - Possible to use offline
 - Possible to modify and save programmed drills
 - Long-press the drill button to open the drill editor
@@ -28,7 +32,7 @@ Features
 - Factory reset removes all custom drills, resets counters and restores default drills
 - All settings are stored in a browser's local storage
 
-Custom drills - additional info
+## Custom drills - additional info
 - Custom drills can be defined in three groups: Custom A, B and C
 - Each custom category can hold up to 20 drills
 - Every custom drill can hold up to 20 balls
