@@ -102,7 +102,7 @@
         .btn-drill .drill-icon .d-dot { background-color: #b2bec3; border-radius: 50%; transition: background-color var(--trans-speed); }
         .btn-drill.running .drill-icon .d-dot { background-color: var(--primary); }
         
-        /* RANDOM MARK */
+        /* RANDOM MARK (Top Right Red Circle R) */
         .mark-random { position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border: 2px solid var(--danger); color: var(--danger); border-radius: 50%; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; background: transparent; line-height: 1; pointer-events: none; }
 
         #status-text { text-align: center; font-size: 0.8rem; color: var(--primary); font-weight: 700; height: 20px; margin-bottom: 5px; letter-spacing: 0.5px; text-transform: uppercase; }
@@ -138,6 +138,12 @@
         .btn-modal { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
         .btn-save { background: var(--primary); color: white; }
         .btn-cancel { background: var(--card-bg); color: var(--text); }
+
+        /* Test Button Style */
+        .btn-test { width: 100%; margin-top: 8px; padding: 8px; background: transparent; border: 1px solid var(--text-light); color: var(--text-light); border-radius: 8px; font-weight: 700; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; text-transform: uppercase; }
+        .btn-test:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-dim); }
+        .btn-test:active { transform: scale(0.98); }
+        .btn-test:disabled { opacity: 0.5; cursor: not-allowed; border-color: var(--border); color: var(--text-light); background: transparent; transform: none; }
 
         /* --- RUN OVERLAY --- */
         #run-ui { display: none; flex-direction: column; align-items: center; width: 100%; justify-content: center; text-align: center; }
@@ -501,10 +507,8 @@
                         d.className = 'd-dot';
                         iconDiv.appendChild(d);
                     }
-                    
                     btn.appendChild(iconDiv);
 
-                    // Add Random Mark if applicable
                     if (currentDrills[key] && currentDrills[key].random) {
                         const rMark = document.createElement('div');
                         rMark.className = 'mark-random';
@@ -653,6 +657,9 @@
 
         const modalBody = document.getElementById('editor-body');
         modalBody.innerHTML = '';
+        
+        const isConnected = state === 'ready';
+        const disabledAttr = isConnected ? '' : 'disabled';
 
         levelData.forEach((ballParams, index) => {
             const div = document.createElement('div');
@@ -672,7 +679,8 @@
             });
             gridHtml += '</div>';
 
-            div.innerHTML = `<div class="ball-title">Ball ${index + 1}</div>` + gridHtml;
+            div.innerHTML = `<div class="ball-title">Ball ${index + 1}</div>` + gridHtml + 
+                            `<button class="btn-test" onclick="testBall(this)" ${disabledAttr}>Test Ball</button>`;
             modalBody.appendChild(div);
         });
         document.getElementById('editor-modal').classList.add('open');
@@ -709,6 +717,28 @@
         renderDrillButtons();
         closeEditor();
         showToast(`Saved Level ${selectedLevel}`);
+    }
+    
+    async function testBall(btn) {
+        if (state !== 'ready') {
+            showToast("Device not connected");
+            return;
+        }
+        
+        const container = btn.closest('.ball-editor');
+        const us = clamp(parseInt(container.querySelector('.inp-us').value), 400, 7500);
+        const ls = clamp(parseInt(container.querySelector('.inp-ls').value), 400, 7500);
+        const bh = clamp(parseInt(container.querySelector('.inp-bh').value), -50, 100);
+        const dp = clamp(parseFloat(container.querySelector('.inp-dp').value), -10, 10);
+        
+        const ballData = packBall(us, ls, bh, dp, 50, 1);
+        
+        try {
+            await send(buildPacket([ballData]));
+            showToast("Test Ball Fired");
+        } catch (e) {
+            log("Test Ball Error: " + e);
+        }
     }
 
     function handleCSVUpload(event) {
@@ -834,9 +864,7 @@
     function factoryReset() {
         if(confirm("WARNING: Delete ALL saved data (including custom drills) and return to original factory state?")) {
             localStorage.clear(); 
-            // Re-apply standard theme visually before reload
             document.documentElement.setAttribute('data-theme', 'standard');
-            // Reload page to clear memory state and re-initialize from defaults
             location.reload();
         }
     }
@@ -945,6 +973,10 @@
         ui.connect.classList.remove('connected');
         isRunning = false;
         updateDrillButtonStates(); 
+        
+        // Disable Test Buttons if editor is open
+        document.querySelectorAll('.btn-test').forEach(b => b.disabled = true);
+        
         clearTimeout(pauseTimer);
         log("Disconnected");
     }
@@ -984,6 +1016,10 @@
             ui.connect.textContent = "Disconnect";
             ui.connect.classList.add('connected');
             updateDrillButtonStates();
+            
+            // Enable Test Buttons if editor is open
+            document.querySelectorAll('.btn-test').forEach(b => b.disabled = false);
+            
             showToast("Connected");
             log("Ready");
         }
