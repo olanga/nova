@@ -18,6 +18,7 @@ Webapp supports only Chrome and Chromium type browsers
 - Possible to use offline
 - Possible to modify and save programmed drills
 - Long-press the drill button to open the drill editor
+- Shoot a single test ball from the drill editor (no save required to test) 
 - Possible to set modified settings as a new default
 - Programmed and custom drills are divided into 3 categories
 - There are 4 themes including a dark mode
@@ -38,6 +39,18 @@ Webapp supports only Chrome and Chromium type browsers
 - Every custom drill can hold up to 20 balls
 - Custom drills can be imported and exported as CSV file. See nova_custom_drills_example.csv
 - Drills in custom category are created dynamically based on the data in the CSV file
+
+## Ball parameters (as discovered by Smee)
+
+- Top: speed upper wheel 400 <=x <= 7500 rpm (step size 1)
+- Bot: speed lower wheel 400 <=x <= 7500 rpm (step size 1)
+- Hgt: ball height -50 <=x <= 100 (step size 1) ; (down - up)
+- Drp: drop point -10 <=x <= 10 (step size 0.5) ; (left - right)
+- Frq: frequency 0 <=x <= 100 (step size 10) ; (0% = 30bpm = 2 sec pause) (100% = 90bpm = 0.67 sec pause) credit: plunder
+- Rep: repetitions 1 <=x <= 200 (step size 1)
+
+Remark: there is a room for improvement in this area. Not very user friendly
+
 
 
 
