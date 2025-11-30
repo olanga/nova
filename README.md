@@ -45,7 +45,7 @@ Webapp supports only Chrome and Chromium type browsers
 - Top: speed upper wheel 400 <=x <= 7500 rpm (step size 1)
 - Bot: speed lower wheel 400 <=x <= 7500 rpm (step size 1)
 - Hgt: ball height -50 <=x <= 100 (step size 1) ; (down - up)
-- Drp: drop point -10 <=x <= 10 (step size 0.5) ; (left - right)
+- Drp: drop point -10 <=x <= 10 (step size 0.5) ; (right to left)
 - Frq: frequency 0 <=x <= 100 (step size 10) ; (0% = 30bpm = 2 sec pause) (100% = 90bpm = 0.67 sec pause) credit: plunder
 - Rep: repetitions 1 <=x <= 200 (step size 1)
 
