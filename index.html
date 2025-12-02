@@ -126,8 +126,12 @@
         .modal-close { font-size: 1.5rem; color: var(--text-light); cursor: pointer; line-height: 1; }
         .modal-body { overflow-y: auto; flex: 1; padding-right: 5px; }
         
-        .ball-editor { background: var(--bg); padding: 10px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border); }
-        .ball-title { font-size: 0.75rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; }
+        .ball-group { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 15px; overflow: hidden; background: var(--bg); }
+        .group-title { background: var(--card-bg); padding: 8px 12px; font-size: 0.75rem; font-weight: 800; color: var(--text-light); text-transform: uppercase; border-bottom: 1px solid var(--border); }
+        .option-card { padding: 10px; border-bottom: 1px solid var(--border); position: relative; }
+        .option-card:last-child { border-bottom: none; }
+        .option-label { font-size: 0.65rem; font-weight: 700; color: var(--primary); margin-bottom: 5px; text-transform: uppercase; display: block; }
+
         .editor-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
         .editor-field { display: flex; flex-direction: column; }
         .field-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
@@ -461,9 +465,31 @@
         }
         updateStatsUI();
 
+        // 1. Normalize any legacy data
+        normalizeDrills();
+
         renderDrillButtons();
         updateDrillButtonStates(); 
         log("System Ready.");
+    }
+
+    // Helper: Ensure drill data is always [ [ [opt], [opt] ], [ [opt] ] ]
+    function normalizeDrills() {
+        for (let key in currentDrills) {
+            for (let lvl = 1; lvl <= 3; lvl++) {
+                if (currentDrills[key][lvl]) {
+                    const steps = currentDrills[key][lvl];
+                    // Map each step. If step[0] is a number (it's a param list), wrap it.
+                    // If step[0] is an array, it's already an options list.
+                    currentDrills[key][lvl] = steps.map(step => {
+                        if (step.length > 0 && typeof step[0] === 'number') {
+                            return [step]; // Wrap in array -> options list of 1
+                        }
+                        return step;
+                    });
+                }
+            }
+        }
     }
 
     function setTheme(themeName) {
@@ -507,8 +533,10 @@
                         d.className = 'd-dot';
                         iconDiv.appendChild(d);
                     }
+                    
                     btn.appendChild(iconDiv);
 
+                    // Add Random Mark if applicable
                     if (currentDrills[key] && currentDrills[key].random) {
                         const rMark = document.createElement('div');
                         rMark.className = 'mark-random';
@@ -648,7 +676,7 @@
         { label: 'Rep', class: 'inp-rp', min: 1, max: 200, step: 1, idx: 5 }
     ];
 
-    function openEditor(key) {
+   function openEditor(key) {
         editingDrillKey = key;
         const levelData = currentDrills[key][selectedLevel];
         
@@ -661,27 +689,40 @@
         const isConnected = state === 'ready';
         const disabledAttr = isConnected ? '' : 'disabled';
 
-        levelData.forEach((ballParams, index) => {
-            const div = document.createElement('div');
-            div.className = 'ball-editor';
+        // levelData is now [ [opt1, opt2], [opt1], ... ]
+        levelData.forEach((stepOptions, stepIndex) => {
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'ball-group';
+            groupDiv.innerHTML = `<div class="group-title">Ball ${stepIndex + 1}</div>`;
             
-            let gridHtml = '<div class="editor-grid">';
-            RANGE_CONFIG.forEach(cfg => {
-                gridHtml += `
-                    <div class="editor-field">
-                        <div class="field-header">
-                            <label>${cfg.label}</label>
-                            <span class="range-hint">${cfg.min}-${cfg.max}</span>
+            stepOptions.forEach((ballParams, optIndex) => {
+                const optDiv = document.createElement('div');
+                optDiv.className = 'option-card';
+                
+                // Add label if there are multiple options
+                let labelHtml = stepOptions.length > 1 ? `<span class="option-label">Option ${optIndex + 1}</span>` : '';
+                
+                let gridHtml = '<div class="editor-grid">';
+                RANGE_CONFIG.forEach(cfg => {
+                    gridHtml += `
+                        <div class="editor-field">
+                            <div class="field-header">
+                                <label>${cfg.label}</label>
+                                <span class="range-hint">${cfg.min}-${cfg.max}</span>
+                            </div>
+                            <input type="number" class="${cfg.class}" value="${ballParams[cfg.idx]}" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}">
                         </div>
-                        <input type="number" class="${cfg.class}" value="${ballParams[cfg.idx]}" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}">
-                    </div>
-                `;
+                    `;
+                });
+                gridHtml += '</div>';
+                
+                // CHANGED: Button text updated to "Test Ball"
+                optDiv.innerHTML = labelHtml + gridHtml + 
+                                   `<button class="btn-test" onclick="testBall(this)" ${disabledAttr}>Test Ball</button>`;
+                groupDiv.appendChild(optDiv);
             });
-            gridHtml += '</div>';
-
-            div.innerHTML = `<div class="ball-title">Ball ${index + 1}</div>` + gridHtml + 
-                            `<button class="btn-test" onclick="testBall(this)" ${disabledAttr}>Test Ball</button>`;
-            modalBody.appendChild(div);
+            
+            modalBody.appendChild(groupDiv);
         });
         document.getElementById('editor-modal').classList.add('open');
     }
@@ -699,18 +740,27 @@
         currentDrills[editingDrillKey].random = document.getElementById('chk-drill-random').checked;
         
         const modalBody = document.getElementById('editor-body');
-        const ballDivs = modalBody.getElementsByClassName('ball-editor');
+        const groups = modalBody.getElementsByClassName('ball-group');
         const newSequence = [];
 
-        for (let div of ballDivs) {
-            const us = clamp(parseInt(div.querySelector('.inp-us').value), 400, 7500);
-            const ls = clamp(parseInt(div.querySelector('.inp-ls').value), 400, 7500);
-            const bh = clamp(parseInt(div.querySelector('.inp-bh').value), -50, 100);
-            const dp = clamp(parseFloat(div.querySelector('.inp-dp').value), -10, 10);
-            const fr = clamp(parseInt(div.querySelector('.inp-fr').value), 0, 100);
-            const rp = clamp(parseInt(div.querySelector('.inp-rp').value), 1, 200);
-            newSequence.push([us, ls, bh, dp, fr, rp]);
+        // Iterate Groups (Steps)
+        for (let group of groups) {
+            const stepOptions = [];
+            const cards = group.getElementsByClassName('option-card');
+            
+            // Iterate Options inside Step
+            for (let card of cards) {
+                const us = clamp(parseInt(card.querySelector('.inp-us').value), 400, 7500);
+                const ls = clamp(parseInt(card.querySelector('.inp-ls').value), 400, 7500);
+                const bh = clamp(parseInt(card.querySelector('.inp-bh').value), -50, 100);
+                const dp = clamp(parseFloat(card.querySelector('.inp-dp').value), -10, 10);
+                const fr = clamp(parseInt(card.querySelector('.inp-fr').value), 0, 100);
+                const rp = clamp(parseInt(card.querySelector('.inp-rp').value), 1, 200);
+                stepOptions.push([us, ls, bh, dp, fr, rp]);
+            }
+            newSequence.push(stepOptions);
         }
+        
         currentDrills[editingDrillKey][selectedLevel] = newSequence;
         localStorage.setItem('custom_drills', JSON.stringify(currentDrills));
         
@@ -725,7 +775,7 @@
             return;
         }
         
-        const container = btn.closest('.ball-editor');
+        const container = btn.closest('.option-card');
         const us = clamp(parseInt(container.querySelector('.inp-us').value), 400, 7500);
         const ls = clamp(parseInt(container.querySelector('.inp-ls').value), 400, 7500);
         const bh = clamp(parseInt(container.querySelector('.inp-bh').value), -50, 100);
@@ -753,8 +803,12 @@
     function parseCSV(text) {
         const lines = text.split(/\r?\n/);
         const newCustomData = { "custom-a": [], "custom-b": [], "custom-c": [] };
-        const newDrillParams = {};
+        
+        // Temporary holding structure: drillKey -> { 1: [], 2: [], 3: [] }
+        // We need a more complex builder to handle grouping by ball
+        const builder = {}; 
 
+        // Clear existing custom drills from currentDrills
         for (let cat in userCustomDrills) {
             userCustomDrills[cat].forEach(drill => {
                 if (currentDrills[drill.key]) delete currentDrills[drill.key];
@@ -773,60 +827,86 @@
             if (!line.trim()) return;
             const sep = line.includes(';') ? ';' : ',';
             const parts = line.split(sep);
-            if (parts.length < 8) return;
-            if (isNaN(parseInt(parts[2]))) return;
+            
+            // Check headers or empty lines
+            if (parts.length < 9 || isNaN(parseFloat(parts[1]))) return;
 
             const catCode = parts[0].trim();
-            const name = parts[1].trim().substring(0, 32);
+            const ballNum = parseFloat(parts[1]); // 1.0, 2.0 etc
+            const name = parts[2].trim().substring(0, 32);
             const category = getCat(catCode);
 
             if (!category) return;
 
-            const ball = [
-                parseInt(parts[2]), parseInt(parts[3]), parseInt(parts[4]),
-                parseFloat(parts[5]), parseInt(parts[6]), parseInt(parts[7])
+            const params = [
+                parseInt(parts[3]), parseInt(parts[4]), parseInt(parts[5]),
+                parseFloat(parts[6]), parseInt(parts[7]), parseInt(parts[8])
             ];
 
             const key = `cust_${catCode}_${name.replace(/\s+/g, '_')}`;
 
-            if (!newDrillParams[key]) {
+            // Initialize if new drill
+            if (!builder[key]) {
+                // Add to metadata list if not present
                 let exists = newCustomData[category].find(d => d.key === key);
                 if (!exists) {
                     if (newCustomData[category].length >= 20) return;
                     newCustomData[category].push({ name: name, key: key });
-                    newDrillParams[key] = { 1: [], 2: [], 3: [] };
                 }
+                // Initialize levels map
+                builder[key] = { 1: {}, 2: {}, 3: {} }; 
+                // We use object to map ballNum -> [options] temporarily
             }
 
-            if (newDrillParams[key][1].length < 20) {
-                newDrillParams[key][1].push(ball);
-                newDrillParams[key][2].push(ball);
-                newDrillParams[key][3].push(ball);
+            // Add params to the specific ball number bucket for all levels (simple logic for now)
+            // Note: The CSV example provided doesn't distinguish levels, so we apply to all 3.
+            for(let lvl=1; lvl<=3; lvl++) {
+                if (!builder[key][lvl][ballNum]) {
+                    builder[key][lvl][ballNum] = [];
+                }
+                builder[key][lvl][ballNum].push(params);
             }
         });
 
+        // Convert builder structure to final array structure [ [opt, opt], [opt] ]
+        for (let key in builder) {
+            currentDrills[key] = {};
+            for(let lvl=1; lvl<=3; lvl++) {
+                // Sort keys (Ball 1, Ball 2...)
+                const sortedBalls = Object.keys(builder[key][lvl]).sort((a,b) => parseFloat(a)-parseFloat(b));
+                currentDrills[key][lvl] = sortedBalls.map(bKey => builder[key][lvl][bKey]);
+            }
+        }
+
         userCustomDrills = newCustomData;
-        Object.assign(currentDrills, newDrillParams);
+        
         localStorage.setItem('custom_data', JSON.stringify(userCustomDrills));
         localStorage.setItem('custom_drills', JSON.stringify(currentDrills));
+        
         renderDrillButtons();
         ui.themeMenu.classList.remove('open');
         showToast("Imported");
     }
 
     function exportCustomDrills() {
-        let csvContent = "Set,Name,Top,Bottom,Height,Drop,Freq,Reps\n";
+        // Updated export logic to handle nested options structure
+        let csvContent = "Set;Ball;Name;Top;Bottom;Height;Drop;Freq;Reps\n";
         const cats = { 'custom-a': 'A', 'custom-b': 'B', 'custom-c': 'C' };
+        
         for (let catKey in cats) {
             const setLabel = cats[catKey];
             const drillList = userCustomDrills[catKey];
             if(drillList && drillList.length > 0) {
                 drillList.forEach(drill => {
+                    // Export Level 1 data as the canonical source
                     const sequence = currentDrills[drill.key] ? currentDrills[drill.key][1] : null; 
                     if (sequence) {
-                        sequence.forEach(ball => {
-                             const row = [setLabel, drill.name, ball[0], ball[1], ball[2], ball[3], ball[4], ball[5]].join(",");
-                             csvContent += row + "\n";
+                        sequence.forEach((stepOptions, stepIndex) => {
+                             const ballNum = stepIndex + 1;
+                             stepOptions.forEach(ball => {
+                                 const row = [setLabel, ballNum, drill.name, ball[0], ball[1], ball[2], ball[3], ball[4], ball[5]].join(";");
+                                 csvContent += row + "\n";
+                             });
                         });
                     }
                 });
@@ -854,10 +934,15 @@
     function resetToDefault() {
         const hasUserDefault = localStorage.getItem('user_defaults');
         if(confirm(hasUserDefault ? "Restore saved defaults?" : "Restore factory settings?")) {
+            // Reload defaults
             currentDrills = hasUserDefault ? JSON.parse(hasUserDefault) : JSON.parse(JSON.stringify(DEFAULT_DRILLS));
+            // IMPORTANT: Normalize them immediately
+            normalizeDrills();
             localStorage.setItem('custom_drills', JSON.stringify(currentDrills));
             toggleMenu();
             showToast("Restored");
+            // Re-render to show restored state
+            renderDrillButtons();
         }
     }
 
@@ -1139,7 +1224,7 @@
             currentCount++;
         }
         
-        let sequence = activeDrillParams;
+        let sequence = activeDrillParams; // This is an array of steps (each step is an array of options)
         if (activeDrillRandom) {
             sequence = [...activeDrillParams]; 
             for (let i = sequence.length - 1; i > 0; i--) {
@@ -1149,9 +1234,11 @@
         }
 
         const balls = [];
-        sequence.forEach((p, i) => {
-            log(`TX Ball ${i+1}: ${p.join(' ')}`);
-            balls.push(packBall(p[0], p[1], p[2], p[3], p[4], p[5]));
+        sequence.forEach((stepOptions, i) => {
+            // Pick a random option from the step
+            const chosenOption = stepOptions[Math.floor(Math.random() * stepOptions.length)];
+            log(`TX Ball ${i+1}: ${chosenOption.join(' ')}`);
+            balls.push(packBall(chosenOption[0], chosenOption[1], chosenOption[2], chosenOption[3], chosenOption[4], chosenOption[5]));
         });
         
         // Update Stats
