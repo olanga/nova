@@ -1,9 +1,10 @@
 # Nova S Pro Drill controll
 
 Webapp allowing use of Nova S Pro without the original app. Original app requires internet access to venor's servers.
-Supports pre-programmed and custom  drills
+Supports pre-programmed and custom  drills.
+Based on findings by https://github.com/smee/nova-s-custom-drills. Thank you!
 
-Based on findings by https://github.com/smee/nova-s-custom-drills . Thank you!
+![Alt text](https://github.com/olanga/nova/blob/main/NovaDrillControl.png?raw=true "Nova  Drill Control")
 
 ## How to use
 - open https://olanga.github.io/nova/  and press connect button
