@@ -1,6 +1,6 @@
 # Nova S Pro Drill controll
 
-Webapp allowing use of Nova S Pro without the original app. Original app requires internet access to venor's servers.
+Webclient allowing use of Nova S Pro without the original app. Original app requires internet access to venor's servers.
 Supports pre-programmed and custom  drills.
 Based on findings by https://github.com/smee/nova-s-custom-drills. Thank you!
 
@@ -13,7 +13,7 @@ Based on findings by https://github.com/smee/nova-s-custom-drills. Thank you!
   
 - download the index.html file and open it locally or host it on your own server
   
-Webapp supports only Chrome and Chromium type browsers
+Webclient supports only Chrome and Chromium type browsers
 
 ## Features
 - Possible to use offline
