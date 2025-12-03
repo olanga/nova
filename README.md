@@ -21,7 +21,7 @@ Webapp supports only Chrome and Chromium type browsers
 - Long-press the drill button to open the drill editor
 - Shoot a single test ball from the drill editor (no save required to test) 
 - Possible to set modified settings as a new default
-- Programmed and custom drills are divided into 3 categories
+- Programmed and custom drills are divided into 3 categories. Source smee: [Google doc](https://docs.google.com/spreadsheets/d/e/2PACX-1vRweUyHQsuiE_Baz1HKoCv7o6rRpyXtv9ERMkRDXxvcSbOb-dBnu6BW4vsHs4eCEjQq12_bZNPkge4-/pubhtml?gid=0&single=true)
 - There are 4 themes including a dark mode
 - Optional console log to trace events
 - Length of drill can be set by time or number of repetitions
