@@ -5,13 +5,14 @@ Supports pre-programmed and custom  drills.
 Based on findings by https://github.com/smee/nova-s-custom-drills. Thank you!
 
 ![Alt text](https://github.com/olanga/nova/blob/main/NovaDrillControl.png?raw=true "Nova  Drill Control")
+![Alt text](https://github.com/olanga/nova/blob/main/DrillEdit.png?raw=true "Nova  Drill Control")
 
 ## How to use
 - open https://olanga.github.io/nova/  and press connect button
   
   or
   
-- download the index.html file and open it locally or host it on your own server
+- download all files and host it on your own server (local server: python3 -m http.server)
   
 Webclient supports only Chrome and Chromium type browsers
 
