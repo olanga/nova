@@ -34,7 +34,7 @@ Webclient supports only Chrome and Chromium type browsers
 - Ball sequence within a drill can be randomized in the drill editor
 - Randomized drills are marked with a badge ‘R’
 - Drill can be paused or stopped anytime
-- Each ball in a custom drill can have many options (pseudorandomness)
+- Each ball in a custom drill can have many options (pseudo randomness))
 - Accumulated counters (eg. Balls: 65 | Drills: 38)
 - Possible to factory reset settings
 - Factory reset removes all custom drills, resets counters and restores default drills
@@ -57,7 +57,7 @@ Webclient supports only Chrome and Chromium type browsers
 
 ## Ball editor
 - Add and remove balls in a sequence
-- Add and remove optional balls (pseudorandomness)
+- Add and remove optional balls (pseudo randomness))
 - Rename drill's name
 - Change sequence of the balls
 
