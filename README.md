@@ -21,7 +21,7 @@ Webclient supports only Chrome and Chromium type browsers
 ## Features
 - Possible to use offline
 - Possible to modify and save programmed drills
-- Drill editor
+- Ball editor
 - Long-press the drill button to open the drill editor
 - Shoot a single test ball from the drill editor (no save required to test)
 - Test combo in drill editor based on current settings
@@ -55,7 +55,7 @@ Webclient supports only Chrome and Chromium type browsers
 
     `A;1;push 1;1000;1000;40;6;0;1`
 
-## Drill editor
+## Ball editor
 - Add and remove balls in a sequence
 - Add and remove optional balls (pseudorandomness)
 - Rename drill's name
