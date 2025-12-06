@@ -4,7 +4,6 @@ Webclient allowing use of Nova S Pro without the original app. Original app requ
 Supports pre-programmed and custom  drills.
 Based on findings by https://github.com/smee/nova-s-custom-drills. Thank you!
 
-![Alt text](https://github.com/olanga/nova/blob/main/NovaDrillControl.png?raw=true "Nova  Drill Control")
 ![Alt text](https://github.com/olanga/nova/blob/main/DrillEdit.png?raw=true "Nova  Drill Control")
 
 ## How to use
