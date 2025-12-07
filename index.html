@@ -107,7 +107,7 @@
     <div class="footer-row">
         <div id="stats-display">Balls: 0 | Drills: 0</div>
         
-        <div style="font-size: 0.7rem; opacity: 0.7; font-weight: 400;">Version 1.1.2</div>
+        <div style="font-size: 0.7rem; opacity: 0.7; font-weight: 400;">Version 1.2</div>
 
         <div class="checkbox-wrapper">
             <input type="checkbox" id="chk-console"> 
@@ -134,16 +134,12 @@
         <div id="editor-body" class="modal-body"></div>
         
         <div class="modal-footer">
-            <div class="footer-row-top">
-                <button class="btn-modal btn-cancel" onclick="closeEditor()">Cancel</button>
-                <button class="btn-modal btn-save" onclick="saveDrillChanges()">Save</button>
-                <button class="btn-modal btn-save-as" onclick="window.handleSaveAsDrill()">Save As</button>
-            </div>
-            
-            <div class="footer-row-bottom">
-                <button class="btn-modal btn-delete-drill" onclick="window.handleDeleteDrill()">Delete</button>
-                <button class="btn-modal btn-test-combo" onclick="window.handleTestCombo()">Test drill</button>
-            </div>
+            <button class="btn-modal btn-delete-drill" onclick="window.handleDeleteDrill()" title="Delete">
+                <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14v13H5V9zm3-5h6v2H8V4zm9 5H7v11h10V9z"/></svg>
+            </button>
+            <button class="btn-modal btn-test-combo" onclick="window.handleTestCombo()">Test drill</button>
+            <button class="btn-modal btn-save-as" onclick="window.handleSaveAsDrill()">Save As</button>
+            <button class="btn-modal btn-save" onclick="saveDrillChanges()">Save</button>
         </div>
     </div>
 </div>

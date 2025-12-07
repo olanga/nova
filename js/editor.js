@@ -84,14 +84,23 @@ function handleRename(titleEl) {
     if (!editingDrillKey || !editingDrillKey.startsWith('cust_')) return;
 
     const currentDisplayName = titleEl.getAttribute('data-name') || titleEl.textContent.replace(' ✎', '');
-    const newName = prompt("Rename Drill (Max 32 chars)\nAllowed: a-z A-Z 0-9 . - # [ ] > < + ) ( Space", currentDisplayName);
+    
+    // UPDATED: Text now says Max 25 chars
+    const newName = prompt("Rename Drill (Max 25 chars)\nAllowed: a-z A-Z 0-9 . - # [ ] > < + ) ( Space", currentDisplayName);
 
     if (!newName || newName === currentDisplayName) return;
 
-    if (newName.length > 32) { showToast("Name too long (Max 32)"); return; }
+    // Validation Limit 25
+    if (newName.length > 25) { 
+        showToast("Name too long (Max 25)");
+        return;
+    }
     
     const validRegex = /^[a-zA-Z0-9.\-#\[\]><\+\)\( ]+$/;
-    if (!validRegex.test(newName)) { showToast("Invalid characters"); return; }
+    if (!validRegex.test(newName)) {
+        showToast("Invalid characters");
+        return;
+    }
 
     const parts = editingDrillKey.split('_'); 
     if (parts.length < 3) return;
@@ -296,41 +305,33 @@ window.handleDeleteBall = (stepIdx, optIdx) => {
 
 // --- UPDATED SAVE AS LOGIC ---
 window.handleSaveAsDrill = () => {
-    const newName = prompt("Save New Drill As:");
+    // UPDATED: Text now says Max 25 chars
+    const newName = prompt("Save New Drill As (Max 25 chars):");
     if(!newName) return;
 
-    if (newName.length > 32) { showToast("Name too long"); return; }
+    // Validation Limit 25
+    if (newName.length > 25) { showToast("Name too long (Max 25)"); return; }
     if (!/^[a-zA-Z0-9.\-#\[\]><\+\)\( ]+$/.test(newName)) { showToast("Invalid characters"); return; }
 
     let targetCat = null;
 
-    // 1. Determine Target Category
-    // If the drill we are editing is ALREADY a custom drill (e.g., cust_A_...),
-    // we want to save into that same category.
     if (editingDrillKey.startsWith('cust_')) {
         const parts = editingDrillKey.split('_');
         if (parts.length >= 2) {
-            const catChar = parts[1].toLowerCase(); // 'a', 'b', or 'c'
+            const catChar = parts[1].toLowerCase(); 
             targetCat = `custom-${catChar}`;
         }
     }
 
-    // 2. Fallback or Validation
-    // If it wasn't a custom drill (it was a preset), OR if extraction failed,
-    // find the first available category.
     if (!targetCat) {
         if (userCustomDrills['custom-a'].length < 20) targetCat = 'custom-a';
         else if (userCustomDrills['custom-b'].length < 20) targetCat = 'custom-b';
         else if (userCustomDrills['custom-c'].length < 20) targetCat = 'custom-c';
         else { showToast("All custom banks full!"); return; }
     } else {
-        // We have a specific target (e.g. Custom B). Check if it's full.
-        // (Note: If we are effectively renaming/saving-as, we are adding 1. 
-        // We only check limit if we are adding a NEW key)
         const catChar = targetCat.split('-')[1].toUpperCase(); 
         const potentialKey = `cust_${catChar}_${newName.replace(/\s+/g, '_')}`;
         
-        // If the key doesn't exist yet, we are adding new. Check limit.
         if (!currentDrills[potentialKey] && userCustomDrills[targetCat].length >= 20) {
              showToast(`Category ${catChar} is full!`);
              return;

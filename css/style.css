@@ -552,7 +552,7 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     overflow: hidden; 
 }
 
-/* UPDATED MODAL HEADER */
+/* UPDATED MODAL HEADER - Includes Truncation Support */
 .modal-header { 
     display: flex; 
     align-items: center; 
@@ -564,7 +564,7 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
 }
 
 .modal-title { 
-    font-weight: 700; 
+    font-weight: normal; /* Changed from 700 to normal */
     color: var(--text); 
     font-size: 1.1rem; 
     white-space: nowrap; 
@@ -739,70 +739,75 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     min-width: 0; 
 }
 
-/* --- UPDATED MODAL FOOTER GRID --- */
+/* --- UPDATED MODAL FOOTER (Single Row) --- */
 .modal-footer { 
     margin-top: 15px; 
-    display: grid;
-    grid-template-rows: auto auto; /* Two rows */
-    gap: 10px; 
-}
-
-/* Row 1 Container: 3 buttons */
-.footer-row-top {
-    grid-row: 1;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-}
-
-/* Row 2 Container: 2 buttons */
-.footer-row-bottom {
-    grid-row: 2;
-    display: grid;
-    grid-template-columns: 1fr 2fr; /* Delete is smaller, Test is wider */
-    gap: 10px;
+    display: flex; 
+    gap: 8px; 
+    align-items: stretch;
 }
 
 /* Button Base Styles */
 .btn-modal { 
-    padding: 12px; 
+    padding: 12px 8px; 
     border-radius: 10px; 
     border: none; 
     font-weight: 600; 
     cursor: pointer; 
-    font-size: 0.85rem; 
+    font-size: 0.8rem; 
     text-transform: uppercase;
     display: flex;
     align-items: center;
     justify-content: center;
+    white-space: nowrap; 
+    transition: transform 0.1s, opacity 0.2s;
 }
+.btn-modal:active { transform: scale(0.96); }
 
-/* Specific Button Colors */
-.btn-cancel { background: var(--card-bg); color: var(--text); }
-.btn-save { background: var(--primary); color: white; }
-
-/* THEME ADAPTIVE SAVE AS BUTTON */
-.btn-save-as { 
-    background: var(--text); 
-    color: var(--bg); 
-}
-
+/* 1. Delete Button (Icon Only) */
 .btn-delete-drill { 
     background: var(--danger); 
     color: white; 
+    width: 44px; 
+    flex: 0 0 44px; /* Fixed width */
+    padding: 0;
 }
+.btn-delete-drill svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+.btn-delete-drill:disabled { opacity: 0.3; cursor: not-allowed; }
 
-/* Ghost Style Test Button */
+/* 2. Test Drill (Ghost Style - Primary Outline) */
 .btn-test-combo { 
     background: transparent;
     border: 2px solid var(--primary); 
     color: var(--primary); 
+    flex: 1.2; 
 }
 [data-theme="night"] .btn-test-combo { border-color: var(--primary); color: var(--primary); }
 .btn-test-combo:hover { background: var(--primary-dim); }
 
-/* Disabled state */
-.btn-delete-drill:disabled { opacity: 0.3; cursor: not-allowed; }
+/* 3. Save As (Ghost Style - Text Outline) */
+.btn-save-as { 
+    background: transparent;
+    border: 2px solid var(--text);
+    color: var(--text); 
+    flex: 1.2;
+}
+.btn-save-as:hover { background: rgba(0,0,0,0.05); }
+[data-theme="night"] .btn-save-as:hover { background: rgba(255,255,255,0.1); }
+
+
+/* 4. Save (Ghost Style - Primary Outline) */
+.btn-save { 
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary); 
+    flex: 1.5; 
+}
+.btn-save:hover { background: var(--primary-dim); }
 
 /* --- EDITOR ACTION BUTTONS (Inner Cards) --- */
 .card-actions { 
