@@ -70,7 +70,9 @@ Webclient supports only Chrome and Chromium type browsers
 - Frq: frequency 0 <=x <= 100 (step size 10) ; (0% = 30bpm = 2 sec pause) (100% = 90bpm = 0.67 sec pause) credit: plunder
 - Rep: repetitions 1 <=x <= 200 (step size 1)
 
-Remark: there is a room for improvement in this area. Not very user friendly
+
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E21PUFEQ)
 
 
 
