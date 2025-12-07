@@ -107,7 +107,7 @@
     <div class="footer-row">
         <div id="stats-display">Balls: 0 | Drills: 0</div>
         
-        <div style="font-size: 0.7rem; opacity: 0.7; font-weight: 400;">Version 1.1.1</div>
+        <div style="font-size: 0.7rem; opacity: 0.7; font-weight: 400;">Version 1.1.2</div>
 
         <div class="checkbox-wrapper">
             <input type="checkbox" id="chk-console"> 
@@ -124,17 +124,26 @@
     <div class="modal">
         <div class="modal-header">
             <div class="modal-title">Edit Drill</div>
-            <div style="display:flex; align-items:center; gap:5px; margin-right:20px;">
+            <label class="random-toggle-container">
+                <span class="toggle-label">Random</span>
                 <input type="checkbox" id="chk-drill-random">
-                <label for="chk-drill-random" style="font-size:0.75rem; font-weight:600; color:var(--text-light);">Random</label>
-            </div>
+                <div class="toggle-switch"></div>
+            </label>
             <div class="modal-close" onclick="closeEditor()">×</div>
         </div>
         <div id="editor-body" class="modal-body"></div>
+        
         <div class="modal-footer">
-            <button class="btn-modal btn-cancel" onclick="closeEditor()">Cancel</button>
-            <button class="btn-modal btn-test-combo" onclick="window.handleTestCombo()">Test Combo</button>
-            <button class="btn-modal btn-save" onclick="saveDrillChanges()">Save</button>
+            <div class="footer-row-top">
+                <button class="btn-modal btn-cancel" onclick="closeEditor()">Cancel</button>
+                <button class="btn-modal btn-save" onclick="saveDrillChanges()">Save</button>
+                <button class="btn-modal btn-save-as" onclick="window.handleSaveAsDrill()">Save As</button>
+            </div>
+            
+            <div class="footer-row-bottom">
+                <button class="btn-modal btn-delete-drill" onclick="window.handleDeleteDrill()">Delete</button>
+                <button class="btn-modal btn-test-combo" onclick="window.handleTestCombo()">Test drill</button>
+            </div>
         </div>
     </div>
 </div>

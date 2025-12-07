@@ -251,6 +251,7 @@ input[type="number"] {
     background: transparent; 
 }
 input[type="number"]:focus { outline: none; }
+input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--text-light); }
 
 .mode-switch { 
     display: flex; 
@@ -551,7 +552,7 @@ input[type="number"]:focus { outline: none; }
     overflow: hidden; 
 }
 
-/* UPDATED MODAL HEADER - Includes Truncation Support */
+/* UPDATED MODAL HEADER */
 .modal-header { 
     display: flex; 
     align-items: center; 
@@ -588,9 +589,15 @@ input[type="number"]:focus { outline: none; }
     margin-bottom: 15px; 
     overflow: hidden; 
     background: var(--bg); 
+    transition: opacity 0.3s;
 }
 
-/* UPDATED GROUP TITLE - Includes "Add Option" button support */
+.ball-group.inactive {
+    opacity: 0.5;
+    border-style: dashed;
+}
+
+/* UPDATED GROUP TITLE */
 .group-title { 
     background: var(--card-bg); 
     padding: 8px 12px; 
@@ -604,10 +611,74 @@ input[type="number"]:focus { outline: none; }
     align-items: center;
 }
 
-/* NEW: Round Plus Button for Adding Options */
+/* Toggle Switch for Active/Inactive Ball */
+.ball-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.toggle-label {
+    font-size: 0.65rem; 
+    font-weight: 700; 
+    color: var(--text-light);
+}
+
+.toggle-switch {
+    position: relative;
+    width: 30px;
+    height: 16px;
+    background: #b2bec3;
+    border-radius: 15px;
+    transition: background 0.2s;
+}
+
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+
+/* Active State for Ball Toggle (Class-based) */
+.ball-toggle.active .toggle-switch {
+    background: var(--primary);
+}
+
+.ball-toggle.active .toggle-switch::after {
+    transform: translateX(14px);
+}
+
+/* --- RANDOM TOGGLE (Header) --- */
+.random-toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.random-toggle-container input {
+    display: none;
+}
+
+/* Active State for Random Toggle (Input-based) */
+.random-toggle-container input:checked + .toggle-switch {
+    background: var(--primary);
+}
+.random-toggle-container input:checked + .toggle-switch::after {
+    transform: translateX(14px);
+}
+
+/* Round Plus Button */
 .btn-add-opt {
     background: transparent;
-    border: 1px solid var(--primary);
+    border: 1px solid var(--primary); 
     color: var(--primary);
     width: 22px;
     height: 22px;
@@ -668,30 +739,72 @@ input[type="number"]:focus { outline: none; }
     min-width: 0; 
 }
 
-/* Main Modal Footer Buttons (Save/Cancel) */
-.modal-footer { margin-top: 15px; display: flex; gap: 10px; }
-.btn-modal { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
-.btn-save { background: var(--primary); color: white; }
-.btn-cancel { background: var(--card-bg); color: var(--text); }
+/* --- UPDATED MODAL FOOTER GRID --- */
+.modal-footer { 
+    margin-top: 15px; 
+    display: grid;
+    grid-template-rows: auto auto; /* Two rows */
+    gap: 10px; 
+}
 
-/* --- UPDATED TEST COMBO BUTTON (GHOST STYLE) --- */
+/* Row 1 Container: 3 buttons */
+.footer-row-top {
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+/* Row 2 Container: 2 buttons */
+.footer-row-bottom {
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Delete is smaller, Test is wider */
+    gap: 10px;
+}
+
+/* Button Base Styles */
+.btn-modal { 
+    padding: 12px; 
+    border-radius: 10px; 
+    border: none; 
+    font-weight: 600; 
+    cursor: pointer; 
+    font-size: 0.85rem; 
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Specific Button Colors */
+.btn-cancel { background: var(--card-bg); color: var(--text); }
+.btn-save { background: var(--primary); color: white; }
+
+/* THEME ADAPTIVE SAVE AS BUTTON */
+.btn-save-as { 
+    background: var(--text); 
+    color: var(--bg); 
+}
+
+.btn-delete-drill { 
+    background: var(--danger); 
+    color: white; 
+}
+
+/* Ghost Style Test Button */
 .btn-test-combo { 
     background: transparent;
     border: 2px solid var(--primary); 
     color: var(--primary); 
-    flex: 1.2; 
 }
-
-/* Slight variations for other themes to ensure visibility */
 [data-theme="night"] .btn-test-combo { border-color: var(--primary); color: var(--primary); }
+.btn-test-combo:hover { background: var(--primary-dim); }
 
-.btn-test-combo:hover { 
-    background: var(--primary-dim); 
-    transform: scale(1.02); 
-    transition: all 0.2s; 
-}
+/* Disabled state */
+.btn-delete-drill:disabled { opacity: 0.3; cursor: not-allowed; }
 
-/* --- EDITOR ACTION BUTTONS (Test, Clone, Delete) --- */
+/* --- EDITOR ACTION BUTTONS (Inner Cards) --- */
 .card-actions { 
     display: flex; 
     gap: 8px; 
@@ -716,11 +829,7 @@ input[type="number"]:focus { outline: none; }
     color: white; 
 }
 
-.btn-act-test { 
-    background: var(--card-bg); 
-    color: var(--text); 
-    border: 1px solid var(--border); 
-}
+.btn-act-test { background: var(--card-bg); color: var(--text); border: 1px solid var(--border); }
 .btn-act-test:hover { background: var(--text-light); color: white; }
 .btn-act-test:disabled { opacity: 0.5; cursor: not-allowed; }
 

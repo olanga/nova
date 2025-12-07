@@ -27,13 +27,30 @@ const ui = {
 };
 
 export function startDrillSequence(drillName) {
-    const params = currentDrills[drillName] ? currentDrills[drillName][selectedLevel] : null;
-    if(!params) {
+    const rawParams = currentDrills[drillName] ? currentDrills[drillName][selectedLevel] : null;
+    if(!rawParams) {
          log("Drill data not found: " + drillName);
          return;
     }
+
+    // --- FILTER INACTIVE STEPS ---
+    // A step is active if index 6 is 1 or undefined (defaults to active).
+    const executableSteps = rawParams.filter(step => {
+        // We check the first option of the step (index 0) for the active flag (index 6)
+        const isActive = step[0][6]; 
+        return isActive === undefined || isActive === 1;
+    });
+
+    // --- STOP IF EMPTY ---
+    if (executableSteps.length === 0) {
+        showToast("no active balls to play");
+        // Ensure visual state is cleared if needed
+        document.querySelectorAll('.btn-drill').forEach(b => b.classList.remove('running'));
+        return;
+    }
     
-    activeDrillParams = params;
+    // Proceed with only the active steps
+    activeDrillParams = executableSteps;
     activeDrillRandom = !!currentDrills[drillName].random;
     
     ui.overlay.classList.add('open');
@@ -118,7 +135,7 @@ async function runIteration() {
         currentCount++;
     }
 
-    // Sequence Building
+    // Sequence Building (using filtered activeDrillParams)
     let sequence = activeDrillParams; 
     if (activeDrillRandom) {
         // Simple Fisher-Yates shuffle for randomization
@@ -133,7 +150,7 @@ async function runIteration() {
     const balls = [];
     sequence.forEach((stepOptions, i) => {
         const chosenOption = stepOptions[Math.floor(Math.random() * stepOptions.length)];
-        // chosenOption structure: [top, bot, hgt, drp, frq, rep]
+        // chosenOption structure: [top, bot, hgt, drp, frq, rep, active]
         log(`TX Ball ${i+1}: ${chosenOption.join(' ')}`);
         balls.push(packBall(...chosenOption));
     });
