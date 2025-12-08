@@ -8,7 +8,11 @@ import {
     saveAsDefault, 
     resetToDefault, 
     factoryReset,
-    appStats 
+    appStats,
+    userCustomDrills,
+    currentDrills,
+    saveDrillsToStorage,
+    selectedLevel 
 } from './state.js';
 
 import { 
@@ -30,10 +34,8 @@ import {
     toggleMenu, 
     switchTab, 
     updateStatsUI
-    // showToast was removed from here because it's not exported by ui.js
 } from './ui.js';
 
-// --- NEW IMPORT LINE ---
 import { showToast } from './utils.js';
 
 import { 
@@ -42,19 +44,15 @@ import {
     togglePause 
 } from './runner.js';
 
+import { downloadDrill } from './cloud.js';
+
 // --- Initialization ---
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Initialize State (Load localStorage)
     initData();
-
-    // 2. Initialize UI (Render buttons, apply theme, update stats)
     renderDrillButtons();
     updateStatsUI();
-    
-    // 3. Attach Static Event Listeners
     setupEventListeners();
-
     console.log("Nova Drill Control: Modules Loaded");
 });
 
@@ -192,4 +190,77 @@ window.handleDrillClick = (key, btn) => {
     btn.classList.add('running');
 
     startDrillSequence(key);
+};
+
+// --- NEW HANDLER: Download Dialog ---
+window.handleDownloadDialog = async () => {
+    // Prompt for the 3-letter + 3-digit code
+    const code = prompt("Enter Share Code (e.g. ABC123):");
+    
+    // Basic validation
+    if (!code || code.trim().length !== 6) {
+        if(code) showToast("Invalid code format");
+        return;
+    }
+
+    showToast("Searching...");
+
+    try {
+        const data = await downloadDrill(code);
+        
+        if (!data) {
+            showToast("Code not found or expired");
+            return;
+        }
+
+        // 1. Handle Naming (Avoid duplicates)
+        let name = data.name;
+        // Check if name exists in any custom category
+        const allNames = [
+            ...userCustomDrills['custom-a'], 
+            ...userCustomDrills['custom-b'], 
+            ...userCustomDrills['custom-c']
+        ].map(d => d.name);
+
+        if (allNames.includes(name)) {
+            name = `${name} (Imp)`;
+        }
+
+        // 2. Find Available Slot (A -> B -> C)
+        let targetCat = 'custom-a';
+        if (userCustomDrills['custom-a'].length >= 20) {
+            if (userCustomDrills['custom-b'].length < 20) targetCat = 'custom-b';
+            else if (userCustomDrills['custom-c'].length < 20) targetCat = 'custom-c';
+            else { showToast("All custom banks full!"); return; }
+        }
+
+        // 3. Save Data
+        const catChar = targetCat.split('-')[1].toUpperCase();
+        // Construct safe key
+        const newKey = `cust_${catChar}_${name.replace(/\s+/g, '_')}`;
+
+        // Add to registry list
+        userCustomDrills[targetCat].push({ name: name, key: newKey });
+        
+        // Reconstruct drill object
+        // Since we only export the *active* data, we place it into the *current* level
+        // or default to Level 1 if you prefer. Here we use 'selectedLevel' to match UI context.
+        const newDrillObj = { 1: [], 2: [], 3: [], random: data.random };
+        newDrillObj[selectedLevel] = data.params; 
+
+        currentDrills[newKey] = newDrillObj;
+
+        // 4. Persist
+        localStorage.setItem('custom_data', JSON.stringify(userCustomDrills));
+        saveDrillsToStorage();
+
+        // 5. Update UI
+        renderDrillButtons();
+        showToast(`Imported to Custom ${catChar}`);
+        toggleMenu(); 
+
+    } catch (e) {
+        console.error(e);
+        showToast("Download Error");
+    }
 };

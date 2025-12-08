@@ -19,6 +19,9 @@
 
     <div id="theme-menu" class="theme-menu">
         <div class="menu-title">Custom Data</div>
+        <div class="theme-item" onclick="window.handleDownloadDialog()">
+            <span class="color-preview" style="background:#00b894"></span> Download Drill
+        </div>
         <div class="theme-item" onclick="document.getElementById('csv-input').click()"><span class="color-preview" style="background:var(--text)"></span> Import Custom Drills</div>
         <div class="theme-item" onclick="exportCustomDrills()"><span class="color-preview" style="background:var(--text)"></span> Export Custom Drills</div>
         <div class="theme-item" onclick="saveAsDefault()"><span class="color-preview" style="background:var(--primary)"></span> Save Defaults</div>
@@ -107,7 +110,7 @@
     <div class="footer-row">
         <div id="stats-display">Balls: 0 | Drills: 0</div>
         
-        <div style="font-size: 0.7rem; opacity: 0.7; font-weight: 400;">Version 1.2</div>
+        <div style="font-size: 0.7rem; opacity: 0.7; font-weight: 400;">Version 1.3</div>
 
         <div class="checkbox-wrapper">
             <input type="checkbox" id="chk-console"> 
@@ -124,6 +127,11 @@
     <div class="modal">
         <div class="modal-header">
             <div class="modal-title">Edit Drill</div>
+            
+            <button class="btn-header-share" onclick="window.handleShareDrill()" title="Share Drill">
+                <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+            </button>
+
             <label class="random-toggle-container">
                 <span class="toggle-label">Random</span>
                 <input type="checkbox" id="chk-drill-random">
@@ -131,6 +139,7 @@
             </label>
             <div class="modal-close" onclick="closeEditor()">×</div>
         </div>
+        
         <div id="editor-body" class="modal-body"></div>
         
         <div class="modal-footer">

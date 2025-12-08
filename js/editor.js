@@ -2,6 +2,7 @@ import { currentDrills, userCustomDrills, selectedLevel, saveDrillsToStorage } f
 import { RANGE_CONFIG } from './constants.js';
 import { sendPacket, packBall, bleState } from './bluetooth.js';
 import { showToast, clamp } from './utils.js';
+import { uploadDrill } from './cloud.js';
 
 // --- Local State ---
 let tempDrillData = null;
@@ -437,4 +438,36 @@ window.handleTestCombo = async () => {
 
     try { await sendPacket(uint8); showToast("Testing Drill..."); } 
     catch (e) { console.error(e); showToast("Test Failed"); }
+};
+
+// --- NEW HANDLER: Share Drill ---
+window.handleShareDrill = async () => {
+    if (!editingDrillKey || !tempDrillData) return;
+
+    let drillName = "Shared Drill";
+    const titleEl = document.querySelector('.modal-title');
+    if(titleEl) drillName = titleEl.textContent.replace(' ✎', '');
+
+    const payload = {
+        name: drillName,
+        level: selectedLevel,
+        params: tempDrillData,
+        random: document.getElementById('chk-drill-random')?.checked || false
+    };
+
+    const btn = document.querySelector('.btn-header-share');
+    const originalHtml = btn.innerHTML;
+    btn.innerHTML = '...'; 
+    btn.disabled = true;
+
+    try {
+        const code = await uploadDrill(payload);
+        prompt("Drill Shared! Give this code to a friend", code);
+    } catch (e) {
+        console.error(e);
+        showToast("Share failed: Server error");
+    } finally {
+        btn.innerHTML = originalHtml;
+        btn.disabled = false;
+    }
 };
