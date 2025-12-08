@@ -10,13 +10,13 @@ Based on findings by https://github.com/smee/nova-s-custom-drills. Thank you!
 
 
 ## How to use
-- open https://olanga.github.io/nova/  and press connect button
+- open https://olanga.github.io/nova/
   
   or
   
 - download all files and host it on your own server (local server: python3 -m http.server)
   
-Webclient supports only Chrome and Chromium type browsers
+Webclient works only with Chrome and Chromium type browsers
 
 ## Features
 - Possible to use offline
