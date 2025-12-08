@@ -21,7 +21,7 @@ Webclient works only with Chrome and Chromium type browsers
 ## Features
 - Possible to use offline
 - Possible to modify and save pre-programmed drills
-- Possible to share drills using codes
+- Possible to share and download drills using codes
 - Long-press the drill button to open the drill editor
 - Ball and drill editor
 - Shoot a single test ball from the drill editor (no save required to test)
