@@ -5,7 +5,6 @@ Supports pre-programmed and custom  drills.
 Based on findings by https://github.com/smee/nova-s-custom-drills. Thank you!
 
 ![Alt text](https://github.com/olanga/nova/blob/main/NovaDrillControl.png?raw=false "Nova  Drill Control")
-![Alt text](https://github.com/olanga/nova/blob/main/DrillEdit.png?raw=true "Nova  Drill Control")
 ![Alt text](https://github.com/olanga/nova/blob/main/DrillEdit2.png?raw=true "Nova  Drill Control")
 ![Alt text](https://github.com/olanga/nova/blob/main/CountDown.png?raw=true "Nova  Drill Control")
 
