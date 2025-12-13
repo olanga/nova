@@ -1,89 +1,83 @@
-# Nova S Pro Drill controll
+# Nova S Pro Drill Control 2.0
 
-Webclient allowing use of Nova S Pro without the original app. Original app requires internet access to venor's servers.
-Supports pre-programmed and custom  drills.
-Based on findings by https://github.com/smee/nova-s-custom-drills. Thank you!
+A pretty web client for the Nova S Pro table tennis robot. This tool replaces the original app, removing the requirement for server connectivity.
 
-![Alt text](https://github.com/olanga/nova/blob/main/NovaDrillControl.png?raw=false "Nova  Drill Control")
-![Alt text](https://github.com/olanga/nova/blob/main/DrillEdit2.png?raw=true "Nova  Drill Control")
-![Alt text](https://github.com/olanga/nova/blob/main/CountDown.png?raw=true "Nova  Drill Control")
+## Usage
 
+**Online:**
 
-## How to use
-- open https://olanga.github.io/nova/
-  
-  or
-  
-- download all files and host it on your own server (local server: python3 -m http.server)
-  
-Webclient works only with Chrome and Chromium type browsers
+  * Visit: [https://olanga.github.io/nova/](https://olanga.github.io/nova/)
+
+**Local:**
+
+  * Download repository files and host locally (e.g., `python3 -m http.server`).
+
+**Requirements:**
+
+  * Chrome or Chromium-based browser.
 
 ## Features
-- Possible to use offline
-- Possible to modify and save pre-programmed drills
-- Possible to share and download drills using codes
-- Long-press the drill button to open the drill editor
-- Ball and drill editor
-- Shoot a single test ball from the drill editor (no save required to test)
-- Test drill in drill editor will play all balls once based on current settings
-- Possible to set modified settings as a new default
-- Programmed and custom drills are divided into 3 categories. Source smee: [Google doc](https://docs.google.com/spreadsheets/d/e/2PACX-1vRweUyHQsuiE_Baz1HKoCv7o6rRpyXtv9ERMkRDXxvcSbOb-dBnu6BW4vsHs4eCEjQq12_bZNPkge4-/pubhtml?gid=1641077883&single=true)
-- There are 4 themes including a dark mode
-- Optional console log to trace events
-- Length of drill can be set by time or number of repetitions
-- Countdown to start and drill countdown 
-- Ball sequence within a drill can be randomized in the drill editor
-- Randomized drills are marked with a badge ‘R’
-- Drill can be paused or stopped anytime
-- Each ball in a custom drill can have many options (pseudo randomness))
-- Accumulated counters (eg. Balls: 65 | Drills: 38)
-- Possible to factory reset settings
-- Factory reset removes all custom drills, resets counters and restores default drills
-- All settings are stored in a browser's local storage
 
-## Custom drills - additional info
-- Custom drills can be defined in three groups: Custom A, B and C
-- Each custom category can hold up to 20 drills
-- Every custom drill can hold up to 20 balls
-- Custom drills can be imported and exported as CSV file. See nova_custom_drills_example.csv
-- Drills in custom category are created dynamically based on the data in the CSV file
-- Ball options. Each ball can have many options which will be picked at random
-- Alternative balls have the same ball number in the CSV file:
+**General**
 
-    `Set;Ball;Name;Top;Bottom;Height;Drop;Freq;Reps`
-  
-    `A;1;push 1;1000;1000;-40;6;0;1`
-
-    `A;1;push 1;1000;1000;40;6;0;1`
-
-## Drill editor
-- Delete, save and save as new drills
-- Share drill between devices and users using codes
-
-## Ball editor
-- Add and remove balls in a sequence
-- Add and remove optional balls (pseudo randomness))
-- deactivate and activate balls
-- Rename drill's name
-- Change sequence of the balls
-
-## Ball parameters (as discovered by Smee)
-
-- Top: speed upper wheel 400 <=x <= 7500 rpm (step size 1)
-- Bot: speed lower wheel 400 <=x <= 7500 rpm (step size 1)
-- Hgt: ball height -50 <=x <= 100 (step size 1) ; (down - up)
-- Drp: drop point -10 <=x <= 10 (step size 0.5) ; (right to left)
-- Frq: frequency 0 <=x <= 100 (step size 10) ; (0% = 30bpm = 2 sec pause) (100% = 90bpm = 0.67 sec pause) credit: plunder
-- Rep: repetitions 1 <=x <= 200 (step size 1)
+  * **Offline Capable:** Works entirely without internet access.
+  * **Data Persistence:** Settings and drills saved to browser local storage.
+  * **Themes:** 4 options, including dark mode.
+  * **Stratistics:**  accumulated counters (total balls/drills).<br>
 
 
+**Drill Management**
+
+  * **Edit & Create:** Modify pre-programmed drills or create custom ones (Groups A, B, C).
+  * **Sharing:** Import/export via CSV or share online specific drills using codes.
+  * **Randomization:** Randomize ball sequences or enable random options per ball.
+  * **Randomization:** (RND) Randomize single ball in a range (-drop point to +drop point)
+  * **Controls:** Set drill duration (time or repetitions), pause/stop, and countdown timers.<br>
+
+
+**Editor Tools**
+
+  * **Drill Editor:** Long-press drill button to access. Supports deletion, "save as", and testing entire sequences.
+  * **Ball Editor:** Add/remove balls, adjust sequence, rename drills, and test single balls without saving.
+
+## Custom Drills (CSV)
+
+Drills can be imported via CSV. Each category (A, B, C) holds 20 drills; each drill holds 20 balls. Alternative balls (pseudo-randomness) share the same ball number.
+
+**CSV Format:** `Set;Ball;Name;Speed;Spin;Type;Height;Drop;Freq;Reps`
+
+**Example:**
+
+```csv
+A;1;Drill A2;7.5;5;top;50;-5;10;1
+A;2;Drill A2;7.5;5;back;50;-5;10;1
+B;1;Drill B1;7.5;5;top;50;-5;10;1
+B;1;Drill B1;7.5;5;back;50;5;10;1
+```
+
+## Technical Parameters
+
+| Parameter | Description | Range | Step |
+| :--- | :--- | :--- | :--- |
+| **Spin type** |top/back | - | - |
+| **Speed** | ball speed | 0 - 10 | 0.5 |
+| **Spin** | ball spin | 0 - 10 | 0.5 |
+| **Height** | Ball height | -50 (down) to 100 (up) | 1 |
+| **Drop** | Drop point | -10 (right) to 10 (left) | 0.5 |
+| **Freq** | Frequency | 0 - 100 | 10 |
+| **Reps** | Repetitions | 1 - 200 | 1 |
+
+*Note: 0% Freq = \~30bpm; 100% Freq = \~90bpm.*
+
+## Credits & Support
+
+Additional informations: [Wiki](https://github.com/olanga/nova/wiki/Protocol-Overview)
+
+Based on findings by [smee](https://github.com/smee/nova-s-custom-drills) and plunder.
+
+RPM version 1.3: [https://olanga.github.io/nova/](https://olanga.github.io/nova/1.3)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E21PUFEQ)
-
-
-
-
-
 
 
 
