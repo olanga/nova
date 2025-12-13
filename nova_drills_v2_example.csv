@@ -1,0 +1,18 @@
+Set;Ball;Name;Speed;Spin;Type;Height;Drop;Freq;Reps
+A;1;Drill A1;7.5;5;back;50;-5;10;1
+A;1;Drill A1;7.5;5;back;50;5;10;1
+A;2;Drill A1;7.5;5;back;50;-5;10;1
+A;1;Drill A2;7.5;5;back;50;-5;10;1
+A;2;Drill A2;7.5;5;back;50;-5;10;1
+
+B;1;Drill B1;7.5;5;back;50;-5;10;1
+B;1;Drill B1;7.5;5;back;50;5;10;1
+B;2;Drill B1;7.5;5;back;50;-5;10;1
+B;1;Drill B2;7.5;5;back;50;-5;10;1
+B;2;Drill B2;7.5;5;back;50;-5;10;1
+
+C;1;Drill C1;7.5;5;back;50;-5;10;1
+C;1;Drill C1;7.5;5;back;50;5;10;1
+C;2;Drill C1;7.5;5;back;50;-5;10;1
+C;1;Drill C2;7.5;5;back;50;-5;10;1
+C;2;Drill C2;7.5;5;back;50;-5;10;1

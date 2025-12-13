@@ -20,7 +20,7 @@
     <div id="theme-menu" class="theme-menu">
         <div class="menu-title">Custom Data</div>
         <div class="theme-item" onclick="window.handleDownloadDialog()">
-            <span class="color-preview" style="background:#00b894"></span> Download Drill
+            <span class="color-preview" style="background:#0984e3"></span> Download Drill
         </div>
         <div class="theme-item" onclick="document.getElementById('csv-input').click()"><span class="color-preview" style="background:var(--text)"></span> Import Custom Drills</div>
         <div class="theme-item" onclick="exportCustomDrills()"><span class="color-preview" style="background:var(--text)"></span> Export Custom Drills</div>
@@ -70,10 +70,9 @@
                 <label>Time (s)</label>
                 <input type="number" id="input-time" value="60" step="10">
             </div>
-            <div class="control-pill">
-                <label>Pause (ms)</label>
-                <input type="number" id="input-pause" value="1000" step="100">
-            </div>
+                <div class="control-pill">
+                    <label>Pause (s)</label> <input type="number" id="input-pause" value="1.0" step="0.1">
+                </div>
         </div>
     </div>
 
@@ -109,13 +108,7 @@
 
     <div class="footer-row">
         <div id="stats-display">Balls: 0 | Drills: 0</div>
-        
-        <div style="font-size: 0.7rem; opacity: 0.7; font-weight: 400;">Version 1.3</div>
-
-        <div class="checkbox-wrapper">
-            <input type="checkbox" id="chk-console"> 
-            <label for="chk-console" style="margin:0; cursor:pointer;">Show Log</label>
-        </div>
+        <div>Version 2.0</div>
     </div>
     
     <div id="log" class="log-box"></div>
@@ -171,6 +164,70 @@
                 <button id="btn-pause" class="btn-run-ctrl btn-pause" onclick="togglePause()">PAUSE</button>
                 <button class="btn-run-ctrl btn-stop-run" onclick="stopRun()">STOP</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div id="download-modal" class="modal-overlay">
+    <div class="modal" style="height:auto; min-height:300px;">
+        <div class="modal-header">
+            <div class="modal-title">Import Drill</div>
+            <div class="modal-close" onclick="window.closeDownloadModal()">×</div>
+        </div>
+        
+        <div class="modal-body" style="display:flex; flex-direction:column; gap:20px; padding-top:15px;">
+            
+            <div class="control-pill" style="box-shadow:none; border:1px solid var(--border);">
+                <label>Share Code</label>
+                <input type="text" id="dl-code" placeholder="ABC123" maxlength="6" 
+                       style="text-align:center; letter-spacing:4px; text-transform:uppercase; font-size:1.6rem; color:var(--primary); font-weight:800;">
+            </div>
+
+            <div>
+                <div class="section-label" style="text-align:center; margin-bottom:8px;">Select Destination</div>
+                <div class="mode-switch" id="dl-cat-switch">
+                    <div class="mode-option active" onclick="window.selectDlCategory('custom-a', this)">Custom A</div>
+                    <div class="mode-option" onclick="window.selectDlCategory('custom-b', this)">Custom B</div>
+                    <div class="mode-option" onclick="window.selectDlCategory('custom-c', this)">Custom C</div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="modal-footer">
+             <button class="btn-modal btn-save" onclick="window.performDownload()">Download & Import</button>
+        </div>
+    </div>
+</div>
+
+<div id="save-as-modal" class="modal-overlay">
+    <div class="modal" style="height:auto; min-height:300px;">
+        <div class="modal-header">
+            <div class="modal-title">Save As New Drill</div>
+            <div class="modal-close" onclick="window.closeSaveAsModal()">×</div>
+        </div>
+        
+        <div class="modal-body" style="display:flex; flex-direction:column; gap:20px; padding-top:15px;">
+            
+            <div class="control-pill" style="box-shadow:none; border:1px solid var(--border);">
+                <label>Drill Name (Max 25)</label>
+                <input type="text" id="save-name" placeholder="My New Drill" maxlength="25" 
+                       style="text-align:center; font-size:1.2rem; color:var(--primary); font-weight:800; background:transparent;">
+            </div>
+
+            <div>
+                <div class="section-label" style="text-align:center; margin-bottom:8px;">Select Destination</div>
+                <div class="mode-switch" id="save-cat-switch">
+                    <div class="mode-option active" onclick="window.selectSaveCategory('custom-a', this)">Custom A</div>
+                    <div class="mode-option" onclick="window.selectSaveCategory('custom-b', this)">Custom B</div>
+                    <div class="mode-option" onclick="window.selectSaveCategory('custom-c', this)">Custom C</div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="modal-footer">
+             <button class="btn-modal btn-save" onclick="window.performSaveAs()">Save Drill</button>
         </div>
     </div>
 </div>

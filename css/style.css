@@ -500,6 +500,7 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
 .checkbox-wrapper { display: flex; align-items: center; gap: 6px; }
 #stats-display { font-variant-numeric: tabular-nums; }
 
+/* TOAST - Z-Index updated to 300 to show over modal */
 #toast { 
     visibility: hidden; 
     min-width: 250px; 
@@ -509,7 +510,7 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     border-radius: 50px; 
     padding: 16px; 
     position: fixed; 
-    z-index: 200; 
+    z-index: 300; 
     left: 50%; 
     bottom: 30px; 
     transform: translateX(-50%); 
@@ -552,7 +553,7 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     overflow: hidden; 
 }
 
-/* UPDATED MODAL HEADER - Includes Truncation Support */
+/* MODAL HEADER */
 .modal-header { 
     display: flex; 
     align-items: center; 
@@ -567,19 +568,16 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     font-weight: normal; 
     color: var(--text); 
     font-size: 1.1rem; 
-    
-    /* Truncation Logic */
     white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis; 
-    
-    /* Flex Behavior: Take only available space */
     flex: 1;       
-    min-width: 0;  /* Critical for flex truncation */
+    min-width: 0; 
     text-align: left;
-    margin-right: 10px; /* Add some spacing before the buttons */
+    margin-right: 10px;
 }
 
+/* Prevent buttons from collapsing */
 .modal-header > div:not(.modal-title) {
     flex-shrink: 0; 
 }
@@ -587,7 +585,8 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
 .modal-close { font-size: 1.5rem; color: var(--text-light); cursor: pointer; line-height: 1; }
 .modal-body { overflow-y: auto; flex: 1; padding-right: 5px; }
 
-/* --- EDITOR SPECIFIC --- */
+/* --- EDITOR SPECIFIC (Smart Grid Layout) --- */
+
 .ball-group { 
     border: 1px solid var(--border); 
     border-radius: 12px; 
@@ -602,7 +601,6 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     border-style: dashed;
 }
 
-/* UPDATED GROUP TITLE */
 .group-title { 
     background: var(--card-bg); 
     padding: 8px 12px; 
@@ -622,12 +620,6 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     align-items: center;
     gap: 8px;
     cursor: pointer;
-}
-
-.toggle-label {
-    font-size: 0.65rem; 
-    font-weight: 700; 
-    color: var(--text-light);
 }
 
 .toggle-switch {
@@ -651,7 +643,6 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     transition: transform 0.2s;
 }
 
-/* Active State for Ball Toggle (Class-based) */
 .ball-toggle.active .toggle-switch {
     background: var(--primary);
 }
@@ -660,7 +651,7 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     transform: translateX(14px);
 }
 
-/* --- RANDOM TOGGLE (Header) --- */
+/* Random Toggle (Header) */
 .random-toggle-container {
     display: flex;
     align-items: center;
@@ -668,17 +659,9 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     margin-right: 20px;
     cursor: pointer;
 }
-.random-toggle-container input {
-    display: none;
-}
-
-/* Active State for Random Toggle (Input-based) */
-.random-toggle-container input:checked + .toggle-switch {
-    background: var(--primary);
-}
-.random-toggle-container input:checked + .toggle-switch::after {
-    transform: translateX(14px);
-}
+.random-toggle-container input { display: none; }
+.random-toggle-container input:checked + .toggle-switch { background: var(--primary); }
+.random-toggle-container input:checked + .toggle-switch::after { transform: translateX(14px); }
 
 /* Round Plus Button */
 .btn-add-opt {
@@ -721,106 +704,107 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     display: block; 
 }
 
-.editor-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+/* --- GRID & INPUT STYLES (Replaced Sliders) --- */
 
-.editor-field { display: flex; flex-direction: column; }
+.editor-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr; 
+    gap: 8px; 
+    margin-bottom: 10px;
+}
 
-.field-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
-.field-header label { font-size: 0.6rem; color: var(--text-light); font-weight: 700; }
-.field-header .range-hint { font-size: 0.55rem; color: #b2bec3; font-weight: 400; }
+.editor-field { 
+    display: flex; 
+    flex-direction: column; 
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px;
+}
 
+.field-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 2px;
+    padding: 0 4px;
+}
+
+.field-header label { 
+    font-size: 0.6rem; 
+    color: var(--text-light); 
+    font-weight: 700; 
+    text-transform: uppercase;
+}
+
+.field-header .range-hint { 
+    font-size: 0.5rem; 
+    color: #b2bec3; 
+}
+
+/* Fast Input Styling */
 .editor-field input { 
-    background: var(--surface); 
-    border: 1px solid var(--border); 
-    padding: 6px 2px; 
-    border-radius: 8px; 
-    font-size: 0.85rem; 
+    border: none;
+    background: transparent;
+    font-size: 0.95rem; 
     color: var(--text); 
     font-weight: 700; 
     text-align: center; 
-    -moz-appearance: textfield; 
     width: 100%; 
-    box-sizing: border-box; 
-    min-width: 0; 
+    padding: 4px 0;
+    -moz-appearance: textfield; 
 }
+.editor-field input:focus { outline: none; color: var(--primary); }
 
-/* --- UPDATED MODAL FOOTER (Single Row) --- */
-.modal-footer { 
-    margin-top: 15px; 
-    display: flex; 
-    gap: 8px; 
-    align-items: stretch;
-}
-
-/* Button Base Styles */
-.btn-modal { 
-    padding: 12px 8px; 
-    border-radius: 10px; 
-    border: none; 
-    font-weight: 600; 
-    cursor: pointer; 
-    font-size: 0.8rem; 
-    text-transform: uppercase;
+/* Spin Toggle Row */
+.spin-row {
     display: flex;
     align-items: center;
-    justify-content: center;
-    white-space: nowrap; 
-    transition: transform 0.1s, opacity 0.2s;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 0 4px;
 }
-.btn-modal:active { transform: scale(0.96); }
 
-/* 1. Delete Button (Icon Only) */
-.btn-delete-drill { 
-    background: var(--danger); 
-    color: white; 
-    width: 44px; 
-    flex: 0 0 44px; /* Fixed width */
-    padding: 0;
+.spin-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
 }
-.btn-delete-drill svg {
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
+
+.spin-capsule {
+    display: flex;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2px;
 }
-.btn-delete-drill:disabled { opacity: 0.3; cursor: not-allowed; }
 
-/* 2. Test Drill (Ghost Style - Primary Outline) */
-.btn-test-combo { 
-    background: transparent;
-    border: 2px solid var(--primary); 
-    color: var(--primary); 
-    flex: 1.2; 
+.sc-opt {
+    padding: 4px 12px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: all 0.2s;
 }
-[data-theme="night"] .btn-test-combo { border-color: var(--primary); color: var(--primary); }
-.btn-test-combo:hover { background: var(--primary-dim); }
 
-/* 3. Save As (Ghost Style - Text Outline) */
-.btn-save-as { 
-    background: transparent;
-    border: 2px solid var(--text);
-    color: var(--text); 
-    flex: 1.2;
+.sc-opt.active {
+    background: var(--text); /* Default dark/light contrast */
+    color: var(--bg);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-.btn-save-as:hover { background: rgba(0,0,0,0.05); }
-[data-theme="night"] .btn-save-as:hover { background: rgba(255,255,255,0.1); }
 
+/* Color Coding for Toggle */
+.sc-opt:first-child.active { background: #e17055; color: white; } /* Topspin */
+.sc-opt:last-child.active { background: #0984e3; color: white; } /* Backspin */
 
-/* 4. Save (Ghost Style - Primary Outline) */
-.btn-save { 
-    background: transparent;
-    border: 2px solid var(--primary);
-    color: var(--primary); 
-    flex: 1.5; 
-}
-.btn-save:hover { background: var(--primary-dim); }
-
-/* --- EDITOR ACTION BUTTONS (Inner Cards) --- */
+/* --- EDITOR ACTION BUTTONS --- */
 .card-actions { 
     display: flex; 
     gap: 8px; 
-    margin-top: 10px; 
-    border-top: 1px solid var(--border); 
-    padding-top: 10px; 
+    margin-top: 5px; 
 }
 
 .btn-action { 
@@ -850,8 +834,7 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
 .btn-act-del:hover { opacity: 0.8; }
 .btn-act-del:disabled { opacity: 0.3; cursor: not-allowed; }
 
-
-/* Share Button in Editor Header */
+/* Share Button */
 .btn-header-share {
     background: transparent;
     border: none;
@@ -861,24 +844,73 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 15px; /* Spacing from Random toggle */
+    margin-right: 15px;
     transition: transform 0.2s;
+    flex-shrink: 0;
+}
+.btn-header-share:hover { transform: scale(1.1); color: var(--text); }
+.btn-header-share svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* --- MODAL FOOTER --- */
+.modal-footer { 
+    margin-top: 15px; 
+    display: flex; 
+    gap: 8px; 
+    align-items: stretch;
 }
 
-.btn-header-share:hover {
-    transform: scale(1.1);
-    color: var(--text);
+.btn-modal { 
+    padding: 12px 8px; 
+    border-radius: 10px; 
+    border: none; 
+    font-weight: 600; 
+    cursor: pointer; 
+    font-size: 0.8rem; 
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap; 
+    transition: transform 0.1s, opacity 0.2s;
 }
+.btn-modal:active { transform: scale(0.96); }
 
-.btn-header-share svg {
-    width: 22px;
-    height: 22px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+.btn-delete-drill { 
+    background: var(--danger); 
+    color: white; 
+    width: 44px; 
+    flex: 0 0 44px; 
+    padding: 0;
 }
+.btn-delete-drill svg { width: 20px; height: 20px; fill: currentColor; }
+.btn-delete-drill:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.btn-test-combo { 
+    background: transparent;
+    border: 2px solid var(--primary); 
+    color: var(--primary); 
+    flex: 1.2; 
+}
+[data-theme="night"] .btn-test-combo { border-color: var(--primary); color: var(--primary); }
+.btn-test-combo:hover { background: var(--primary-dim); }
+
+.btn-save-as { 
+    background: transparent;
+    border: 2px solid var(--text);
+    color: var(--text); 
+    flex: 1.2;
+}
+.btn-save-as:hover { background: rgba(0,0,0,0.05); }
+[data-theme="night"] .btn-save-as:hover { background: rgba(255,255,255,0.1); }
+
+.btn-save { 
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary); 
+    flex: 1.5; 
+}
+.btn-save:hover { background: var(--primary-dim); }
+
 
 /* --- RUN OVERLAY --- */
 #run-ui { 

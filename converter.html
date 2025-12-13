@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drill Converter v4.1</title>
+    <style>
+        :root {
+            --primary: #0984e3;
+            --bg: #f5f6fa;
+            --surface: #ffffff;
+            --text: #2d3436;
+            --border: #dfe6e9;
+            --danger: #d63031;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            background: var(--surface);
+            width: 100%;
+            max-width: 600px;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        h1 { margin-top: 0; font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; }
+        
+        /* NEW: Formula Text Style */
+        .formula-text {
+            text-align: center;
+            color: #636e72;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+            font-family: monospace;
+            background: #f1f2f6;
+            padding: 10px;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: #dfe6e9;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #636e72;
+            text-transform: uppercase;
+        }
+
+        /* Inputs */
+        input[type="range"] { width: 100%; cursor: pointer; }
+        input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary); }
+        select { padding: 8px; border-radius: 8px; border: 1px solid var(--border); }
+        
+        .val-display {
+            font-weight: bold;
+            color: var(--primary);
+            float: right;
+        }
+        .val-display.limited { color: var(--danger); }
+
+        /* Results Section */
+        .results {
+            background: #2d3436;
+            color: #dfe6e9;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-family: monospace;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #4a4a4a;
+            padding-bottom: 4px;
+        }
+        .result-row:nth-child(6) { border: none; margin-bottom: 0; }
+
+        .output-box {
+            background: #000;
+            color: #00cec9;
+            padding: 10px;
+            border-radius: 6px;
+            word-break: break-all;
+            margin-top: 5px;
+            font-size: 0.9rem;
+            border: 1px solid #00b894;
+            margin-bottom: 15px;
+        }
+        
+        .label-small {
+            color: #b2bec3;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            display: block;
+        }
+
+        .btn-row { 
+            display: flex; 
+            gap: 10px; 
+            margin-top: 20px; 
+        }
+        
+        .copy-btn {
+            flex: 1;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+        .copy-btn:hover { opacity: 0.9; }
+        .btn-sec { background: #636e72; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Drill Converter v4.1</h1>
+    
+    <div class="formula-text">
+        Top rpm = 970 + (630.5 × Speed) + (342 x Spin)<br>
+        Bot rpm = 970 + (630.5 × Speed) - (342 × Spin)
+    </div>
+
+    <div class="checkbox-group">
+        <input type="checkbox" id="chk-random" onchange="calc()">
+        <label for="chk-random" style="color:var(--text); cursor:pointer;">Random Sequence</label>
+    </div>
+
+    <div class="grid">
+        <div class="control-group">
+            <label>Spin Type</label>
+            <select id="rot" onchange="calc()">
+                <option value="top">Top Spin</option>
+                <option value="under">Under Spin (Back)</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Reps <span id="val-reps" class="val-display">1</span></label>
+            <input type="range" id="reps" min="1" max="100" value="1" oninput="calc()">
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="control-group">
+            <label>Speed (0-10) <span id="val-speed" class="val-display">5.0</span></label>
+            <input type="range" id="speed" min="0" max="10" step="0.5" value="5" oninput="calc()">
+        </div>
+        <div class="control-group">
+            <label>Spin (0-10) <span id="val-spin" class="val-display">2.0</span></label>
+            <input type="range" id="spin" min="0" max="10" step="0.5" value="2" oninput="calc()">
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="control-group">
+            <label>Height (-50 to 100) <span id="val-hgt" class="val-display">45</span></label>
+            <input type="range" id="hgt" min="-50" max="100" step="1" value="45" oninput="calc()">
+        </div>
+        <div class="control-group">
+            <label>Drop Point (-10 to 10) <span id="val-drp" class="val-display">0</span></label>
+            <input type="range" id="drp" min="-10" max="10" step="0.5" value="0" oninput="calc()">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label>Frequency (0-100) <span id="val-frq" class="val-display">50</span></label>
+        <input type="range" id="frq" min="0" max="100" step="10" value="50" oninput="calc()">
+    </div>
+
+    <div class="results">
+        <div class="result-row"><span>Top Motor:</span> <span id="out-top">0 RPM</span></div>
+        <div class="result-row"><span>Bot Motor:</span> <span id="out-bot">0 RPM</span></div>
+        <div class="result-row"><span>Internal Height:</span> <span id="out-hgt">0</span></div>
+        <div class="result-row"><span>Drop Point:</span> <span id="out-drp">0</span></div>
+        <div class="result-row"><span>Frequency:</span> <span id="out-frq">0</span></div>
+        <div class="result-row"><span>Reps:</span> <span id="out-reps">1</span></div>
+        
+        <label class="label-small">Internal Params (CSV)</label>
+        <div class="output-box" id="out-csv">Waiting...</div>
+        
+        <label class="label-small">Binary Command (Hex)</label>
+        <div class="output-box" id="out-hex">Waiting...</div>
+    </div>
+
+    <div class="btn-row">
+        <button class="copy-btn btn-sec" onclick="copyText('out-csv')">Copy CSV</button>
+        <button class="copy-btn" onclick="copyText('out-hex')">Copy Hex</button>
+    </div>
+</div>
+
+<script>
+    // --- Limits & Config ---
+    const LIMIT_MIN = 400;
+    const LIMIT_MAX = 7500;
+    
+    // Spin Constraints Lookup Table (Speed -> Max Spin)
+    const SPIN_LIMITS = {
+        "0": 2, "0.5": 3, 
+        "1": 4, "1.5": 5, 
+        "2": 6, "2.5": 7, 
+        "3": 8, "3.5": 9, 
+        "4": 10, "4.5": 10, 
+        "5": 9, "5.5": 8, 
+        "6": 8, "6.5": 7, 
+        "7": 6, "7.5": 5, 
+        "8": 4, "8.5": 3, 
+        "9": 2, "9.5": 1, 
+        "10": 0
+    };
+
+    function clamp(val, min, max) {
+        return Math.max(min, Math.min(max, val));
+    }
+
+    function toHex(num, type) {
+        const buffer = new ArrayBuffer(4);
+        const view = new DataView(buffer);
+        if (type === 'float') view.setFloat32(0, num, true);
+        else view.setUint32(0, num, true);
+        
+        let hex = '';
+        new Uint8Array(buffer).forEach(b => hex += b.toString(16).padStart(2, '0'));
+        return hex;
+    }
+
+    function calc() {
+        // 1. Get Inputs
+        const type = document.getElementById('rot').value;
+        const isRandom = document.getElementById('chk-random').checked;
+        const speedVal = parseFloat(document.getElementById('speed').value);
+        let spinVal = parseFloat(document.getElementById('spin').value);
+        
+        const hgtInternal = parseInt(document.getElementById('hgt').value); 
+        const drpApp = parseFloat(document.getElementById('drp').value);
+        const frqApp = parseFloat(document.getElementById('frq').value);
+        const repsVal = parseInt(document.getElementById('reps').value);
+
+        // --- Spin Constraints ---
+        const maxAllowedSpin = SPIN_LIMITS[speedVal.toString()] ?? 10;
+        const effectiveSpin = Math.min(spinVal, maxAllowedSpin);
+
+        // Update UI Text
+        document.getElementById('val-speed').textContent = speedVal;
+        
+        const spinLabel = document.getElementById('val-spin');
+        if (spinVal > maxAllowedSpin) {
+            spinLabel.textContent = `${effectiveSpin} (Max ${maxAllowedSpin})`;
+            spinLabel.classList.add('limited');
+        } else {
+            spinLabel.textContent = spinVal;
+            spinLabel.classList.remove('limited');
+        }
+
+        document.getElementById('val-hgt').textContent = hgtInternal;
+        document.getElementById('val-drp').textContent = drpApp;
+        document.getElementById('val-frq').textContent = frqApp;
+        document.getElementById('val-reps').textContent = repsVal;
+
+        // --- ALGORITHM V3 ---
+        const baseSpeed = 970 + (630.5 * speedVal);
+        const spinFactor = 342 * effectiveSpin; 
+
+        let topRpm, botRpm;
+
+        if (type === 'top') {
+            topRpm = baseSpeed + spinFactor;
+            botRpm = baseSpeed - spinFactor;
+        } else { 
+            topRpm = baseSpeed - spinFactor;
+            botRpm = baseSpeed + spinFactor;
+        }
+
+        // Clamp RPMs
+        topRpm = Math.round(clamp(topRpm, LIMIT_MIN, LIMIT_MAX));
+        botRpm = Math.round(clamp(botRpm, LIMIT_MIN, LIMIT_MAX));
+
+        // 3. Update Result Rows
+        document.getElementById('out-top').textContent = topRpm + " RPM";
+        document.getElementById('out-bot').textContent = botRpm + " RPM";
+        document.getElementById('out-hgt').textContent = hgtInternal;
+        document.getElementById('out-drp').textContent = drpApp;
+        document.getElementById('out-frq').textContent = frqApp;
+        document.getElementById('out-reps').textContent = repsVal;
+        
+        // 4. Build CSV
+        const csvLine = `${topRpm},${botRpm},${hgtInternal},${drpApp},${frqApp},${repsVal}`;
+        document.getElementById('out-csv').textContent = csvLine;
+
+        // 5. Binary Encoding
+        const h_clamped = clamp(hgtInternal, -50, 100);
+        const h_final = (h_clamped + 50) / 150 * 50 - 20;
+
+        const d_clamped = clamp(drpApp, -10, 10);
+        const d_final = (d_clamped + 10) / 20 * 44 - 22;
+
+        const f_clamped = clamp(frqApp, 0, 100);
+        const f_final = (f_clamped / 100) + 0.5;
+
+        // 6. Build Hex
+        const headerSuffix = isRandom ? "01" : "00";
+        const header = "811c00010100" + headerSuffix;
+        
+        const hexTop = toHex(topRpm, 'uint');
+        const hexBot = toHex(botRpm, 'uint');
+        const hexHgt = toHex(h_final, 'float');
+        const hexDrp = toHex(d_final, 'float');
+        const hexFrq = toHex(f_final, 'float');
+        const hexRep = toHex(repsVal, 'uint');
+
+        const payload = hexTop + hexBot + hexHgt + hexDrp + hexFrq + hexRep;
+        const fullCommand = header + payload;
+
+        document.getElementById('out-hex').textContent = fullCommand;
+    }
+
+    function copyText(elementId) {
+        const txt = document.getElementById(elementId).textContent;
+        navigator.clipboard.writeText(txt).then(() => {});
+    }
+
+    // Init
+    calc();
+</script>
+
+</body>
+</html>

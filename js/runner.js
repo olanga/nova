@@ -1,6 +1,6 @@
 import { currentDrills, selectedLevel, runMode, appStats } from './state.js';
 import { sendPacket, packBall, bleState } from './bluetooth.js';
-import { log, showToast } from './utils.js';
+import { log, showToast, clamp } from './utils.js';
 import { updateStatsUI } from './ui.js';
 
 let isRunning = false;
@@ -150,9 +150,39 @@ async function runIteration() {
     const balls = [];
     sequence.forEach((stepOptions, i) => {
         const chosenOption = stepOptions[Math.floor(Math.random() * stepOptions.length)];
-        // chosenOption structure: [top, bot, hgt, drp, frq, rep, active]
-        log(`TX Ball ${i+1}: ${chosenOption.join(' ')}`);
-        balls.push(packBall(...chosenOption));
+        
+        // Clone to avoid mutating the original drill data in state
+        const tempBall = [...chosenOption];
+
+        // --- RND MODE LOGIC ---
+        // Index 10 is the RND flag. Index 3 is Drop (-10 to 10).
+        if (tempBall[10] === true) {
+            const currentDrop = tempBall[3];
+            const limit = Math.abs(currentDrop);
+            
+            // If limit is 0 (Center), random range is 0 to 0, so do nothing.
+            if (limit > 0) {
+                // Determine how many 0.5 steps exist in the full range (-limit to +limit)
+                // Range Span = limit * 2. 
+                // Steps = Span / 0.5
+                const totalSteps = (limit * 2) / 0.5;
+                
+                // Pick a random step index
+                const randomStep = Math.floor(Math.random() * (totalSteps + 1));
+                
+                // Calculate new drop value
+                const newDrop = -limit + (randomStep * 0.5);
+                
+                tempBall[3] = newDrop;
+                // Optional debug log
+                // log(`RND Active: Range ±${limit}, New Drop: ${newDrop}`);
+            }
+        }
+
+        log(`TX Ball ${i+1}: ${tempBall.join(' ')}`);
+        
+        // packBall expects (us, ls, bh, dp, freq, reps) -> indices 0,1,2,3,4,5
+        balls.push(packBall(...tempBall));
     });
 
     // Update Stats
@@ -175,11 +205,14 @@ export function handleDone() {
         return;
     }
     
-    const pause = parseInt(document.getElementById('input-pause').value);
+    // Convert Seconds to Milliseconds
+    const pauseInput = parseFloat(document.getElementById('input-pause').value);
+    const pauseMs = (isNaN(pauseInput) ? 1.0 : pauseInput) * 1000;
+
     if (!isPaused) {
          pauseTimer = setTimeout(() => { 
              if(isRunning && !isPaused) runIteration(); 
-         }, pause);
+         }, pauseMs);
     }
 }
 
