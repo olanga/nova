@@ -75,7 +75,7 @@ Additional informations: [Wiki](https://github.com/olanga/nova/wiki/Protocol-Ove
 
 Based on findings by [smee](https://github.com/smee/nova-s-custom-drills) and plunder.
 
-RPM version 1.3: [https://olanga.github.io/nova/](https://olanga.github.io/nova/1.3)
+RPM version 1.3: [https://olanga.github.io/nova/1.3](https://olanga.github.io/nova/1.3)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E21PUFEQ)
 
