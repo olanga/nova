@@ -355,59 +355,111 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
 .icon-dot { background-color: var(--text-light); border-radius: 50%; opacity: 0.5; }
 .tab-btn.active .icon-dot { background-color: var(--primary); opacity: 1; }
 
-.drill-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px; }
-.hidden { display: none !important; }
-
-.btn-drill { 
-    background: var(--surface); 
-    border: 1px solid transparent; 
-    border-radius: 20px; 
-    padding: 15px 8px; 
-    font-size: 0.8rem; 
-    font-weight: 600; 
-    color: var(--btn-text); 
-    cursor: pointer; 
+/* === REDESIGNED DRILL LIST (Single Column) === */
+.drill-list { 
     display: flex; 
     flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-    gap: 10px; 
-    box-shadow: 0 2px 5px var(--shadow); 
-    transition: all 0.1s; 
-    min-height: 85px; 
-    width: 100%; 
+    gap: 8px; 
+    margin-bottom: 10px; 
+}
+.hidden { display: none !important; }
+
+/* === WIDE BUTTON STYLE === */
+.btn-drill { 
+    width: 100%;
+    min-height: 60px;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px; /* Spacing between icon, text, badge */
+    
+    background: var(--surface); 
+    border: 1px solid transparent; 
+    border-radius: 12px; 
+    color: var(--btn-text); 
+    box-shadow: 0 1px 3px var(--shadow); 
     position: relative; 
+    transition: transform 0.1s, background-color 0.2s;
     user-select: none; 
     -webkit-user-select: none; 
+    cursor: pointer;
 }
 
-.btn-drill span { text-align: center; line-height: 1.3; width: 100%; }
-.btn-drill:active { transform: scale(0.97); }
+.btn-drill:active { transform: scale(0.98); }
 .btn-drill.running { border-color: var(--primary); background: var(--primary-dim); color: var(--primary); }
 .btn-drill:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; background: rgba(0,0,0,0.05); }
-[data-theme="night"] .btn-drill:disabled { background: rgba(255,255,255,0.05); }
 
-.btn-drill .drill-icon { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; width: 14px; height: 14px; }
+/* Left-side visual icon */
+.btn-drill .drill-icon { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 3px; 
+    width: 14px; 
+    height: 14px; 
+    flex-shrink: 0; 
+    opacity: 0.7;
+}
 .btn-drill .drill-icon .d-dot { background-color: #b2bec3; border-radius: 50%; transition: background-color var(--trans-speed); }
 .btn-drill.running .drill-icon .d-dot { background-color: var(--primary); }
 
+/* Text Label */
+.btn-drill span { 
+    flex: 1; 
+    text-align: left; 
+    font-size: 0.95rem; 
+    font-weight: 600; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+
+/* Random Badge (Right side now) */
 .mark-random { 
-    position: absolute; 
-    top: 8px; 
-    right: 8px; 
-    width: 20px; 
-    height: 20px; 
-    border: 2px solid var(--danger); 
+    position: static;
+    width: 22px; 
+    height: 22px; 
+    border: 1.5px solid var(--danger); 
     color: var(--danger); 
     border-radius: 50%; 
-    font-size: 10px; 
+    font-size: 0.65rem; 
     font-weight: 900; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
     background: transparent; 
     line-height: 1; 
-    pointer-events: none; 
+    flex-shrink: 0;
+}
+
+/* Sorting Grip Handle */
+.drill-grab-handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 100%;
+    cursor: grab;
+    color: var(--text-light);
+    opacity: 0.3;
+    font-size: 1.4rem;
+    margin-left: 5px;
+    border-left: 1px solid var(--border);
+    padding-left: 10px;
+    flex-shrink: 0;
+    transition: opacity 0.2s;
+}
+
+.drill-grab-handle:hover {
+    opacity: 1;
+    color: var(--primary);
+}
+
+.btn-drill.dragging {
+    opacity: 0.5;
+    background: var(--card-bg);
+    border: 1px dashed var(--text-light);
 }
 
 /* --- FOOTER & LOGS --- */
@@ -553,7 +605,7 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     overflow: hidden; 
 }
 
-/* MODAL HEADER */
+/* MODAL HEADER - GENERAL */
 .modal-header { 
     display: flex; 
     align-items: center; 
@@ -577,10 +629,61 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     margin-right: 10px;
 }
 
-/* Prevent buttons from collapsing */
-.modal-header > div:not(.modal-title) {
-    flex-shrink: 0; 
+/* EDITOR MODAL HEADER SPECIFIC */
+/* Switches to column layout for Editor only */
+#editor-modal .modal-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
 }
+
+/* Row 1: Title and Close */
+#editor-modal .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+}
+
+/* New Title Container allowing full width and edit icon */
+#editor-modal .title-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#editor-drill-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#editor-drill-edit-icon {
+    font-size: 1rem;
+    opacity: 0.5;
+    flex-shrink: 0; /* Ensures icon never disappears */
+    color: var(--primary);
+}
+
+/* Row 2: Actions */
+#editor-modal .header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Adjustments for buttons inside new layout */
+.btn-header-share { margin-right: 0; } 
+.random-toggle-container { margin-right: 0; }
 
 .modal-close { font-size: 1.5rem; color: var(--text-light); cursor: pointer; line-height: 1; }
 .modal-body { overflow-y: auto; flex: 1; padding-right: 5px; }
@@ -656,7 +759,6 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-right: 20px;
     cursor: pointer;
 }
 .random-toggle-container input { display: none; }
@@ -844,7 +946,6 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 15px;
     transition: transform 0.2s;
     flex-shrink: 0;
 }

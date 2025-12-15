@@ -7,22 +7,17 @@ import { uploadDrill } from './cloud.js';
 // --- Local State ---
 let tempDrillData = null;
 let editingDrillKey = null;
-let selectedSaveCat = 'custom-a'; // Default for Save As Modal
+let selectedSaveCat = 'custom-a'; 
 
 // --- Public Module Functions ---
 
 export function openEditor(key) {
     editingDrillKey = key;
-    
-    // Set Title
-    const titleEl = document.querySelector('.modal-title');
-    if (titleEl) updateTitleDisplay(titleEl, key);
+    updateTitleDisplay(key);
 
-    // Random
     const chk = document.getElementById('chk-drill-random');
     if (chk) chk.checked = !!(currentDrills[key] && currentDrills[key].random);
 
-    // Load Data
     if (currentDrills[key] && currentDrills[key][selectedLevel]) {
         tempDrillData = JSON.parse(JSON.stringify(currentDrills[key][selectedLevel]));
     } else {
@@ -125,18 +120,20 @@ function renderEditor() {
         groupDiv.className = `ball-group ${isActive ? '' : 'inactive'}`;
         
         const isSingle = stepOptions.length === 1;
-        
-        // Check for RND flag at index 10
         const isRnd = isSingle && !!stepOptions[0][10];
 
-        const plusBtn = isSingle 
-            ? `<button class="btn-add-opt" onclick="window.handleAddOption(${stepIndex})">+</button>` 
-            : '';
+        // Duplicate/Next Step Button (Icon: Two overlapping squares)
+        const plusBtn = `
+            <button class="btn-add-opt" title="Duplicate Ball" onclick="window.handleAddSequenceStep(${stepIndex})">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+            </button>`;
 
-        // RND Toggle Layout (Right side, separated by border)
         const rndHtml = isSingle ? `
             <div style="display:flex; align-items:center; gap:8px; margin-left:45px;">
-                <span style="font-size:0.75rem; font-weight:800; color:var(--text-light); opacity:1.0;">RND</span>
+                <span style="font-size:0.75rem; font-weight:800; color:var(--text-light); opacity:1.0;">Random drop</span>
                 <div class="ball-toggle ${isRnd ? 'active' : ''}" onclick="window.handleRndToggle(${stepIndex})">
                     <div class="toggle-switch"></div>
                 </div>
@@ -166,6 +163,9 @@ function renderEditor() {
             const spin = ballParams[8];
             const type = ballParams[9];
             const currentMaxSpin = SPIN_LIMITS[speed.toString()] ?? 10;
+            
+            // BPM Calculation: 30 + (Percent * 0.6)
+            const bpmValue = Math.round(30 + (ballParams[4] * 0.6));
 
             const optDiv = document.createElement('div');
             optDiv.className = 'option-card';
@@ -204,8 +204,8 @@ function renderEditor() {
                             oninput="window.handleEditorInput(${stepIndex}, ${optIndex}, 3, this.value)">
                     </div>
                     <div class="editor-field">
-                        <div class="field-header"><label>Freq</label><span class="range-hint">0-100</span></div>
-                        <input type="number" value="${ballParams[4]}" step="10" min="0" max="100"
+                        <div class="field-header"><label>BPM</label><span class="range-hint">30-90</span></div>
+                        <input type="number" value="${bpmValue}" step="1" min="30" max="90"
                             oninput="window.handleEditorInput(${stepIndex}, ${optIndex}, 4, this.value)">
                     </div>
                     <div class="editor-field">
@@ -216,20 +216,21 @@ function renderEditor() {
                 </div>`;
 
             const isLastBall = tempDrillData.length === 1 && stepOptions.length === 1;
+            
             const actionsHtml = `
                 <div class="card-actions">
                      <button class="btn-action btn-act-test" 
                              onclick="window.handleTestBall(${stepIndex}, ${optIndex})" 
                              ${isConnected && isActive ? '' : 'disabled'}>Test</button>
                      <button class="btn-action btn-act-clone" 
-                             onclick="window.handleCloneBall(${stepIndex}, ${optIndex})">Clone</button>
+                             onclick="window.handleAddVariant(${stepIndex}, ${optIndex})">+ Variant</button>
                      <button class="btn-action btn-act-del" 
                              onclick="window.handleDeleteBall(${stepIndex}, ${optIndex})" 
                              ${isLastBall ? 'disabled' : ''}>Delete</button>
                 </div>
             `;
             
-            const label = stepOptions.length > 1 ? `<span class="option-label">Option ${optIndex + 1}</span>` : '';
+            const label = stepOptions.length > 1 ? `<span class="option-label">Variant ${optIndex + 1}</span>` : '';
             optDiv.innerHTML = label + toggleHtml + inputsHtml + actionsHtml;
             groupDiv.appendChild(optDiv);
         });
@@ -244,7 +245,14 @@ window.handleEditorInput = (stepIdx, optIdx, paramIdx, value) => {
     const ball = tempDrillData[stepIdx][optIdx];
     let val = parseFloat(value);
     if(isNaN(val)) val = 0;
-    ball[paramIdx] = val;
+
+    // Convert BPM input (30-90) back to internal percent (0-100)
+    if (paramIdx === 4) {
+        let percent = (val - 30) / 0.6;
+        ball[paramIdx] = clamp(percent, 0, 100);
+    } else {
+        ball[paramIdx] = val;
+    }
 
     if (paramIdx === 7) { 
         const maxAllowed = SPIN_LIMITS[val.toString()] ?? 10;
@@ -292,22 +300,15 @@ window.handleRndToggle = (stepIdx) => {
     renderEditor();
 };
 
-window.handleAddOption = (stepIndex) => {
-    const baseOption = JSON.parse(JSON.stringify(tempDrillData[stepIndex][0]));
-    // Copy the RND flag if present, or clear it? Usually options disable RND logic in UI.
-    // The UI hides RND toggle if >1 options anyway.
-    tempDrillData[stepIndex].push(baseOption);
+window.handleAddSequenceStep = (sourceStepIndex) => {
+    const fullStepClone = JSON.parse(JSON.stringify(tempDrillData[sourceStepIndex]));
+    tempDrillData.splice(sourceStepIndex + 1, 0, fullStepClone);
     renderEditor();
 };
 
-window.handleCloneBall = (stepIdx, optIdx) => {
-    const ballConfig = JSON.parse(JSON.stringify(tempDrillData[stepIdx][optIdx]));
-    if (tempDrillData[stepIdx].length > 1) {
-        tempDrillData[stepIdx].splice(optIdx + 1, 0, ballConfig);
-    } else {
-        const newStep = [ballConfig];
-        tempDrillData.splice(stepIdx + 1, 0, newStep);
-    }
+window.handleAddVariant = (stepIndex, sourceOptIndex) => {
+    const baseConfig = JSON.parse(JSON.stringify(tempDrillData[stepIndex][sourceOptIndex]));
+    tempDrillData[stepIndex].push(baseConfig);
     renderEditor();
 };
 
@@ -320,15 +321,11 @@ window.handleDeleteBall = (stepIdx, optIdx) => {
     renderEditor();
 };
 
-// --- SAVE AS HANDLERS (UPDATED) ---
-
 window.handleSaveAsDrill = () => {
-    // 1. Open Modal
     selectedSaveCat = 'custom-a';
     const nameInput = document.getElementById('save-name');
     if (nameInput) nameInput.value = '';
     
-    // Reset UI Switch
     const switchEl = document.getElementById('save-cat-switch');
     if(switchEl) {
         Array.from(switchEl.children).forEach(c => c.classList.remove('active'));
@@ -353,24 +350,18 @@ window.selectSaveCategory = (val, btn) => {
 window.performSaveAs = () => {
     const newName = document.getElementById('save-name').value.trim();
     if(!newName) { showToast("Enter a name"); return; }
-    if (newName.length > 25) { showToast("Name too long"); return; }
+    if (newName.length > 40) { showToast("Name too long"); return; }
     if (!/^[a-zA-Z0-9.\-#\[\]><\+\)\( ]+$/.test(newName)) { showToast("Invalid characters"); return; }
 
     const targetCat = selectedSaveCat;
-
-    // Check Capacity
     if (userCustomDrills[targetCat].length >= 20) { 
-        showToast("That bank is full (Max 20)!"); 
-        return; 
+        showToast("That bank is full (Max 20)!"); return; 
     }
 
     const catChar = targetCat.split('-')[1].toUpperCase(); 
     const newKey = `cust_${catChar}_${newName.replace(/\s+/g, '_')}_${Date.now()}`;
-
-    // Add to User Custom List
     userCustomDrills[targetCat].push({ name: newName, key: newKey });
 
-    // Prepare Data
     let baseDrill = currentDrills[editingDrillKey] || { 1: [], 2: [], 3: [] }; 
     const newDrillData = JSON.parse(JSON.stringify(baseDrill));
     newDrillData[selectedLevel] = tempDrillData;
@@ -378,27 +369,19 @@ window.performSaveAs = () => {
     const chk = document.getElementById('chk-drill-random');
     if (chk) newDrillData.random = chk.checked;
 
-    // Save and Persist
     currentDrills[newKey] = newDrillData;
     saveDrillsToStorage(); 
     localStorage.setItem('custom_data', JSON.stringify(userCustomDrills));
 
-    // Cleanup and Switch
     window.closeSaveAsModal();
     closeEditor();
     openEditor(newKey);
-    
-    // Update main buttons
     document.dispatchEvent(new CustomEvent('drills-updated'));
     
-    // Switch main UI tab to where we just saved
     const tabBtn = document.querySelector(`.tab-btn[onclick*="${targetCat}"]`);
     if (tabBtn) switchTab(targetCat, tabBtn);
-    
     showToast(`Saved to ${catChar}`);
 };
-
-// --- DELETE & RENAME ---
 
 window.handleDeleteDrill = () => {
     if (!editingDrillKey || !editingDrillKey.startsWith('cust_')) return;
@@ -421,20 +404,17 @@ window.handleDeleteDrill = () => {
 
 window.handleRenameDrill = () => {
     if (!editingDrillKey || !editingDrillKey.startsWith('cust_')) return;
-    const titleEl = document.querySelector('.modal-title');
-    handleRename(titleEl);
-};
-
-function handleRename(titleEl) {
-    const currentName = titleEl.textContent.replace(' ✎', '');
+    
+    const nameEl = document.getElementById('editor-drill-name');
+    const currentName = nameEl ? nameEl.textContent : "New Drill";
+    
     const newName = prompt("Rename Drill:", currentName);
     if (!newName || newName === currentName) return;
-    if (newName.length > 25) { showToast("Name too long"); return; }
+    if (newName.length > 40) { showToast("Name too long"); return; }
 
     const parts = editingDrillKey.split('_'); 
     const catChar = parts[1]; 
     const catListKey = `custom-${catChar.toLowerCase()}`;
-    
     const newKey = `cust_${catChar}_${newName.replace(/\s+/g, '_')}_${Date.now()}`;
     
     const list = userCustomDrills[catListKey];
@@ -449,15 +429,16 @@ function handleRename(titleEl) {
         editingDrillKey = newKey;
         localStorage.setItem('custom_data', JSON.stringify(userCustomDrills)); 
         saveDrillsToStorage(); 
-        updateTitleDisplay(titleEl, newKey);
+        updateTitleDisplay(newKey);
         showToast("Renamed");
         document.dispatchEvent(new CustomEvent('drills-updated'));
     }
-}
+};
 
-function updateTitleDisplay(el, key) {
+function updateTitleDisplay(key) {
     let displayName = key;
     let isCustom = false;
+    
     if (key.startsWith('cust_')) {
         isCustom = true;
         const parts = key.split('_');
@@ -469,10 +450,29 @@ function updateTitleDisplay(el, key) {
     } else {
         displayName = key.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     }
-    el.innerHTML = displayName + (key.startsWith('cust_') ? ' <span style="opacity:0.5;font-size:0.8em">✎</span>' : '');
-    if(key.startsWith('cust_')) el.onclick = () => window.handleRenameDrill();
+    
+    const nameEl = document.getElementById('editor-drill-name');
+    const iconEl = document.getElementById('editor-drill-edit-icon');
+    const container = document.querySelector('#editor-modal .title-container');
+
+    if(nameEl) nameEl.textContent = displayName;
+    
+    if(isCustom) {
+        if(iconEl) iconEl.style.display = 'inline-block';
+        if(container) {
+            container.style.pointerEvents = 'auto';
+            container.onclick = () => window.handleRenameDrill();
+        }
+    } else {
+        if(iconEl) iconEl.style.display = 'none';
+        if(container) {
+            container.style.pointerEvents = 'none';
+            container.onclick = null;
+        }
+    }
 }
 
+// --- REVERTED: Byte 3 set back to 1 ---
 window.handleTestBall = async (stepIdx, optIdx) => {
     if (!bleState.isConnected) { showToast("Device not connected"); return; }
     const d = tempDrillData[stepIdx][optIdx];
@@ -480,25 +480,23 @@ window.handleTestBall = async (stepIdx, optIdx) => {
     const buffer = new ArrayBuffer(31); 
     const view = new DataView(buffer);
     view.setUint8(0, 0x81); view.setUint16(1, 28, true); 
-    view.setUint8(3, 1); view.setUint16(4, 1, true); view.setUint8(6, 0);
+    view.setUint8(3, 1); // Set to 1
+    view.setUint16(4, 1, true); 
+    view.setUint8(6, 0);
     new Uint8Array(buffer).set(ballData, 7);
     try { await sendPacket(new Uint8Array(buffer)); showToast("Test Ball Fired"); } 
     catch (e) { console.error(e); showToast("Test Failed"); }
 };
 
+// --- REVERTED: Byte 3 set back to 1 ---
 window.handleTestCombo = async () => {
     if (!bleState.isConnected) { showToast("Device not connected"); return; }
     if (!tempDrillData || tempDrillData.length === 0) return;
     const balls = [];
     tempDrillData.forEach(stepOptions => {
         if (stepOptions[0][6] === 0) return;
-        
-        // Clone for safety to not mutate editor data with RND logic
-        const chosen = stepOptions[0]; // Take first option for test
+        const chosen = stepOptions[0]; 
         const d = [...chosen];
-
-        // RND Logic for Test Combo? 
-        // Usually static test is preferred, but let's apply RND logic for realism if active
         if (d[10] === true) {
             const currentDrop = d[3];
             const limit = Math.abs(currentDrop);
@@ -508,7 +506,6 @@ window.handleTestCombo = async () => {
                  d[3] = -limit + (randomStep * 0.5);
             }
         }
-
         balls.push(packBall(d[0], d[1], d[2], d[3], d[4], 1));
     });
     if (balls.length === 0) { showToast("No active balls"); return; }
@@ -517,7 +514,9 @@ window.handleTestCombo = async () => {
     const view = new DataView(buffer);
     const uint8 = new Uint8Array(buffer);
     view.setUint8(0, 0x81); view.setUint16(1, 4 + (balls.length * 24), true); 
-    view.setUint8(3, 1); view.setUint16(4, 1, true); view.setUint8(6, 0);
+    view.setUint8(3, 1); // Set to 1
+    view.setUint16(4, 1, true); 
+    view.setUint8(6, 0);
     let offset = 7;
     balls.forEach(b => { uint8.set(b, offset); offset += 24; });
     try { await sendPacket(uint8); showToast("Testing Drill..."); } 
@@ -526,10 +525,9 @@ window.handleTestCombo = async () => {
 
 window.handleShareDrill = async () => {
     if (!editingDrillKey || !tempDrillData) return;
-
     let drillName = "Shared Drill";
-    const titleEl = document.querySelector('.modal-title');
-    if(titleEl) drillName = titleEl.textContent.replace(' ✎', '');
+    const nameEl = document.getElementById('editor-drill-name');
+    if(nameEl) drillName = nameEl.textContent;
 
     const payload = {
         name: drillName,
@@ -545,15 +543,12 @@ window.handleShareDrill = async () => {
 
     try {
         const code = await uploadDrill(payload);
-        
-        // UX: Auto-copy + Alert
         if (navigator.clipboard && navigator.clipboard.writeText) {
              await navigator.clipboard.writeText(code);
              alert(`Drill Shared Successfully!\n\nCode: ${code}\n\n(Copied to clipboard)`);
         } else {
              prompt("Drill Shared! Copy this code:", code);
         }
-
     } catch (e) {
         console.error("Share Error:", e);
         showToast("Share failed. Check network.");
