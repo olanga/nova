@@ -34,28 +34,22 @@ export function startDrillSequence(drillName) {
     }
 
     // --- FILTER INACTIVE STEPS ---
-    // A step is active if index 6 is 1 or undefined (defaults to active).
     const executableSteps = rawParams.filter(step => {
-        // We check the first option of the step (index 0) for the active flag (index 6)
         const isActive = step[0][6]; 
         return isActive === undefined || isActive === 1;
     });
 
-    // --- STOP IF EMPTY ---
     if (executableSteps.length === 0) {
         showToast("no active balls to play");
-        // Ensure visual state is cleared if needed
         document.querySelectorAll('.btn-drill').forEach(b => b.classList.remove('running'));
         return;
     }
     
-    // Proceed with only the active steps
     activeDrillParams = executableSteps;
     activeDrillRandom = !!currentDrills[drillName].random;
     
     ui.overlay.classList.add('open');
     
-    // Countdown Animation
     let count = 4;
     ui.display.textContent = count;
     ui.label.textContent = "GET READY";
@@ -63,7 +57,7 @@ export function startDrillSequence(drillName) {
     
     ui.progress.style.transition = 'none';
     ui.progress.style.strokeDashoffset = '0';
-    void ui.progress.offsetWidth; // Force Reflow
+    void ui.progress.offsetWidth; 
     
     requestAnimationFrame(() => {
         ui.progress.style.transition = 'stroke-dashoffset 4s linear';
@@ -86,6 +80,12 @@ export function beginDrillExecution() {
     isRunning = true;
     isPaused = false;
     
+    // --- FIX: Increment Drill Count ONCE per session, not per rep ---
+    appStats.drills += 1;
+    localStorage.setItem('nova_stats', JSON.stringify(appStats));
+    updateStatsUI();
+    // ---------------------------------------------------------------
+
     ui.btnPause.style.display = 'block';
     ui.btnPause.textContent = "PAUSE";
     ui.btnPause.classList.remove('pulse-anim');
@@ -135,10 +135,8 @@ async function runIteration() {
         currentCount++;
     }
 
-    // Sequence Building (using filtered activeDrillParams)
     let sequence = activeDrillParams; 
     if (activeDrillRandom) {
-        // Simple Fisher-Yates shuffle for randomization
         sequence = [...activeDrillParams]; 
         for (let i = sequence.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -146,52 +144,39 @@ async function runIteration() {
         }
     }
 
-    // Prepare Packets
     const balls = [];
     sequence.forEach((stepOptions, i) => {
         const chosenOption = stepOptions[Math.floor(Math.random() * stepOptions.length)];
-        
-        // Clone to avoid mutating the original drill data in state
         const tempBall = [...chosenOption];
 
-        // --- RND MODE LOGIC ---
-        // Index 10 is the RND flag. Index 3 is Drop (-10 to 10).
-        if (tempBall[10] === true) {
+        const scatter = tempBall[10] || 0;
+        if (scatter > 0) {
             const currentDrop = tempBall[3];
-            const limit = Math.abs(currentDrop);
+            const minDrop = currentDrop - scatter;
+            const maxDrop = currentDrop + scatter;
+            const span = maxDrop - minDrop;
+            const steps = Math.floor(span / 0.5);
             
-            // If limit is 0 (Center), random range is 0 to 0, so do nothing.
-            if (limit > 0) {
-                // Determine how many 0.5 steps exist in the full range (-limit to +limit)
-                // Range Span = limit * 2. 
-                // Steps = Span / 0.5
-                const totalSteps = (limit * 2) / 0.5;
-                
-                // Pick a random step index
-                const randomStep = Math.floor(Math.random() * (totalSteps + 1));
-                
-                // Calculate new drop value
-                const newDrop = -limit + (randomStep * 0.5);
-                
+            if (steps > 0) {
+                const randomStep = Math.floor(Math.random() * (steps + 1));
+                let newDrop = minDrop + (randomStep * 0.5);
+                newDrop = clamp(newDrop, -10, 10);
                 tempBall[3] = newDrop;
-                // Optional debug log
-                // log(`RND Active: Range ±${limit}, New Drop: ${newDrop}`);
+                log(`Scatter Active: Base ${currentDrop} ±${scatter} -> ${newDrop}`);
             }
         }
 
         log(`TX Ball ${i+1}: ${tempBall.join(' ')}`);
-        
-        // packBall expects (us, ls, bh, dp, freq, reps) -> indices 0,1,2,3,4,5
         balls.push(packBall(...tempBall));
     });
 
-    // Update Stats
+    // --- FIX: Only increment BALLS here ---
     appStats.balls += balls.length;
-    appStats.drills += 1;
+    // appStats.drills += 1;  <-- REMOVED THIS LINE
     localStorage.setItem('nova_stats', JSON.stringify(appStats));
     updateStatsUI();
+    // --------------------------------------
 
-    // Send Bluetooth Packet
     const packet = buildPacket(balls);
     await sendPacket(packet);
 }
@@ -205,7 +190,6 @@ export function handleDone() {
         return;
     }
     
-    // Convert Seconds to Milliseconds
     const pauseInput = parseFloat(document.getElementById('input-pause').value);
     const pauseMs = (isNaN(pauseInput) ? 1.0 : pauseInput) * 1000;
 
@@ -233,13 +217,11 @@ export function togglePause() {
         ui.btnPause.classList.add('pulse-anim');
         clearTimeout(pauseTimer);
         
-        // Freeze CSS Animation
         const computedStyle = window.getComputedStyle(ui.progress);
         const currentOffset = computedStyle.getPropertyValue('stroke-dashoffset');
         ui.progress.style.transition = 'none';
         ui.progress.style.strokeDashoffset = currentOffset;
         
-        // Command robot to stop
         sendPacket([0x80,1,0,1]); 
     }
 }

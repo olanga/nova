@@ -126,28 +126,27 @@ export function renderDrillButtons() {
             createButton(container, item.key, item.name, true, cat);
         });
 
-        // --- UPDATED: "New Drill" Button Styling ---
+        // --- UPDATED: "New Drill" Button Styling (Circular Plus) ---
+        const addWrapper = document.createElement('div');
+        addWrapper.style.cssText = "width:100%; display:flex; justify-content:center; margin:15px 0 10px 0;";
+
         const addBtn = document.createElement('button');
-        addBtn.className = 'btn-drill btn-add-drill';
-        
-        // Flexbox styling for perfect centering
-        addBtn.style.width = '33%';
-        addBtn.style.margin = '10px auto'; 
-        addBtn.style.display = 'flex'; 
-        addBtn.style.flexDirection = 'column'; 
-        addBtn.style.alignItems = 'center'; 
-        addBtn.style.justifyContent = 'center';
-        addBtn.style.gap = '5px'; 
-        addBtn.style.padding = '10px';
+        addBtn.className = 'btn-swap'; // Reusing the circular button class from style.css
+        // Slightly larger than the editor button (40px vs 32px) for better main menu touch target
+        addBtn.style.cssText = "width:40px; height:40px; color:var(--primary); border-color:var(--primary); font-size:1.2rem; box-shadow:0 2px 5px rgba(0,0,0,0.1);";
+        addBtn.title = "Create New Drill";
         
         addBtn.innerHTML = `
-            <div class="drill-icon" style="border-color:var(--primary); opacity:0.8; margin:0;">
-                <div style="font-size:24px; font-weight:bold; color:var(--primary); line-height:0; display:flex; align-items:center; justify-content:center; width:100%; height:100%; padding-bottom:3px;">+</div>
-            </div>
-            <span style="color:var(--primary); font-weight:700; font-size:0.8rem;">New Drill</span>
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
         `;
+        
         addBtn.onclick = () => window.handleCreateNewDrill(cat);
-        container.appendChild(addBtn);
+        
+        addWrapper.appendChild(addBtn);
+        container.appendChild(addWrapper);
     });
 }
 

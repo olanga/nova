@@ -93,6 +93,11 @@ function setupEventListeners() {
         updateDrillButtonStates();
     });
     
+    // --- ADDED: Listen for stats reset ---
+    document.addEventListener('stats-updated', () => {
+        updateStatsUI();
+    });
+    
     document.addEventListener('connection-changed', () => {
         updateDrillButtonStates();
         const editorModal = document.getElementById('editor-modal');
