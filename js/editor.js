@@ -188,6 +188,10 @@ function renderEditor() {
             const type = ballParams[9];
             const currentMaxSpin = SPIN_LIMITS[speed.toString()] ?? 10;
             
+            // --- UPDATED: Backspin Visual Logic ---
+            const spinStyle = type === 'back' ? 'background:var(--danger); color:#fff; border-radius:4px;' : '';
+            // -------------------------------------
+            
             // BPM Calculation: 30 + (Percent * 0.6)
             const bpmValue = Math.round(30 + (ballParams[4] * 0.6));
 
@@ -216,6 +220,7 @@ function renderEditor() {
                     <div class="editor-field">
                         <div class="field-header"><label>Spin</label><span class="range-hint" id="lbl-spin-${stepIndex}-${optIndex}">Max ${currentMaxSpin}</span></div>
                         <input type="number" inputmode="decimal" id="inp-spin-${stepIndex}-${optIndex}" value="${spin}" step="0.5" min="0" max="${currentMaxSpin}"
+                            style="${spinStyle}"
                             oninput="window.handleEditorInput(${stepIndex}, ${optIndex}, 8, this.value)">
                     </div>
                     <div class="editor-field">
