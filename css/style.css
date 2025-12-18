@@ -1047,6 +1047,12 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
 .btn-run-ctrl { width: 100%; padding: 15px; border-radius: 15px; border: none; font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform 0.1s; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 .btn-run-ctrl:active { transform: scale(0.95); }
 .btn-pause { background: var(--card-bg); color: var(--text); }
-.btn-stop-run { background: var(--danger); color: white; }
+.btn-stop-run { 
+    background: var(--danger); 
+    color: white; 
+    padding: 30px;      /* Doubled padding (was 15px) */
+    font-size: 1.5rem;  /* Larger text */
+    margin-top: 10px;   /* Extra spacing from pause button */
+}
 .pulse-anim { animation: pulse 1s infinite; }
 @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
