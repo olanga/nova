@@ -2,6 +2,11 @@
 
 A pretty web client for the Nova S Pro table tennis robot. This tool replaces the original app, removing the requirement for server connectivity.
 
+
+| Main | Editor | Countdown |
+| :---: | :---: | :---: |
+| <img src="./images/main.png" width="300"> | <img src="./images/editor.png" width="300"> | <img src="./images/countdown.png" width="300"> |
+
 ## Usage
 
 **Online:**
