@@ -9,7 +9,7 @@ A pretty web client for the Nova S Pro table tennis robot. This tool replaces th
 
 ## Usage
 
-**Online:**
+**Online/Offline:**
 
   * Visit: [https://olanga.github.io/nova/](https://olanga.github.io/nova/)
 
@@ -19,7 +19,7 @@ A pretty web client for the Nova S Pro table tennis robot. This tool replaces th
 
 **Requirements:**
 
-  * Chrome or Chromium-based browser. iPhone is not supported as it uses Webkit browser engine.
+  * Chrome, Cromite or any other Chromium-based browser. iPhone is not supported as it uses Webkit browser engine.
 
 ## Features
 
