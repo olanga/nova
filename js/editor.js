@@ -188,7 +188,7 @@ function renderEditor() {
             const type = ballParams[9];
             const currentMaxSpin = SPIN_LIMITS[speed.toString()] ?? 10;
             
-            // --- UPDATED: Backspin Visual Logic ---
+            // --- UPDATED: Backspin Visual Logic (Red Input Field) ---
             const spinStyle = type === 'back' ? 'background:var(--danger); color:#fff; border-radius:4px;' : '';
             // -------------------------------------
             
@@ -198,16 +198,20 @@ function renderEditor() {
             const optDiv = document.createElement('div');
             optDiv.className = 'option-card';
 
+            // --- UPDATED: Swap Colors for Top/Back Toggle (Top=Blue, Back=Red) ---
             const toggleHtml = `
                 <div class="spin-row">
                     <span class="spin-label">Rotation:</span>
                     <div class="spin-capsule">
                         <div class="sc-opt ${type === 'top' ? 'active' : ''}" 
+                             style="${type === 'top' ? 'background:#0984e3' : ''}"
                              onclick="window.handleTypeToggle(${stepIndex}, ${optIndex}, 'top')">TOP</div>
                         <div class="sc-opt ${type === 'back' ? 'active' : ''}" 
+                             style="${type === 'back' ? 'background:var(--danger)' : ''}"
                              onclick="window.handleTypeToggle(${stepIndex}, ${optIndex}, 'back')">BACK</div>
                     </div>
                 </div>`;
+            // ---------------------------------------------------------------------
 
             // NOTE: 'Drop' uses onchange to prevent re-rendering while typing negative numbers
             const inputsHtml = `

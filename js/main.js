@@ -70,11 +70,14 @@ function setupEventListeners() {
     const inputPause = document.getElementById('input-pause');
     if (inputPause) {
         inputPause.onchange = (e) => {
-            // Updated Logic: Seconds (0.5 - 5.0)
+            // Updated Logic: Seconds (0.0 - 5.0) with 0.1 step
             let val = parseFloat(e.target.value);
             if(isNaN(val)) val = 1.0;
-            if(val < 0.5) val = 0.5;
+            
+            // Allow down to 0, max 5
+            if(val < 0) val = 0; 
             if(val > 5.0) val = 5.0;
+            
             e.target.value = val.toFixed(1);
         };
     }
