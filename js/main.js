@@ -233,7 +233,7 @@ window.performDownload = async () => {
     }
 
     // Check capacity before calling server
-    if (userCustomDrills[selectedDownloadCat].length >= 20) {
+    if (userCustomDrills[selectedDownloadCat].length >= 100) {
         const catChar = selectedDownloadCat.split('-')[1].toUpperCase();
         showToast(`Bank ${catChar} is full!`);
         return;

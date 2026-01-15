@@ -5,8 +5,8 @@ import { openEditor } from './editor.js';
 
 // --- NEW: Handle Create New Drill ---
 window.handleCreateNewDrill = (category) => {
-    if (userCustomDrills[category].length >= 20) {
-        showToast("Category is full (Max 20)");
+    if (userCustomDrills[category].length >= 100) {
+        showToast("Category is full (Max 100)");
         return;
     }
 
@@ -69,7 +69,7 @@ window.handleTabDrop = (e, targetCat) => {
 
     if (!sourceCat) return; 
     if (sourceCat === targetCat) return; 
-    if (userCustomDrills[targetCat].length >= 20) {
+    if (userCustomDrills[targetCat].length >= 100) {
         showToast(`Bank ${targetCat.split('-')[1].toUpperCase()} is full!`);
         return;
     }

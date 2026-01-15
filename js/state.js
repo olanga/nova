@@ -174,7 +174,7 @@ export function importCustomDrills(csvText) {
 
                 if (!customBuilder[key]) {
                     let exists = newCustomData[category].find(d => d.key === key);
-                    if (!exists && newCustomData[category].length < 20) newCustomData[category].push({ name: name, key: key });
+                    if (!exists && newCustomData[category].length < 100) newCustomData[category].push({ name: name, key: key });
                     customBuilder[key] = { 1: {}, 2: {}, 3: {} }; 
                 }
                 for(let lvl=1; lvl<=3; lvl++) {
