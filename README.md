@@ -12,6 +12,7 @@ A pretty web client for the Nova S Pro table tennis robot. This tool replaces th
 **Online/Offline:**
 
   * Visit: [https://olanga.github.io/nova/](https://olanga.github.io/nova/)
+  * Self hosting: https is required
 
 **Local:**
 
