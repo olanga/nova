@@ -49,7 +49,7 @@ A pretty web client for the Nova S Pro table tennis robot. This tool replaces th
 
 ## Custom Drills (CSV)
 
-Drills can be imported via CSV. Each category (A, B, C) holds 100 drills; each drill holds 20 balls. Alternative balls (pseudo-randomness) share the same ball number.
+Drills can be imported via CSV. Each category (A, B, C) holds 100 drills; each drill holds 20 balls. Variant balls (pseudo-randomness) share the same ball number.
 
 **CSV Format:** `Set;Ball;Name;Speed;Spin;Type;Height;Drop;BPM;Reps`
 
