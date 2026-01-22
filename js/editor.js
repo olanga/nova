@@ -213,13 +213,13 @@ function renderEditor() {
                 </div>`;
             // ---------------------------------------------------------------------
 
-            // NOTE: 'Drop' uses onchange to prevent re-rendering while typing negative numbers
+            // NOTE: 'Drop' and 'Speed' use onchange to prevent re-rendering while typing negative numbers or clearing input
             const inputsHtml = `
                 <div class="editor-grid">
                     <div class="editor-field">
                         <div class="field-header"><label>Speed</label><span class="range-hint">0-10</span></div>
                         <input type="number" inputmode="decimal" id="inp-speed-${stepIndex}-${optIndex}" value="${speed}" step="0.5" min="0" max="10"
-                            oninput="window.handleEditorInput(${stepIndex}, ${optIndex}, 7, this.value)">
+                            onchange="window.handleEditorInput(${stepIndex}, ${optIndex}, 7, this.value)">
                     </div>
                     <div class="editor-field">
                         <div class="field-header"><label>Spin</label><span class="range-hint" id="lbl-spin-${stepIndex}-${optIndex}">Max ${currentMaxSpin}</span></div>
@@ -425,8 +425,8 @@ window.performSaveAs = () => {
     if (!/^[a-zA-Z0-9.\-#\[\]><\+\)\( ]+$/.test(newName)) { showToast("Invalid characters"); return; }
 
     const targetCat = selectedSaveCat;
-    if (userCustomDrills[targetCat].length >= 100) { 
-        showToast("That bank is full (Max 100)!"); return; 
+    if (userCustomDrills[targetCat].length >= 20) { 
+        showToast("That bank is full (Max 20)!"); return; 
     }
 
     const catChar = targetCat.split('-')[1].toUpperCase(); 
