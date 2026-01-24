@@ -8,6 +8,15 @@ export let selectedLevel = 1;
 export let runMode = "reps";
 export let appStats = { balls: 0, drills: 0 };
 
+// --- NEW: Last Played State ---
+export let lastPlayedDrill = localStorage.getItem('nova_last_played');
+
+export function setLastPlayed(key) {
+    lastPlayedDrill = key;
+    localStorage.setItem('nova_last_played', key);
+}
+// ------------------------------
+
 export function initData() {
     const savedTheme = localStorage.getItem('nova_theme_pref');
     if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
@@ -174,7 +183,7 @@ export function importCustomDrills(csvText) {
 
                 if (!customBuilder[key]) {
                     let exists = newCustomData[category].find(d => d.key === key);
-                    if (!exists && newCustomData[category].length < 100) newCustomData[category].push({ name: name, key: key });
+                    if (!exists && newCustomData[category].length < 20) newCustomData[category].push({ name: name, key: key });
                     customBuilder[key] = { 1: {}, 2: {}, 3: {} }; 
                 }
                 for(let lvl=1; lvl<=3; lvl++) {

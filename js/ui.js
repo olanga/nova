@@ -1,12 +1,21 @@
-import { currentDrills, userCustomDrills, appStats, drillOrder, saveDrillOrder, saveDrillsToStorage } from './state.js';
+import { 
+    currentDrills, 
+    userCustomDrills, 
+    appStats, 
+    drillOrder, 
+    saveDrillOrder, 
+    saveDrillsToStorage, 
+    selectedLevel,
+    lastPlayedDrill 
+} from './state.js';
 import { bleState } from './bluetooth.js';
 import { showToast } from './utils.js';
 import { openEditor } from './editor.js';
 
 // --- NEW: Handle Create New Drill ---
 window.handleCreateNewDrill = (category) => {
-    if (userCustomDrills[category].length >= 100) {
-        showToast("Category is full (Max 100)");
+    if (userCustomDrills[category].length >= 20) {
+        showToast("Category is full (Max 20)");
         return;
     }
 
@@ -69,7 +78,7 @@ window.handleTabDrop = (e, targetCat) => {
 
     if (!sourceCat) return; 
     if (sourceCat === targetCat) return; 
-    if (userCustomDrills[targetCat].length >= 100) {
+    if (userCustomDrills[targetCat].length >= 20) {
         showToast(`Bank ${targetCat.split('-')[1].toUpperCase()} is full!`);
         return;
     }
@@ -126,13 +135,11 @@ export function renderDrillButtons() {
             createButton(container, item.key, item.name, true, cat);
         });
 
-        // --- UPDATED: "New Drill" Button Styling (Circular Plus) ---
         const addWrapper = document.createElement('div');
         addWrapper.style.cssText = "width:100%; display:flex; justify-content:center; margin:15px 0 10px 0;";
 
         const addBtn = document.createElement('button');
-        addBtn.className = 'btn-swap'; // Reusing the circular button class from style.css
-        // Slightly larger than the editor button (40px vs 32px) for better main menu touch target
+        addBtn.className = 'btn-swap'; 
         addBtn.style.cssText = "width:40px; height:40px; color:var(--primary); border-color:var(--primary); font-size:1.2rem; box-shadow:0 2px 5px rgba(0,0,0,0.1);";
         addBtn.title = "Create New Drill";
         
@@ -148,6 +155,17 @@ export function renderDrillButtons() {
         addWrapper.appendChild(addBtn);
         container.appendChild(addWrapper);
     });
+
+    updateLastPlayedHighlight();
+}
+
+export function updateLastPlayedHighlight() {
+    document.querySelectorAll('.btn-drill').forEach(b => b.classList.remove('last-played'));
+    
+    if (lastPlayedDrill) {
+        const btn = document.querySelector(`.btn-drill[data-key="${lastPlayedDrill}"]`);
+        if (btn) btn.classList.add('last-played');
+    }
 }
 
 function createButton(container, key, label, allowSort, category) {
@@ -367,3 +385,18 @@ function formatDrillName(key) {
     if (key.startsWith('cust_')) return key; 
     return key.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 }
+
+// --- NEW: About Modal Handlers ---
+window.openAboutModal = () => {
+    // Close menu first if open
+    const menu = document.getElementById('theme-menu');
+    if(menu) menu.classList.remove('open');
+    
+    const m = document.getElementById('about-modal');
+    if(m) m.classList.add('open');
+};
+
+window.closeAboutModal = () => {
+    const m = document.getElementById('about-modal');
+    if(m) m.classList.remove('open');
+};
