@@ -37,6 +37,9 @@
         
         <div class="theme-item" onclick="resetStats()">Reset Statistics</div>
         <div class="theme-item reset-item" onclick="factoryReset()">Factory Reset</div>
+
+        <div style="border-top: 1px solid var(--border); margin: 5px 0;"></div>
+        <div class="theme-item" onclick="window.openAboutModal()">About</div>
     </div>
     
     <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="handleCSVUpload(event)">
@@ -118,7 +121,7 @@
 
     <div class="footer-row">
         <div id="stats-display">Balls: 0 | Drills: 0</div>
-        <div>Version 2.2h</div>
+        <div>Version 2.2m</div>
     </div>
     
     <div id="log" class="log-box"></div>
@@ -230,6 +233,22 @@
         </div>
         <div class="modal-footer">
              <button class="btn-modal btn-save" onclick="window.performSaveAs()">Save Drill</button>
+        </div>
+    </div>
+</div>
+
+<div id="about-modal" class="modal-overlay">
+    <div class="modal" style="height:auto; width:85%; max-width:320px;">
+        <div class="modal-header">
+            <div class="modal-title">About</div>
+            <div class="modal-close" onclick="window.closeAboutModal()">×</div>
+        </div>
+        <div class="modal-body" style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:15px; padding:20px 0;">
+            <h3 style="margin:0; color:var(--text);">Nova Drill Control</h3>
+            <a href="https://github.com/olanga/nova" target="_blank" 
+               style="color:var(--primary); font-weight:700; text-decoration:none; padding:10px 20px; border:2px solid var(--primary); border-radius:12px; transition:0.2s;">
+               View on GitHub
+            </a>
         </div>
     </div>
 </div>
