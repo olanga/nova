@@ -661,7 +661,7 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
     font-size: 1.2rem;
     font-weight: 700;
     color: var(--text);
-    white-space: nowrap;
+    white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -1056,3 +1056,20 @@ input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; color: var(--
 }
 .pulse-anim { animation: pulse 1s infinite; }
 @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+/* --- LAST PLAYED HIGHLIGHT --- */
+.btn-drill.last-played {
+    border-color: var(--primary); /* subtle highlight border */
+    background: var(--surface);   /* keep background clean or use var(--primary-dim) */
+}
+
+/* Optional: Add a small indicator icon */
+.btn-drill.last-played::after {
+    content: '●'; /* Dot indicator */
+    color: var(--primary);
+    position: absolute;
+    right: 10px; /* Adjust based on your button padding */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8rem;
+}
