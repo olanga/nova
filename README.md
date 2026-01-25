@@ -1,7 +1,7 @@
 # Nova S Pro Drill Control
 
-A pretty web client for the Nova S Pro table tennis robot. This tool replaces the original app, removing the requirement for server connectivity.
-
+A pretty web client for the Nova S Pro table tennis robot. 
+This tool can be used as a replacement for the original app, removing the requirements for server connectivity and user login.
 
 | Main | Editor | Countdown |
 | :---: | :---: | :---: |
