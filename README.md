@@ -79,6 +79,8 @@ B;1;Drill B1;7.5;5;back;50;5;60;1
 
 Additional informations: [Wiki](https://github.com/olanga/nova/wiki/Protocol-Overview)
 
+Spinsight measurements: [Wiki](https://github.com/olanga/nova/wiki/Spinsight-measurements-with-Nova-S-Pro)
+
 Based on findings by [smee](https://github.com/smee/nova-s-custom-drills) and plunder.
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E21PUFEQ)
