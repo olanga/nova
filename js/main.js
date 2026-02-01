@@ -33,7 +33,8 @@ import {
     setTheme, 
     toggleMenu, 
     switchTab, 
-    updateStatsUI
+    updateStatsUI,
+    showSessionSummary 
 } from './ui.js';
 
 import { showToast } from './utils.js';
@@ -62,7 +63,10 @@ function setupEventListeners() {
     const btnConnect = document.getElementById('btn-connect');
     if (btnConnect) {
         btnConnect.onclick = () => {
-            if (bleState.isConnected) disconnectDevice();
+            if (bleState.isConnected) {
+                disconnectDevice();
+                showSessionSummary(); // <--- ADDED: Show summary on disconnect
+            }
             else connectDevice();
         };
     }
@@ -233,6 +237,7 @@ window.performDownload = async () => {
     }
 
     // Check capacity before calling server
+    // UPDATED LIMIT: 100
     if (userCustomDrills[selectedDownloadCat].length >= 100) {
         const catChar = selectedDownloadCat.split('-')[1].toUpperCase();
         showToast(`Bank ${catChar} is full!`);

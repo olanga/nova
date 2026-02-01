@@ -8,6 +8,28 @@ export let selectedLevel = 1;
 export let runMode = "reps";
 export let appStats = { balls: 0, drills: 0 };
 
+// --- NEW: Session Summary State ---
+let sessionSnapshot = { balls: 0, drills: 0 };
+let sessionStartTime = 0; // NEW: Track start time
+
+export function startSession() {
+    sessionSnapshot.balls = appStats.balls;
+    sessionSnapshot.drills = appStats.drills;
+    sessionStartTime = Date.now(); // NEW: Capture start timestamp
+}
+
+export function getSessionSummary() {
+    // NEW: Calculate duration in ms (default to 0 if not started)
+    const durationMs = sessionStartTime > 0 ? (Date.now() - sessionStartTime) : 0;
+    
+    return {
+        balls: appStats.balls - sessionSnapshot.balls,
+        drills: appStats.drills - sessionSnapshot.drills,
+        duration: durationMs // NEW: Return duration
+    };
+}
+// ----------------------------------
+
 // --- NEW: Last Played State ---
 export let lastPlayedDrill = localStorage.getItem('nova_last_played');
 

@@ -6,16 +6,18 @@ import {
     saveDrillOrder, 
     saveDrillsToStorage, 
     selectedLevel,
-    lastPlayedDrill 
+    lastPlayedDrill,
+    getSessionSummary 
 } from './state.js';
 import { bleState } from './bluetooth.js';
-import { showToast } from './utils.js';
+import { showToast, formatDuration } from './utils.js'; 
 import { openEditor } from './editor.js';
 
 // --- NEW: Handle Create New Drill ---
 window.handleCreateNewDrill = (category) => {
-    if (userCustomDrills[category].length >= 20) {
-        showToast("Category is full (Max 20)");
+    // UPDATED LIMIT: 100
+    if (userCustomDrills[category].length >= 100) {
+        showToast("Category is full (Max 100)");
         return;
     }
 
@@ -78,7 +80,9 @@ window.handleTabDrop = (e, targetCat) => {
 
     if (!sourceCat) return; 
     if (sourceCat === targetCat) return; 
-    if (userCustomDrills[targetCat].length >= 20) {
+    
+    // UPDATED LIMIT: 100
+    if (userCustomDrills[targetCat].length >= 100) {
         showToast(`Bank ${targetCat.split('-')[1].toUpperCase()} is full!`);
         return;
     }
@@ -399,4 +403,25 @@ window.openAboutModal = () => {
 window.closeAboutModal = () => {
     const m = document.getElementById('about-modal');
     if(m) m.classList.remove('open');
+};
+
+// --- NEW: Session Summary UI ---
+export function showSessionSummary() {
+    const summary = getSessionSummary();
+    
+    const dVal = document.getElementById('sum-drills-val');
+    const bVal = document.getElementById('sum-balls-val');
+    const tVal = document.getElementById('sum-time-val'); // <--- NEW
+    
+    if(dVal) dVal.textContent = summary.drills;
+    if(bVal) bVal.textContent = summary.balls;
+    if(tVal) tVal.textContent = formatDuration(summary.duration); // <--- NEW
+    
+    const modal = document.getElementById('summary-modal');
+    if(modal) modal.classList.add('open');
+}
+
+window.closeSummaryModal = () => {
+    const modal = document.getElementById('summary-modal');
+    if(modal) modal.classList.remove('open');
 };

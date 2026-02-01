@@ -104,3 +104,20 @@ function safe_add(d, _) {
 function bit_rol(d, _) {
     return d << _ | d >>> 32 - _
 }
+
+// --- NEW: Duration Formatter ---
+export function formatDuration(ms) {
+    if (!ms || ms < 0) return "0:00";
+    
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    
+    if (minutes >= 60) {
+        const hours = Math.floor(minutes / 60);
+        const remMin = minutes % 60;
+        return `${hours}h ${remMin}m`;
+    }
+    
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
