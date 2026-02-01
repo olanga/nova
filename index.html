@@ -121,7 +121,7 @@
 
     <div class="footer-row">
         <div id="stats-display">Balls: 0 | Drills: 0</div>
-        <div>Version 2.2m</div>
+        <div>Version 2.3</div>
     </div>
     
     <div id="log" class="log-box"></div>
@@ -249,6 +249,36 @@
                style="color:var(--primary); font-weight:700; text-decoration:none; padding:10px 20px; border:2px solid var(--primary); border-radius:12px; transition:0.2s;">
                View on GitHub
             </a>
+        </div>
+    </div>
+</div>
+
+<div id="summary-modal" class="modal-overlay">
+    <div class="modal" style="height:auto; width:90%; max-width:380px;">
+        <div class="modal-header">
+            <div class="modal-title">Session Summary</div>
+        </div>
+        <div class="modal-body" style="display:flex; flex-direction:column; gap:15px; padding:15px 0;">
+            <div style="text-align:center; color:var(--text-light); font-size:0.9rem; margin-bottom:10px;">
+                Training session complete!
+            </div>
+            <div style="display:flex; gap:10px; justify-content:center;">
+                <div class="control-pill">
+                    <label>Drills</label>
+                    <div id="sum-drills-val" style="font-size:1.8rem; font-weight:800; color:var(--primary); line-height:1;">0</div>
+                </div>
+                <div class="control-pill">
+                    <label>Balls</label>
+                    <div id="sum-balls-val" style="font-size:1.8rem; font-weight:800; color:var(--primary); line-height:1;">0</div>
+                </div>
+                <div class="control-pill">
+                    <label>Time</label>
+                    <div id="sum-time-val" style="font-size:1.8rem; font-weight:800; color:var(--text); line-height:1;">0:00</div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+             <button class="btn-modal btn-save" onclick="window.closeSummaryModal()">Close</button>
         </div>
     </div>
 </div>
