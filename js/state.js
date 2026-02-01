@@ -10,22 +10,21 @@ export let appStats = { balls: 0, drills: 0 };
 
 // --- NEW: Session Summary State ---
 let sessionSnapshot = { balls: 0, drills: 0 };
-let sessionStartTime = 0; // NEW: Track start time
+let sessionStartTime = 0;
 
 export function startSession() {
     sessionSnapshot.balls = appStats.balls;
     sessionSnapshot.drills = appStats.drills;
-    sessionStartTime = Date.now(); // NEW: Capture start timestamp
+    sessionStartTime = Date.now();
 }
 
 export function getSessionSummary() {
-    // NEW: Calculate duration in ms (default to 0 if not started)
     const durationMs = sessionStartTime > 0 ? (Date.now() - sessionStartTime) : 0;
     
     return {
         balls: appStats.balls - sessionSnapshot.balls,
         drills: appStats.drills - sessionSnapshot.drills,
-        duration: durationMs // NEW: Return duration
+        duration: durationMs
     };
 }
 // ----------------------------------
@@ -205,10 +204,16 @@ export function importCustomDrills(csvText) {
 
                 if (!customBuilder[key]) {
                     let exists = newCustomData[category].find(d => d.key === key);
-                    if (!exists && newCustomData[category].length < 20) newCustomData[category].push({ name: name, key: key });
+                    
+                    // UPDATED LIMIT: 100
+                    if (!exists && newCustomData[category].length < 100) {
+                        newCustomData[category].push({ name: name, key: key });
+                    }
+                    
                     customBuilder[key] = { 1: {}, 2: {}, 3: {} }; 
                 }
                 for(let lvl=1; lvl<=3; lvl++) {
+                    if (!customBuilder[key][lvl]) customBuilder[key][lvl] = {};
                     if (!customBuilder[key][lvl][ballNum]) customBuilder[key][lvl][ballNum] = [];
                     customBuilder[key][lvl][ballNum].push(params);
                 }
