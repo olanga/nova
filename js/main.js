@@ -42,7 +42,8 @@ import { showToast } from './utils.js';
 import { 
     startDrillSequence, 
     stopRun, 
-    togglePause 
+    togglePause,
+    skipCountdown // <--- ADDED IMPORT
 } from './runner.js';
 
 import { downloadDrill } from './cloud.js';
@@ -65,7 +66,7 @@ function setupEventListeners() {
         btnConnect.onclick = () => {
             if (bleState.isConnected) {
                 disconnectDevice();
-                showSessionSummary(); // <--- ADDED: Show summary on disconnect
+                showSessionSummary(); 
             }
             else connectDevice();
         };
@@ -85,6 +86,15 @@ function setupEventListeners() {
             e.target.value = val.toFixed(1);
         };
     }
+
+    // --- NEW: Tap to Skip Countdown ---
+    const runDisplay = document.getElementById('run-display');
+    if (runDisplay) {
+        runDisplay.onclick = () => {
+            skipCountdown();
+        };
+    }
+    // ----------------------------------
 
     document.addEventListener('click', (e) => {
         const menu = document.getElementById('theme-menu');

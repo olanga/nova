@@ -13,6 +13,7 @@ let remainingTime = 0;
 let pauseTimer = null;
 let countdownTimer = null;
 let runTimer = null;
+let startTimeout = null; // --- ADDED: Track the start delay
 
 let activeDrillParams = null;
 let activeDrillRandom = false;
@@ -77,7 +78,8 @@ export function startDrillSequence(drillName) {
         } else {
             clearInterval(countdownTimer);
             ui.display.textContent = "GO!";
-            setTimeout(beginDrillExecution, 800);
+            // --- UPDATED: Store timeout to allow cancelling ---
+            startTimeout = setTimeout(beginDrillExecution, 800);
         }
     }, 1000);
 }
@@ -237,6 +239,7 @@ export function stopRun() {
     clearInterval(countdownTimer);
     clearInterval(runTimer);
     clearTimeout(pauseTimer);
+    clearTimeout(startTimeout); // --- ADDED: Clear start delay on stop
     
     // --- UNLOCK SCROLL ON STOP ---
     toggleBodyScroll(false);
@@ -245,6 +248,23 @@ export function stopRun() {
     
     sendPacket([0x80,1,0,1]); // Stop command
     log("Drill Stopped");
+}
+
+// --- NEW FUNCTION: Skip Countdown ---
+export function skipCountdown() {
+    // Only execute if NOT running and overlay IS open (i.e., we are in countdown state)
+    if (isRunning) return;
+    if (!ui.overlay.classList.contains('open')) return;
+    
+    // Cancel any pending start mechanisms
+    clearInterval(countdownTimer);
+    clearTimeout(startTimeout);
+    
+    // Visual feedback
+    ui.display.textContent = "GO!";
+    
+    // Start immediately
+    beginDrillExecution();
 }
 
 function formatTime(s) {
