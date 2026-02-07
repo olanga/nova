@@ -78,7 +78,7 @@ B;1;Drill B1;7.5;5;back;50;5;60;1
 
 ## Credits & Support
 
-Additional informations: [Wiki](https://github.com/olanga/nova/wiki/Protocol-Overview)
+Additional informations: [Wiki](https://github.com/olanga/nova/wiki/General-information)
 
 Spinsight measurements: [Wiki](https://github.com/olanga/nova/wiki/Spinsight-measurements-with-Nova-S-Pro)
 
