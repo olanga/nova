@@ -18,6 +18,22 @@ This tool can be used as a replacement for the original app, removing the requir
 
   * Download repository files and host locally (e.g., `python3 -m http.server`).
 
+**Docker:**
+
+  Pre-built images are available on the GitHub Container Registry:
+
+  ```bash
+  docker run -d -p 8080:80 ghcr.io/olanga/nova:latest
+  ```
+
+  Or build locally:
+
+  ```bash
+  docker build -t nova .
+  docker run -d -p 8080:80 nova
+  ```
+  Then open `http://localhost:8080` in your browser.
+
 **Requirements:**
 
   * Chrome, Cromite or any other Chromium-based browser. iPhone is not supported as it uses Webkit browser engine.

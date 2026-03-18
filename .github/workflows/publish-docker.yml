@@ -1,0 +1,135 @@
+name: Publish Docker Image & Release
+
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # -------------------------------------------------------------------
+  # 0) TAG CREATION
+  # -------------------------------------------------------------------
+  tag-creation:
+    name: 0. Create version tag
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.pull_request.merged == true
+    outputs:
+      created_tag: ${{ steps.created_tag.outputs.created_tag }}
+      change_type: ${{ steps.change_type.outputs.change_type }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect change type from PR labels
+        id: change_type
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "change_type=patch" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          LABELS='${{ toJson(github.event.pull_request.labels.*.name) }}'
+          if echo "$LABELS" | grep -qi "major"; then
+            TYPE="major"
+          elif echo "$LABELS" | grep -qi "minor\|feature\|feat"; then
+            TYPE="minor"
+          else
+            TYPE="patch"
+          fi
+          echo "change_type=$TYPE" >> "$GITHUB_OUTPUT"
+
+      - name: Get latest tag
+        id: last_tag
+        run: |
+          LAST_TAG=$(git tag --sort=-v:refname | head -n 1)
+          if [ -z "$LAST_TAG" ]; then
+            LAST_TAG="0.0.0"
+          fi
+          # Strip leading 'v' if present
+          LAST_TAG="${LAST_TAG#v}"
+          echo "last_tag=$LAST_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Bump version
+        id: created_tag
+        run: |
+          IFS='.' read -r major minor patch <<< "${{ steps.last_tag.outputs.last_tag }}"
+          case "${{ steps.change_type.outputs.change_type }}" in
+            major)
+              major=$((major + 1)); minor=0; patch=0 ;;
+            minor)
+              minor=$((minor + 1)); patch=0 ;;
+            patch)
+              patch=$((patch + 1)) ;;
+          esac
+          CREATED_TAG="${major}.${minor}.${patch}"
+          echo "New tag: $CREATED_TAG"
+          echo "created_tag=$CREATED_TAG" >> "$GITHUB_OUTPUT"
+
+  # -------------------------------------------------------------------
+  # 1) BUILD & PUSH DOCKER IMAGE
+  # -------------------------------------------------------------------
+  build-and-push:
+    name: 1. Build & push Docker image
+    runs-on: ubuntu-latest
+    needs: tag-creation
+    permissions:
+      contents: read
+      packages: write
+    env:
+      CREATED_TAG: ${{ needs.tag-creation.outputs.created_tag }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.CREATED_TAG }}
+
+  # -------------------------------------------------------------------
+  # 2) CREATE GITHUB RELEASE
+  # -------------------------------------------------------------------
+  release-creation:
+    name: 2. Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [tag-creation, build-and-push]
+    permissions:
+      contents: write
+    env:
+      CREATED_TAG: ${{ needs.tag-creation.outputs.created_tag }}
+      CHANGE_TYPE: ${{ needs.tag-creation.outputs.change_type }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.CREATED_TAG }}
+          name: Release ${{ env.CREATED_TAG }}
+          generate_release_notes: true
+          body: |
+            🐳 Docker image: `${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.CREATED_TAG }}`
+
+            ```bash
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.CREATED_TAG }}
+            ```
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
