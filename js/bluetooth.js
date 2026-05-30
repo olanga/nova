@@ -25,20 +25,14 @@ export async function connectDevice() {
 
         const server = await device.gatt.connect();
         const service = await server.getPrimaryService(UUID_S);
-        const chars = await service.getCharacteristics();
 
-        for(let c of chars) {
-            if(c.uuid === UUID_N) {
-                await c.startNotifications();
-                c.addEventListener('characteristicvaluechanged', onNotify);
-            }
-            if(c.uuid === UUID_W) bleState.writeChar = c;
-        }
+        const notifyChar = await service.getCharacteristic(UUID_N);
+        await notifyChar.startNotifications();
+        notifyChar.addEventListener('characteristicvaluechanged', onNotify);
 
-        if(bleState.writeChar) {
-            bleState.handshakeState = "handshake";
-            sendPacket([0x07,0,0,0]); // Start handshake
-        }
+        bleState.writeChar = await service.getCharacteristic(UUID_W);
+        bleState.handshakeState = "handshake";
+        sendPacket([0x07,0,0,0]);
     } catch(e) {
         log("Connect Error: " + e.message);
     }
@@ -64,7 +58,16 @@ function onDisconnect() {
 export function sendPacket(data) {
     if(!bleState.writeChar) return Promise.reject("No Write Char");
     const arr = new Uint8Array(data);
-    writeLock = writeLock.then(() => bleState.writeChar.writeValue(arr).catch(e => log("TX Error: " + e)));
+    writeLock = writeLock.then(() => {
+        const char = bleState.writeChar;
+        if (char.properties.write && char.writeValueWithResponse) {
+            return char.writeValueWithResponse(arr).catch(e => log("TX Error: " + e));
+        } else if (char.properties.writeWithoutResponse && char.writeValueWithoutResponse) {
+            return char.writeValueWithoutResponse(arr).catch(e => log("TX Error: " + e));
+        } else {
+            return char.writeValue(arr).catch(e => log("TX Error: " + e));
+        }
+    });
     return writeLock;
 }
 
