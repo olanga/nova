@@ -20,7 +20,11 @@ This tool can be used as a replacement for the original app, removing the requir
 
 **Requirements:**
 
-  * Chrome, Cromite or any other Chromium-based browser. iPhone is not supported as it uses Webkit browser engine.
+  * Chrome, Cromite or any other Chromium-based browser. iPhone is not supported in the browser as it uses the Webkit engine (no Web Bluetooth).
+
+**Native apps (Android / iOS):**
+
+  * The web app can also be packaged as a native Android or iOS app via Capacitor — see [BUILDING.md](./BUILDING.md). A native build accesses Bluetooth through the OS, so it also runs on iPhone / iPad.
 
 ## Features
 

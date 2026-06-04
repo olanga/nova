@@ -2,7 +2,7 @@
 <html lang="en" data-theme="standard">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Nova Drill Control</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -42,7 +42,7 @@
         <div class="theme-item" onclick="window.openAboutModal()">About</div>
     </div>
     
-    <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="handleCSVUpload(event)">
+    <input type="file" id="csv-input" accept=".csv, text/plain, text/csv" style="display:none" onchange="handleCSVUpload(event)">
 
     <div class="settings-card">
         <div id="status-text">Disconnected</div>

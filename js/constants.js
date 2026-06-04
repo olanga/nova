@@ -1,4 +1,5 @@
 export const SERVICE_UUID = 0xfeff;
+export const SERVICE_UUID_LONG = "0000feff-0000-1000-8000-00805f9b34fb";
 export const UUID_S = "02f00000-0000-0000-0000-00000000fe00";
 export const UUID_N = "02f00000-0000-0000-0000-00000000ff02";
 export const UUID_W = "02f00000-0000-0000-0000-00000000ff01";
