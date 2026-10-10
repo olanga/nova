@@ -43,7 +43,8 @@ import {
     startDrillSequence, 
     stopRun, 
     togglePause,
-    skipCountdown // <--- ADDED IMPORT
+    skipCountdown,
+    handleVisibilityChange
 } from './runner.js';
 
 import { downloadDrill } from './cloud.js';
@@ -114,6 +115,9 @@ function setupEventListeners() {
     document.addEventListener('stats-updated', () => {
         updateStatsUI();
     });
+
+    // --- Screen Wake Lock Re-acquire on Visibility Change ---
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     
     document.addEventListener('connection-changed', () => {
         updateDrillButtonStates();

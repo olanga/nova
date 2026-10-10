@@ -9,6 +9,42 @@ let currentCount = 0;
 let targetCount = 0;
 let remainingTime = 0;
 
+// Screen Wake Lock
+let wakeLockSentinel = null;
+
+export async function requestWakeLock() {
+    if (!('wakeLock' in navigator)) return;
+    try {
+        if (!wakeLockSentinel || wakeLockSentinel.released) {
+            wakeLockSentinel = await navigator.wakeLock.request('screen');
+            wakeLockSentinel.addEventListener('release', () => {
+                log("Wake Lock released");
+            });
+            log("Wake Lock acquired");
+        }
+    } catch (err) {
+        log("Wake Lock error: " + err.message);
+    }
+}
+
+export async function releaseWakeLock() {
+    if (wakeLockSentinel) {
+        try {
+            await wakeLockSentinel.release();
+        } catch (err) {
+            log("Wake Lock release error: " + err.message);
+        } finally {
+            wakeLockSentinel = null;
+        }
+    }
+}
+
+export function handleVisibilityChange() {
+    if (document.visibilityState === 'visible' && isRunning && !isPaused) {
+        requestWakeLock();
+    }
+}
+
 // Timers
 let pauseTimer = null;
 let countdownTimer = null;
@@ -53,9 +89,10 @@ export function startDrillSequence(drillName) {
     setLastPlayed(drillName);
     updateLastPlayedHighlight();
 
-    // --- LOCK SCROLL ON START ---
+    // --- LOCK SCROLL ON START & REQUEST WAKE LOCK ---
     toggleBodyScroll(true);
     ui.overlay.classList.add('open');
+    requestWakeLock();
     
     let count = 4;
     ui.display.textContent = count;
@@ -210,6 +247,7 @@ export function handleDone() {
 export function togglePause() {
     if (isPaused) {
         isPaused = false;
+        requestWakeLock();
         ui.btnPause.textContent = "PAUSE";
         ui.btnPause.classList.remove('pulse-anim');
         
@@ -220,6 +258,7 @@ export function togglePause() {
         runIteration(); 
     } else {
         isPaused = true;
+        releaseWakeLock();
         ui.btnPause.textContent = "RESUME";
         ui.btnPause.classList.add('pulse-anim');
         clearTimeout(pauseTimer);
@@ -236,6 +275,7 @@ export function togglePause() {
 export function stopRun() {
     isRunning = false;
     isPaused = false;
+    releaseWakeLock();
     clearInterval(countdownTimer);
     clearInterval(runTimer);
     clearTimeout(pauseTimer);
